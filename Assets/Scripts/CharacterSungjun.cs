@@ -5,25 +5,18 @@ using UnityEngine;
 
 public class CharacterSungjun : Character
 {
-    public override int GetMaxHitPoint()
+    protected override void InitializeBaseStats()
     {
-        return 100;
-    }
-
-    public override float GetBaseMoveSpeed()
-    {
-        return 0f;
-    }
-
-    public override int GetMaxSpecialPoint()
-    {
-        return 100;
+        HitPoint = 100;
+        MoveSpeed = 2f;
+        SpecialPointMax = 100;
     }
 
     public CharacterSungjun()
     {
-
+        InitializeBaseStats();
     }
+    
     public override void OnPressUp()
     {
         base.OnPressUp();
@@ -34,6 +27,23 @@ public class CharacterSungjun : Character
     {
         base.OnPressDown();
         Debug.Log("Sungjun OnPressDown");
+    }
+
+    public override void OnPressLeft()
+    {
+        base.OnPressLeft();
+    }
+
+    public override void OnPressRight()
+    {
+        base.OnPressRight();
+    }
+
+    public override void OnUseSkill1()
+    {
+        base.OnUseSkill1();
+        Debug.Log("Sungjun OnUseSkill1");
+        GameController.Instance.ProjectileHandler.CreateSungjunProjectile(GetPosition(), Utils.DirectionToVector2(GetDirection()), 10, 10);
     }
 
     

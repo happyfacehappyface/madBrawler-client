@@ -1,17 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GameController : MonoBehaviour
 {
+
+    public static GameController Instance;
+
+    private TimeSpan _currentTime;
     public Character _leftPlayerCharacter;
     public Character _rightPlayerCharacter;
 
     [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private ProjectileHandler _projectileHandler;
+
+    public ProjectileHandler ProjectileHandler => _projectileHandler;
 
 
     private void ManualStart()
     {
+        Instance = this;
+
         GameObject leftPlayer = Instantiate(_playerPrefab);
         GameObject rightPlayer = Instantiate(_playerPrefab);
 
@@ -20,10 +30,17 @@ public class GameController : MonoBehaviour
 
         _leftPlayerCharacter.SetPlayerObject(leftPlayer);
         _rightPlayerCharacter.SetPlayerObject(rightPlayer);
+
+        _currentTime = TimeSpan.Zero;
+
+        _projectileHandler.ManualStart();
     }
 
     private void ManualUpdate()
     {
+        _currentTime += TimeSpan.FromSeconds(Time.deltaTime);
+        _projectileHandler.ManualUpdate();
+
         HandleInput();
     }
 
@@ -102,3 +119,13 @@ public class GameController : MonoBehaviour
         ManualUpdate();
     }
 }
+
+
+
+
+public enum Team
+{
+    Left,
+    Right
+}
+

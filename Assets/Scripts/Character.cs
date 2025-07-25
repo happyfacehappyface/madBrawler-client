@@ -6,15 +6,12 @@ public abstract class Character
 {
 
     public GameObject PlayerObject;
+    public Direction Direction;
 
-    public int HitPoint;
-    public int MoveSpeed;
-    public int SpecialPointMax;
+    protected int HitPoint;
+    protected float MoveSpeed;
+    protected int SpecialPointMax;
 
-
-    public abstract int GetMaxHitPoint();
-    public abstract float GetBaseMoveSpeed();
-    public abstract int GetMaxSpecialPoint();
 
     
 
@@ -23,24 +20,41 @@ public abstract class Character
         PlayerObject = playerObject;
     }
 
+    public Vector2 GetPosition()
+    {
+        return PlayerObject.transform.localPosition;
+    }
+
+    public Direction GetDirection()
+    {
+        return Direction;
+    }
+
+    protected abstract void InitializeBaseStats();
+
     public virtual void OnPressUp()
     {
-        PlayerObject.transform.position += Time.deltaTime * GetBaseMoveSpeed() * new Vector3(0, 1, 0);
+        PlayerObject.transform.localPosition += Time.deltaTime * MoveSpeed * new Vector3(0, 1, 0);
+        Debug.Log($"move Speed: {MoveSpeed}");
+        Direction = Direction.Up;
     }
 
     public virtual void OnPressDown()
     {
-        PlayerObject.transform.position += Time.deltaTime * GetBaseMoveSpeed() * new Vector3(0, -1, 0);
+        PlayerObject.transform.localPosition += Time.deltaTime * MoveSpeed * new Vector3(0, -1, 0);
+        Direction = Direction.Down;
     }
 
     public virtual void OnPressLeft()
     {
-        PlayerObject.transform.position += Time.deltaTime * GetBaseMoveSpeed() * new Vector3(-1, 0, 0);
+        PlayerObject.transform.localPosition += Time.deltaTime * MoveSpeed * new Vector3(-1, 0, 0);
+        Direction = Direction.Left;
     }
     
     public virtual void OnPressRight()
     {
-        PlayerObject.transform.position += Time.deltaTime * GetBaseMoveSpeed() * new Vector3(1, 0, 0);
+        PlayerObject.transform.localPosition += Time.deltaTime * MoveSpeed * new Vector3(1, 0, 0);
+        Direction = Direction.Right;
     }
 
     public virtual void OnUseSkill1()
@@ -58,4 +72,13 @@ public abstract class Character
         Debug.Log("OnUseSkill3");
     }
     
+}
+
+
+public enum Direction
+{
+    Up,
+    Down,
+    Left,
+    Right
 }
