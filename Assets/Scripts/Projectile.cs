@@ -25,7 +25,7 @@ public abstract class Projectile : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public virtual void ManualStart(Team team)
+    public void ManualStart(Team team)
     {
         _team = team;
     }
@@ -41,10 +41,10 @@ public abstract class Projectile : MonoBehaviour
             character.OnHitByProjectile(this);
         }
 
-        // if (other.TryGetComponent<Wall>(out Wall wall))
-        // {
-        //     OnHitByWall();
-        // }
+        if (other.TryGetComponent<Wall>(out Wall wall))
+        {
+            OnHitByWall();
+        }
     }
 
 }

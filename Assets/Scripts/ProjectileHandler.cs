@@ -46,6 +46,7 @@ public class ProjectileHandler : MonoBehaviour
 
         SungjunProjectile newProjectile = newObject.GetComponent<SungjunProjectile>();
         newProjectile.ManualStart(team);
+        newProjectile.Initialize(direction);
 
         _projectiles.Add(newProjectile);
     }

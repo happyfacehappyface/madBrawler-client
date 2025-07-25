@@ -7,25 +7,31 @@ public class CharacterSungjun : Character
 {
     protected override void InitializeBaseStats()
     {
-        HitPoint = 100;
-        HitPointMax = 100;
+        HitPoint = 100f;
+        HitPointMax = 100f;
         MoveSpeed = 2f;
         
-        SpecialPoint = 0;
-        SpecialPointMax = 100;
+        SpecialPoint = 0f;
+        SpecialPointMax = 100f;
+
+        _basicAttackCoolTime = TimeSpan.FromSeconds(0.5f);
+        _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
+        {
+            TimeSpan.FromSeconds(2.0f),
+            TimeSpan.FromSeconds(2.0f),
+            TimeSpan.FromSeconds(2.0f)
+        };
     }
 
 
     public override void OnPressUp()
     {
         base.OnPressUp();
-        Debug.Log("Sungjun OnPressUp");
     }
 
     public override void OnPressDown()
     {
         base.OnPressDown();
-        Debug.Log("Sungjun OnPressDown");
     }
 
     public override void OnPressLeft()
@@ -38,12 +44,21 @@ public class CharacterSungjun : Character
         base.OnPressRight();
     }
 
-    public override void OnUseSkill1()
+    public override bool OnPressBasicAttack()
     {
-        base.OnUseSkill1();
-        Debug.Log("Sungjun OnUseSkill1");
+        if (!base.OnPressBasicAttack()) return false;
+        Debug.Log("Sungjun OnPressBasicAttack");
         GameController.Instance.ProjectileHandler.CreateSungjunProjectile(GetPosition(), Utils.DirectionToVector2(GetDirection()), 10, Team);
+        return true;
     }
 
-    
+    public override bool OnPressSkill0()
+    {
+        if (!base.OnPressSkill0()) return false;
+        Debug.Log("Sungjun OnPressSkill0");
+        AddEffect(new CharacterEffect(Team, TimeSpan.FromSeconds(3), CharacterEffectType.Buff, new CharacterEffectCategory.MoveSpeed(3), "MoveSpeed", null));
+        return true;
+    }
+
+
 }

@@ -9,8 +9,8 @@ public class SungjunProjectile : Projectile
 
     private TimeSpan _lifeTime = TimeSpan.FromSeconds(10);
 
-    [SerializeField] private Vector2 _direction;
-    [SerializeField] private float _speed;
+    private Vector2 _direction;
+    private float _speed;
 
     private bool _isHit;
 
@@ -18,11 +18,12 @@ public class SungjunProjectile : Projectile
 
 
 
-    public override void ManualStart(Team team)
+    public void Initialize(Vector2 direction)
     {
-        base.ManualStart(team);
         _isHit = false;
         _timeFromStart = TimeSpan.Zero;
+        _speed = 5;
+        _direction = direction;
     }
 
     

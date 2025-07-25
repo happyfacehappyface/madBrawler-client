@@ -9,6 +9,9 @@ public class GameController : MonoBehaviour
     public static GameController Instance;
 
     private TimeSpan _currentTime;
+    private TimeSpan _leftTime;
+    private TimeSpan _rightTime;
+
     private Character _leftPlayerCharacter;
     public Character LeftPlayerCharacter => _leftPlayerCharacter;
 
@@ -38,6 +41,8 @@ public class GameController : MonoBehaviour
         _rightPlayerCharacter.ManualStart(Team.Right);
 
         _currentTime = TimeSpan.Zero;
+        _leftTime = TimeSpan.Zero;
+        _rightTime = TimeSpan.Zero;
 
         _projectileHandler.ManualStart();
     }
@@ -45,6 +50,12 @@ public class GameController : MonoBehaviour
     private void ManualUpdate()
     {
         _currentTime += TimeSpan.FromSeconds(Time.deltaTime);
+        _leftTime += TimeSpan.FromSeconds(Time.deltaTime);
+        _rightTime += TimeSpan.FromSeconds(Time.deltaTime);
+
+        _leftPlayerCharacter.ManualUpdate();
+        _rightPlayerCharacter.ManualUpdate();
+
         _projectileHandler.ManualUpdate();
 
         HandleInput();
@@ -87,32 +98,75 @@ public class GameController : MonoBehaviour
             _rightPlayerCharacter.OnPressRight();
         }
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _leftPlayerCharacter.OnPressBasicAttack();
+        }
         if (Input.GetKeyDown(KeyCode.B))
         {
-            _leftPlayerCharacter.OnUseSkill1();
+            _leftPlayerCharacter.OnPressSkill0();
         }
         if (Input.GetKeyDown(KeyCode.N))
         {
-            _leftPlayerCharacter.OnUseSkill2();
+            _leftPlayerCharacter.OnPressSkill1();
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
-            _leftPlayerCharacter.OnUseSkill3();
+            _leftPlayerCharacter.OnPressSkill2();
         }
 
+        if (Input.GetKeyDown(KeyCode.Keypad0))
+        {
+            _rightPlayerCharacter.OnPressBasicAttack();
+        }
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
-            _rightPlayerCharacter.OnUseSkill1();
+            _rightPlayerCharacter.OnPressSkill0();
         }
         if (Input.GetKeyDown(KeyCode.Keypad2))
         {
-            _rightPlayerCharacter.OnUseSkill2();
+            _rightPlayerCharacter.OnPressSkill1();
         }
         if (Input.GetKeyDown(KeyCode.Keypad3))
         {
-            _rightPlayerCharacter.OnUseSkill3();
+            _rightPlayerCharacter.OnPressSkill2();
         }
 
+    }
+
+
+    public TimeSpan GetCurrentTime()
+    {
+        return _currentTime;
+    }
+
+    public TimeSpan GetPlayerTime(Team team)
+    {
+        if (team == Team.Left)
+        {
+            return _leftTime;
+        }
+        else
+        {
+            return _rightTime;
+        }
+    }
+
+    public TimeSpan GetCurrentDeltaTime()
+    {
+        return TimeSpan.FromSeconds(Time.deltaTime);
+    }
+
+    public TimeSpan GetPlayerDeltaTime(Team team)
+    {
+        if (team == Team.Left)
+        {
+            return TimeSpan.FromSeconds(Time.deltaTime);
+        }
+        else
+        {
+            return TimeSpan.FromSeconds(Time.deltaTime);
+        }
     }
 
 
@@ -136,3 +190,13 @@ public enum Team
     Right
 }
 
+
+
+
+
+
+
+namespace System.Runtime.CompilerServices
+{
+        internal static class IsExternalInit {}
+}
