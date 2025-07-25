@@ -4,14 +4,22 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    public Character leftPlayerCharacter;
-    public Character rightPlayerCharacter;
+    public Character _leftPlayerCharacter;
+    public Character _rightPlayerCharacter;
+
+    [SerializeField] private GameObject _playerPrefab;
 
 
     private void ManualStart()
     {
-        leftPlayerCharacter = new CharacterSungjun();
-        rightPlayerCharacter = new CharacterSungjun();
+        GameObject leftPlayer = Instantiate(_playerPrefab);
+        GameObject rightPlayer = Instantiate(_playerPrefab);
+
+        _leftPlayerCharacter = new CharacterSungjun();
+        _rightPlayerCharacter = new CharacterSungjun();
+
+        _leftPlayerCharacter.SetPlayerObject(leftPlayer);
+        _rightPlayerCharacter.SetPlayerObject(rightPlayer);
     }
 
     private void ManualUpdate()
@@ -21,64 +29,64 @@ public class GameController : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
-            leftPlayerCharacter.OnPressUp();
+            _leftPlayerCharacter.OnPressUp();
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKey(KeyCode.S))
         {
-            leftPlayerCharacter.OnPressDown();
+            _leftPlayerCharacter.OnPressDown();
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
         {
-            leftPlayerCharacter.OnPressLeft();
+            _leftPlayerCharacter.OnPressLeft();
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKey(KeyCode.D))
         {
-            leftPlayerCharacter.OnPressRight();
+            _leftPlayerCharacter.OnPressRight();
         }
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
-            rightPlayerCharacter.OnPressUp();
+            _rightPlayerCharacter.OnPressUp();
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.DownArrow))
         {
-            rightPlayerCharacter.OnPressDown();
+            _rightPlayerCharacter.OnPressDown();
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
-            rightPlayerCharacter.OnPressLeft();
+            _rightPlayerCharacter.OnPressLeft();
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
-            rightPlayerCharacter.OnPressRight();
+            _rightPlayerCharacter.OnPressRight();
         }
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            leftPlayerCharacter.OnUseSkill1();
+            _leftPlayerCharacter.OnUseSkill1();
         }
         if (Input.GetKeyDown(KeyCode.N))
         {
-            leftPlayerCharacter.OnUseSkill2();
+            _leftPlayerCharacter.OnUseSkill2();
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
-            leftPlayerCharacter.OnUseSkill3();
+            _leftPlayerCharacter.OnUseSkill3();
         }
 
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
-            rightPlayerCharacter.OnUseSkill1();
+            _rightPlayerCharacter.OnUseSkill1();
         }
         if (Input.GetKeyDown(KeyCode.Keypad2))
         {
-            rightPlayerCharacter.OnUseSkill2();
+            _rightPlayerCharacter.OnUseSkill2();
         }
         if (Input.GetKeyDown(KeyCode.Keypad3))
         {
-            rightPlayerCharacter.OnUseSkill3();
+            _rightPlayerCharacter.OnUseSkill3();
         }
 
     }
