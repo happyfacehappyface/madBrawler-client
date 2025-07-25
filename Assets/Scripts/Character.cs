@@ -2,27 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Character
+public abstract class Character : MonoBehaviour
 {
-
-    public GameObject PlayerObject;
-    public Direction Direction;
+    protected Direction Direction;
+    protected Team Team;
 
     protected int HitPoint;
+    protected int HitPointMax;
     protected float MoveSpeed;
+    protected int SpecialPoint;
     protected int SpecialPointMax;
 
-
-    
-
-    public void SetPlayerObject(GameObject playerObject)
+    public virtual void ManualStart(Team team)
     {
-        PlayerObject = playerObject;
+        InitializeBaseStats();
+        Team = team;
     }
+
+    public float HitPointRatio()
+    {
+        return (float)HitPoint / (float)HitPointMax;
+    }
+
 
     public Vector2 GetPosition()
     {
-        return PlayerObject.transform.localPosition;
+        return transform.localPosition;
     }
 
     public Direction GetDirection()
@@ -30,30 +35,45 @@ public abstract class Character
         return Direction;
     }
 
+    public Team GetTeam()
+    {
+        return Team;
+    }
+
+
+    protected void AddHitPoint(int amount)
+    {
+        HitPoint = Mathf.Clamp(HitPoint + amount, 0, HitPointMax);
+    }
+
+    protected void AddSpecialPoint(int amount)
+    {
+        SpecialPoint = Mathf.Clamp(SpecialPoint + amount, 0, SpecialPointMax);
+    }
+
     protected abstract void InitializeBaseStats();
 
     public virtual void OnPressUp()
     {
-        PlayerObject.transform.localPosition += Time.deltaTime * MoveSpeed * new Vector3(0, 1, 0);
-        Debug.Log($"move Speed: {MoveSpeed}");
+        transform.localPosition += Time.deltaTime * MoveSpeed * new Vector3(0, 1, 0);
         Direction = Direction.Up;
     }
 
     public virtual void OnPressDown()
     {
-        PlayerObject.transform.localPosition += Time.deltaTime * MoveSpeed * new Vector3(0, -1, 0);
+        transform.localPosition += Time.deltaTime * MoveSpeed * new Vector3(0, -1, 0);
         Direction = Direction.Down;
     }
 
     public virtual void OnPressLeft()
     {
-        PlayerObject.transform.localPosition += Time.deltaTime * MoveSpeed * new Vector3(-1, 0, 0);
+        transform.localPosition += Time.deltaTime * MoveSpeed * new Vector3(-1, 0, 0);
         Direction = Direction.Left;
     }
     
     public virtual void OnPressRight()
     {
-        PlayerObject.transform.localPosition += Time.deltaTime * MoveSpeed * new Vector3(1, 0, 0);
+        transform.localPosition += Time.deltaTime * MoveSpeed * new Vector3(1, 0, 0);
         Direction = Direction.Right;
     }
 
@@ -70,6 +90,18 @@ public abstract class Character
     public virtual void OnUseSkill3()
     {
         Debug.Log("OnUseSkill3");
+    }
+
+    public virtual void OnHitByProjectile(Projectile projectile)
+    {
+
+        if (projectile.Team == Team)
+        {
+            return;
+        }
+
+        AddHitPoint((-1) * projectile.Damage);
+        Debug.Log("OnHitByProjectile");
     }
     
 }

@@ -9,11 +9,18 @@ public class GameController : MonoBehaviour
     public static GameController Instance;
 
     private TimeSpan _currentTime;
-    public Character _leftPlayerCharacter;
-    public Character _rightPlayerCharacter;
+    private Character _leftPlayerCharacter;
+    public Character LeftPlayerCharacter => _leftPlayerCharacter;
+
+    private Character _rightPlayerCharacter;
+    public Character RightPlayerCharacter => _rightPlayerCharacter;
+
+
+    
 
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private ProjectileHandler _projectileHandler;
+    [SerializeField] private GameUIDrawer _gameUIDrawer;
 
     public ProjectileHandler ProjectileHandler => _projectileHandler;
 
@@ -25,11 +32,10 @@ public class GameController : MonoBehaviour
         GameObject leftPlayer = Instantiate(_playerPrefab);
         GameObject rightPlayer = Instantiate(_playerPrefab);
 
-        _leftPlayerCharacter = new CharacterSungjun();
-        _rightPlayerCharacter = new CharacterSungjun();
-
-        _leftPlayerCharacter.SetPlayerObject(leftPlayer);
-        _rightPlayerCharacter.SetPlayerObject(rightPlayer);
+        _leftPlayerCharacter = leftPlayer.GetComponent<CharacterSungjun>();
+        _leftPlayerCharacter.ManualStart(Team.Left);
+        _rightPlayerCharacter = rightPlayer.GetComponent<CharacterSungjun>();
+        _rightPlayerCharacter.ManualStart(Team.Right);
 
         _currentTime = TimeSpan.Zero;
 
@@ -42,6 +48,7 @@ public class GameController : MonoBehaviour
         _projectileHandler.ManualUpdate();
 
         HandleInput();
+        _gameUIDrawer.ManualUpdate();
     }
 
     private void HandleInput()

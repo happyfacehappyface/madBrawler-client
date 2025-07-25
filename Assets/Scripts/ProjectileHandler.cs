@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProjectileHandler : MonoBehaviour
 {
-    public List<Projectile> Projectiles;
+    private List<Projectile> _projectiles;
 
     [SerializeField] private GameObject _sungjunProjectilePrefab;
     [SerializeField] private Transform _sungjunProjectileParent;
@@ -12,7 +12,7 @@ public class ProjectileHandler : MonoBehaviour
 
     public void ManualStart()
     {
-        Projectiles = new List<Projectile>();
+        _projectiles = new List<Projectile>();
     }
 
     public void ManualUpdate()
@@ -22,13 +22,13 @@ public class ProjectileHandler : MonoBehaviour
 
     private void CleanUpAndUpdateProjectiles()
     {
-        for (var i = Projectiles.Count - 1; i >= 0; i--)
+        for (var i = _projectiles.Count - 1; i >= 0; i--)
         {
-            var projectile = Projectiles[i];
+            var projectile = _projectiles[i];
             if (projectile.ShouldBeDestroyed())
             {
                 projectile.OnDestroy();
-                Projectiles.RemoveAt(i);
+                _projectiles.RemoveAt(i);
             }
             else
             {
@@ -37,16 +37,17 @@ public class ProjectileHandler : MonoBehaviour
         }
     }
 
-    public void CreateSungjunProjectile(Vector2 origin, Vector2 direction, float speed, int damage)
+    public void CreateSungjunProjectile(Vector2 origin, Vector2 direction, float speed, Team team)
     {
         GameObject newObject = Instantiate(_sungjunProjectilePrefab, _sungjunProjectileParent);
+        Debug.Log($"CreateSungjunProjectile: {origin}, {direction}, {speed}");
 
         newObject.transform.SetLocalPositionAndRotation(Utils.Vector2ToVector3(origin), Quaternion.Euler(Utils.Vector2ToVector3(direction)));
 
-        Projectile newProjectile = new SungjunProjectile(direction, speed, damage);
-        newProjectile.SetProjectileObject(newObject);
+        SungjunProjectile newProjectile = newObject.GetComponent<SungjunProjectile>();
+        newProjectile.ManualStart(team);
 
-        Projectiles.Add(newProjectile);
+        _projectiles.Add(newProjectile);
     }
 
 

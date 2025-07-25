@@ -8,15 +8,14 @@ public class CharacterSungjun : Character
     protected override void InitializeBaseStats()
     {
         HitPoint = 100;
+        HitPointMax = 100;
         MoveSpeed = 2f;
+        
+        SpecialPoint = 0;
         SpecialPointMax = 100;
     }
 
-    public CharacterSungjun()
-    {
-        InitializeBaseStats();
-    }
-    
+
     public override void OnPressUp()
     {
         base.OnPressUp();
@@ -43,7 +42,7 @@ public class CharacterSungjun : Character
     {
         base.OnUseSkill1();
         Debug.Log("Sungjun OnUseSkill1");
-        GameController.Instance.ProjectileHandler.CreateSungjunProjectile(GetPosition(), Utils.DirectionToVector2(GetDirection()), 10, 10);
+        GameController.Instance.ProjectileHandler.CreateSungjunProjectile(GetPosition(), Utils.DirectionToVector2(GetDirection()), 10, Team);
     }
 
     

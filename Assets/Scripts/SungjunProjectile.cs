@@ -9,36 +9,42 @@ public class SungjunProjectile : Projectile
 
     private TimeSpan _lifeTime = TimeSpan.FromSeconds(10);
 
-    private Vector2 _direction;
-    private float _speed;
-    private int _damage;
+    [SerializeField] private Vector2 _direction;
+    [SerializeField] private float _speed;
 
-    private bool _isHit = false;
+    private bool _isHit;
+
+    private TimeSpan _timeFromStart;
 
 
-    public SungjunProjectile(Vector2 direction, float speed, int damage)
+
+    public override void ManualStart(Team team)
     {
-        _direction = direction;
-        _speed = speed;
-        _damage = damage;
+        base.ManualStart(team);
+        _isHit = false;
+        _timeFromStart = TimeSpan.Zero;
     }
 
     
 
     public override void ManualUpdate()
     {
-        base.ManualUpdate();
-
-        ProjectileObject.transform.position += Time.deltaTime * _speed * new Vector3(_direction.x, _direction.y, 0);
+        _timeFromStart += TimeSpan.FromSeconds(Time.deltaTime);
+        transform.position += Time.deltaTime * _speed * Utils.Vector2ToVector3(_direction);
     }
 
     public override bool ShouldBeDestroyed()
     {
-        return (TimeFromStart > _lifeTime) || _isHit;
+        return (_timeFromStart > _lifeTime) || _isHit;
     }
 
     public override void OnHitByCharacter(Character character)
     {
+        if (character.GetTeam() == Team)
+        {
+            return;
+        }
+
         _isHit = true;
     }
 
