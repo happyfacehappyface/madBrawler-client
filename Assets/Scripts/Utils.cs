@@ -21,6 +21,14 @@ public static class Utils
                 return new Vector2(-1, 0);
             case Direction.Right:
                 return new Vector2(1, 0);
+            case Direction.UpLeft:
+                return new Vector2(-1, 1).normalized;
+            case Direction.UpRight:
+                return new Vector2(1, 1).normalized;
+            case Direction.DownLeft:
+                return new Vector2(-1, -1).normalized;
+            case Direction.DownRight:
+                return new Vector2(1, -1).normalized;
             default:
                 return Vector2.zero;
         }

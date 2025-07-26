@@ -66,36 +66,44 @@ public class GameController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W))
         {
-            _leftPlayerCharacter.OnPressUp();
+            if (Input.GetKey(KeyCode.A))
+            {
+                _leftPlayerCharacter.OnPressDirection(Direction.UpLeft);
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                _leftPlayerCharacter.OnPressDirection(Direction.UpRight);
+            }
+            else
+            {
+                _leftPlayerCharacter.OnPressDirection(Direction.Up);
+            }
         }
-        if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S))
         {
-            _leftPlayerCharacter.OnPressDown();
+            if (Input.GetKey(KeyCode.A))
+            {
+                _leftPlayerCharacter.OnPressDirection(Direction.DownLeft);
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                _leftPlayerCharacter.OnPressDirection(Direction.DownRight);
+            }
+            else
+            {
+                _leftPlayerCharacter.OnPressDirection(Direction.Down);
+            }
         }
-        if (Input.GetKey(KeyCode.A))
+        else
         {
-            _leftPlayerCharacter.OnPressLeft();
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            _leftPlayerCharacter.OnPressRight();
-        }
-
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            _rightPlayerCharacter.OnPressUp();
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            _rightPlayerCharacter.OnPressDown();
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            _rightPlayerCharacter.OnPressLeft();
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            _rightPlayerCharacter.OnPressRight();
+            if (Input.GetKey(KeyCode.A))
+            {
+                _leftPlayerCharacter.OnPressDirection(Direction.Left);
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                _leftPlayerCharacter.OnPressDirection(Direction.Right);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Space))

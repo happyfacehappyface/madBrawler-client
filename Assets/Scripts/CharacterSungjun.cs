@@ -24,26 +24,12 @@ public class CharacterSungjun : Character
     }
 
 
-    public override void OnPressUp()
+    public override void OnPressDirection(Direction direction)
     {
-        base.OnPressUp();
+        base.OnPressDirection(direction);
     }
 
-    public override void OnPressDown()
-    {
-        base.OnPressDown();
-    }
-
-    public override void OnPressLeft()
-    {
-        base.OnPressLeft();
-    }
-
-    public override void OnPressRight()
-    {
-        base.OnPressRight();
-    }
-
+    
     public override bool OnPressBasicAttack()
     {
         if (!base.OnPressBasicAttack()) return false;

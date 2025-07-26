@@ -93,33 +93,13 @@ public abstract class Character : MonoBehaviour
 
     protected abstract void InitializeBaseStats();
 
-    public virtual void OnPressUp()
+    public virtual void OnPressDirection(Direction direction)
     {
         if (!IsMoveAble()) return;
-        transform.localPosition += Time.deltaTime * GetMoveSpeed() * new Vector3(0, 1, 0);
-        Direction = Direction.Up;
+        transform.localPosition += Time.deltaTime * GetMoveSpeed() * Utils.Vector2ToVector3(Utils.DirectionToVector2(direction));
+        Direction = direction;
     }
 
-    public virtual void OnPressDown()
-    {
-        if (!IsMoveAble()) return;
-        transform.localPosition += Time.deltaTime * GetMoveSpeed() * new Vector3(0, -1, 0);
-        Direction = Direction.Down;
-    }
-
-    public virtual void OnPressLeft()
-    {
-        if (!IsMoveAble()) return;
-        transform.localPosition += Time.deltaTime * GetMoveSpeed() * new Vector3(-1, 0, 0);
-        Direction = Direction.Left;
-    }
-    
-    public virtual void OnPressRight()
-    {
-        if (!IsMoveAble()) return;
-        transform.localPosition += Time.deltaTime * GetMoveSpeed() * new Vector3(1, 0, 0);
-        Direction = Direction.Right;
-    }
 
     public virtual bool OnPressBasicAttack()
     {
@@ -233,5 +213,9 @@ public enum Direction
     Up,
     Down,
     Left,
-    Right
+    Right,
+    UpLeft,
+    UpRight,
+    DownLeft,
+    DownRight
 }
