@@ -33,4 +33,9 @@ public static class Utils
                 return Vector2.zero;
         }
     }
+
+    public static Vector3 DirectionToVector3(Direction direction)
+    {
+        return Vector2ToVector3(DirectionToVector2(direction));
+    }
 }

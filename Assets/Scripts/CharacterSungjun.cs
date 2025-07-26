@@ -17,7 +17,7 @@ public class CharacterSungjun : Character
         _basicAttackCoolTime = TimeSpan.FromSeconds(0.5f);
         _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
         {
-            TimeSpan.FromSeconds(2.0f),
+            TimeSpan.FromSeconds(0f),
             TimeSpan.FromSeconds(2.0f),
             TimeSpan.FromSeconds(2.0f)
         };

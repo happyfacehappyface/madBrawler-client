@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TreeEditor;
 
 public abstract class Character : MonoBehaviour
 {
@@ -96,7 +97,9 @@ public abstract class Character : MonoBehaviour
     public virtual void OnPressDirection(Direction direction)
     {
         if (!IsMoveAble()) return;
-        transform.localPosition += Time.deltaTime * GetMoveSpeed() * Utils.Vector2ToVector3(Utils.DirectionToVector2(direction));
+
+        GraduallyMove(direction, GetMoveSpeed() * Time.deltaTime);
+
         Direction = direction;
     }
 
@@ -200,6 +203,34 @@ public abstract class Character : MonoBehaviour
     public float GetSkillCoolTimeRatio(int skillIndex)
     {
         return (float)_skillRemainCoolTime[skillIndex].TotalSeconds / (float)_skillCoolTime[skillIndex].TotalSeconds;
+    }
+
+
+
+
+    private bool IsSomething(Direction direction)
+    {
+        int layerMask = LayerMask.GetMask("Wall");
+        RaycastHit2D hit = Physics2D.Raycast(transform.localPosition, Utils.DirectionToVector3(direction), 0.3f, layerMask);
+
+        return hit.collider != null;
+    }
+
+    private void GraduallyMove(Direction direction, float power)
+    {
+        float step = 0.05f;
+
+        if (IsSomething(direction))
+        {
+            return;
+        }
+
+        transform.localPosition += Mathf.Min(power, step) * Utils.DirectionToVector3(direction);
+
+        if (power > step)
+        {
+            GraduallyMove(direction, power - step);
+        }
     }
     
     
