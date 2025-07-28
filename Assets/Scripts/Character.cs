@@ -6,6 +6,7 @@ using TreeEditor;
 
 public abstract class Character : MonoBehaviour
 {
+    [SerializeField] private Rigidbody2D _rigidbody2D;
     protected Direction Direction;
     protected Team Team;
 
@@ -16,11 +17,16 @@ public abstract class Character : MonoBehaviour
     protected float SpecialPointMax;
 
     protected List<CharacterEffect> _effects = new List<CharacterEffect>();
+    protected CharacterState _state;
 
     protected TimeSpan _basicAttackCoolTime;
     protected TimeSpan[] _skillCoolTime;
     protected TimeSpan _basicAttackRemainCoolTime;
     protected TimeSpan[] _skillRemainCoolTime;
+
+
+    private Dictionary<int, TimeSpan> _projectileHitTime;
+    private TimeSpan _lastProjectileHitTimeCleanTime;
 
 
     public virtual void ManualStart(Team team)
@@ -31,12 +37,44 @@ public abstract class Character : MonoBehaviour
 
         _basicAttackRemainCoolTime = TimeSpan.Zero;
         _skillRemainCoolTime = new TimeSpan[GameConst.SkillCount];
+
+        _projectileHitTime = new Dictionary<int, TimeSpan>();
+        _lastProjectileHitTimeCleanTime = TimeSpan.Zero;
     }
 
     public virtual void ManualUpdate()
     {
+        UpdateState();
         CleanEffects();
         UpdateCoolTime();
+        if (GameController.Instance.GetPlayerTime(Team) - _lastProjectileHitTimeCleanTime > TimeSpan.FromSeconds(0.3f))
+        {
+            CleanProjectileHitTime();
+            _lastProjectileHitTimeCleanTime = GameController.Instance.GetPlayerTime(Team);
+        }
+    }
+
+    private void UpdateState()
+    {
+        switch (_state)
+        {
+            case CharacterState.Idle:
+                break;
+            case CharacterState.Dash dash:
+                if (dash.endTime < GameController.Instance.GetPlayerTime(Team))
+                {
+                    _state = new CharacterState.Idle();
+                }
+                break;
+            case CharacterState.Rush rush:
+                break;
+            case CharacterState.Drive drive:
+                if (drive.endTime < GameController.Instance.GetPlayerTime(Team))
+                {
+                    _state = new CharacterState.Idle();
+                }
+                break;
+        }
     }
 
 
@@ -49,6 +87,22 @@ public abstract class Character : MonoBehaviour
     private void CleanEffects()
     {
         _effects.RemoveAll(effect => effect.IsEnded());
+    }
+
+    private void CleanProjectileHitTime()
+    {
+        var keysToRemove = new List<int>();
+        foreach (var pair in _projectileHitTime)
+        {
+            if (pair.Value < GameController.Instance.GetPlayerTime(Team))
+            {
+                keysToRemove.Add(pair.Key);
+            }
+        }
+        foreach (var key in keysToRemove)
+        {
+            _projectileHitTime.Remove(key);
+        }
     }
 
     private void UpdateCoolTime()
@@ -82,12 +136,12 @@ public abstract class Character : MonoBehaviour
     }
 
 
-    protected void AddHitPoint(int amount)
+    public void AddHitPoint(float amount)
     {
         HitPoint = Mathf.Clamp(HitPoint + amount, 0, HitPointMax);
     }
 
-    protected void AddSpecialPoint(int amount)
+    public void AddSpecialPoint(float amount)
     {
         SpecialPoint = Mathf.Clamp(SpecialPoint + amount, 0, SpecialPointMax);
     }
@@ -99,6 +153,8 @@ public abstract class Character : MonoBehaviour
         if (!IsMoveAble()) return;
 
         GraduallyMove(direction, GetMoveSpeed() * Time.deltaTime);
+
+        //_rigidbody2D.MovePosition(transform.localPosition + (GetMoveSpeed() * Time.deltaTime * Utils.DirectionToVector3(direction)));
 
         Direction = direction;
     }
@@ -138,16 +194,16 @@ public abstract class Character : MonoBehaviour
 
     public virtual void OnHitByProjectile(Projectile projectile)
     {
-
-        if (projectile.Team == Team)
-        {
-            return;
-        }
-
-        AddHitPoint((-1) * projectile.Damage);
-        Debug.Log("OnHitByProjectile");
+        if (!CanHitByProjectile(projectile)) return;
+        _projectileHitTime[projectile.ProjectileID] = GameController.Instance.GetPlayerTime(Team) + projectile.HitIntervalTime;
     }
-    
+
+    public bool CanHitByProjectile(Projectile projectile)
+    {
+        if (projectile.Team == Team) return false;
+
+        return !_projectileHitTime.ContainsKey(projectile.ProjectileID);
+    }
 
     private bool IsMoveAble()
     {
@@ -156,6 +212,9 @@ public abstract class Character : MonoBehaviour
             if (effect.EffectCategory is CharacterEffectCategory.Stun) return false;
             if (effect.EffectCategory is CharacterEffectCategory.Bond) return false;
         }
+
+        if (_state is CharacterState.Dash) return false;
+
         return true;
     }
 
@@ -167,6 +226,9 @@ public abstract class Character : MonoBehaviour
         {
             if (effect.EffectCategory is CharacterEffectCategory.Stun) return false;
         }
+
+        if (_state is CharacterState.Drive) return false;
+
         return true;
     }
 
@@ -179,6 +241,9 @@ public abstract class Character : MonoBehaviour
             if (effect.EffectCategory is CharacterEffectCategory.Stun) return false;
             if (effect.EffectCategory is CharacterEffectCategory.Silence) return false;
         }
+
+        if (_state is CharacterState.Drive) return false;
+
         return true;
     }
 
@@ -205,15 +270,55 @@ public abstract class Character : MonoBehaviour
         return (float)_skillRemainCoolTime[skillIndex].TotalSeconds / (float)_skillCoolTime[skillIndex].TotalSeconds;
     }
 
+    protected void ChangeStateDash(Direction direction, float power, bool isWallPassable, TimeSpan dashTime)
+    {
+        _state = new CharacterState.Dash(direction, power, isWallPassable, GameController.Instance.GetPlayerTime(Team) + dashTime);
+    }
+
+    protected void ChangeStateRush(Direction direction, float power, bool isWallPassable)
+    {
+        _state = new CharacterState.Rush(direction, power, isWallPassable);
+    }
+
+    protected void ChangeStateDrive(bool isWallPassable, TimeSpan driveTime)
+    {
+        _state = new CharacterState.Drive(isWallPassable, GameController.Instance.GetPlayerTime(Team) + driveTime);
+    }
+
 
 
 
     private bool IsSomething(Direction direction)
     {
         int layerMask = LayerMask.GetMask("Wall");
-        RaycastHit2D hit = Physics2D.Raycast(transform.localPosition, Utils.DirectionToVector3(direction), 0.3f, layerMask);
+        
+        //RaycastHit2D hit = Physics2D.Raycast(transform.localPosition, Utils.DirectionToVector3(direction), 0.3f, layerMask);
 
-        return hit.collider != null;
+        if ((direction == Direction.Up) || (direction == Direction.UpLeft) || (direction == Direction.UpRight))
+        {
+            RaycastHit2D hitUp = Physics2D.Raycast(transform.localPosition, Utils.DirectionToVector3(Direction.Up), 0.5f, layerMask);
+            if (hitUp.collider != null) return true;
+        }
+
+        if ((direction == Direction.Down) || (direction == Direction.DownLeft) || (direction == Direction.DownRight))
+        {
+            RaycastHit2D hitDown = Physics2D.Raycast(transform.localPosition, Utils.DirectionToVector3(Direction.Down), 0.5f, layerMask);
+            if (hitDown.collider != null) return true;
+        }
+
+        if ((direction == Direction.Left) || (direction == Direction.UpLeft) || (direction == Direction.DownLeft))
+        {
+            RaycastHit2D hitLeft = Physics2D.Raycast(transform.localPosition, Utils.DirectionToVector3(Direction.Left), 0.3f, layerMask);
+            if (hitLeft.collider != null) return true;
+        }
+        
+        if ((direction == Direction.Right) || (direction == Direction.UpRight) || (direction == Direction.DownRight))
+        {
+            RaycastHit2D hitRight = Physics2D.Raycast(transform.localPosition, Utils.DirectionToVector3(Direction.Right), 0.3f, layerMask);
+            if (hitRight.collider != null) return true;
+        }
+
+        return false;
     }
 
     private void GraduallyMove(Direction direction, float power)
@@ -227,10 +332,17 @@ public abstract class Character : MonoBehaviour
 
         transform.localPosition += Mathf.Min(power, step) * Utils.DirectionToVector3(direction);
 
+        //_rigidbody2D.MovePosition(transform.localPosition + Mathf.Min(power, step) * Utils.DirectionToVector3(direction));
+
         if (power > step)
         {
             GraduallyMove(direction, power - step);
         }
+    }
+
+    public Transform GetPlayerTransform()
+    {
+        return transform;
     }
     
     
@@ -249,4 +361,16 @@ public enum Direction
     UpRight,
     DownLeft,
     DownRight
+}
+
+public abstract record CharacterState
+{
+    public sealed record Idle() : CharacterState;
+    public sealed record Dash(Direction direction, float power, bool isWallPassable, TimeSpan endTime) : CharacterState;
+    public sealed record Rush(Direction direction, float power, bool isWallPassable) : CharacterState;
+
+    public sealed record Drive(bool isWallPassable, TimeSpan endTime) : CharacterState;
+    
+
+
 }

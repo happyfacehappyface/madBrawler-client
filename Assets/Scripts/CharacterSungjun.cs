@@ -9,7 +9,7 @@ public class CharacterSungjun : Character
     {
         HitPoint = 100f;
         HitPointMax = 100f;
-        MoveSpeed = 2f;
+        MoveSpeed = 4f;
         
         SpecialPoint = 0f;
         SpecialPointMax = 100f;
@@ -17,7 +17,7 @@ public class CharacterSungjun : Character
         _basicAttackCoolTime = TimeSpan.FromSeconds(0.5f);
         _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
         {
-            TimeSpan.FromSeconds(0f),
+            TimeSpan.FromSeconds(2.0f),
             TimeSpan.FromSeconds(2.0f),
             TimeSpan.FromSeconds(2.0f)
         };
@@ -43,6 +43,16 @@ public class CharacterSungjun : Character
         if (!base.OnPressSkill0()) return false;
         Debug.Log("Sungjun OnPressSkill0");
         AddEffect(new CharacterEffect(Team, TimeSpan.FromSeconds(3), CharacterEffectType.Buff, new CharacterEffectCategory.MoveSpeed(3), "MoveSpeed", null));
+        return true;
+    }
+
+    public override bool OnPressSkill1()
+    {
+        if (!base.OnPressSkill1()) return false;
+        Debug.Log("Sungjun OnPressSkill1");
+        GameController.Instance.ProjectileHandler.CreateSungjunSkill2(Team);
+        ChangeStateDrive(false, TimeSpan.FromSeconds(2.0f));
+        AddEffect(new CharacterEffect(Team, TimeSpan.FromSeconds(2.0f), CharacterEffectType.Buff, new CharacterEffectCategory.MoveSpeed(2.0f), "MoveSpeed", null));
         return true;
     }
 

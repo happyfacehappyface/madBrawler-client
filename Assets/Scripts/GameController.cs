@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private ProjectileHandler _projectileHandler;
+    [SerializeField] private WallHandler _wallHandler;
     [SerializeField] private GameUIDrawer _gameUIDrawer;
 
     public ProjectileHandler ProjectileHandler => _projectileHandler;
@@ -45,6 +46,7 @@ public class GameController : MonoBehaviour
         _rightTime = TimeSpan.Zero;
 
         _projectileHandler.ManualStart();
+        _wallHandler.ManualStart();
     }
 
     private void ManualUpdate()
@@ -57,6 +59,7 @@ public class GameController : MonoBehaviour
         _rightPlayerCharacter.ManualUpdate();
 
         _projectileHandler.ManualUpdate();
+        _wallHandler.ManualUpdate();
 
         HandleInput();
         _gameUIDrawer.ManualUpdate();
@@ -103,6 +106,48 @@ public class GameController : MonoBehaviour
             else if (Input.GetKey(KeyCode.D))
             {
                 _leftPlayerCharacter.OnPressDirection(Direction.Right);
+            }
+        }
+
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                _rightPlayerCharacter.OnPressDirection(Direction.UpLeft);
+            }
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                _rightPlayerCharacter.OnPressDirection(Direction.UpRight);
+            }
+            else
+            {
+                _rightPlayerCharacter.OnPressDirection(Direction.Up);
+            }
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                _rightPlayerCharacter.OnPressDirection(Direction.DownLeft);
+            }
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                _rightPlayerCharacter.OnPressDirection(Direction.DownRight);
+            }
+            else
+            {
+                _rightPlayerCharacter.OnPressDirection(Direction.Down);
+            }
+        }
+        else
+        {
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                _rightPlayerCharacter.OnPressDirection(Direction.Left);
+            }
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                _rightPlayerCharacter.OnPressDirection(Direction.Right);
             }
         }
 
@@ -174,6 +219,18 @@ public class GameController : MonoBehaviour
         else
         {
             return TimeSpan.FromSeconds(Time.deltaTime);
+        }
+    }
+
+    public Transform GetPlayerTransform(Team team)
+    {
+        if (team == Team.Left)
+        {
+            return _leftPlayerCharacter.GetPlayerTransform();
+        }
+        else
+        {
+            return _rightPlayerCharacter.GetPlayerTransform();
         }
     }
 

@@ -6,28 +6,35 @@ using Unity.VisualScripting;
 
 public abstract class Projectile : MonoBehaviour
 {
-    private int _damage = 2;
-    public int Damage => _damage;
 
-    
+    public int ProjectileID { get; private set; }
+    public TimeSpan HitIntervalTime { get; protected set; }
     private Team _team;
     public Team Team => _team;
 
 
     public abstract bool ShouldBeDestroyed();
 
-    public abstract void OnHitByCharacter(Character character);
+    public virtual bool OnHitByCharacter(Character character)
+    {
+        if (Team == character.GetTeam()) return false;
+        if (!character.CanHitByProjectile(this)) return false;
 
-    public abstract void OnHitByWall();
+        character.OnHitByProjectile(this);
+        return true;
+    }
+
+    public abstract void OnHitByWall(Wall wall);
 
     public virtual void OnDestroy()
     {
         Destroy(gameObject);
     }
 
-    public void ManualStart(Team team)
+    public void ManualStart(Team team, int projectileID)
     {
         _team = team;
+        ProjectileID = projectileID;
     }
 
     public abstract void ManualUpdate();
@@ -38,12 +45,11 @@ public abstract class Projectile : MonoBehaviour
         if (other.TryGetComponent<Character>(out Character character))
         {
             OnHitByCharacter(character);
-            character.OnHitByProjectile(this);
         }
 
         if (other.TryGetComponent<Wall>(out Wall wall))
         {
-            OnHitByWall();
+            OnHitByWall(wall);
         }
     }
 
