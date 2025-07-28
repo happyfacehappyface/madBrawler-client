@@ -7,6 +7,7 @@ using TreeEditor;
 public abstract class Character : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D _rigidbody2D;
+    [SerializeField] private Transform _spinnedTransform;
     protected Direction Direction;
     protected Team Team;
 
@@ -28,11 +29,14 @@ public abstract class Character : MonoBehaviour
     private Dictionary<int, TimeSpan> _projectileHitTime;
     private TimeSpan _lastProjectileHitTimeCleanTime;
 
+    private bool _isWallPassable;
+
 
     public virtual void ManualStart(Team team)
     {
         InitializeBaseStats();
         Team = team;
+        gameObject.layer = LayerMask.NameToLayer(Team == Team.Left ? "LeftCharacter" : "RightCharacter");
         _effects = new List<CharacterEffect>();
 
         _basicAttackRemainCoolTime = TimeSpan.Zero;
@@ -45,6 +49,7 @@ public abstract class Character : MonoBehaviour
     public virtual void ManualUpdate()
     {
         UpdateState();
+        UpdateByState();
         CleanEffects();
         UpdateCoolTime();
         if (GameController.Instance.GetPlayerTime(Team) - _lastProjectileHitTimeCleanTime > TimeSpan.FromSeconds(0.3f))
@@ -74,7 +79,48 @@ public abstract class Character : MonoBehaviour
                     _state = new CharacterState.Idle();
                 }
                 break;
+            case CharacterState.ForcedMove forcedMove:
+                if (forcedMove.endTime < GameController.Instance.GetPlayerTime(Team))
+                {
+                    _state = new CharacterState.Idle();
+                }
+                break;
         }
+    }
+
+    private void UpdateByState()
+    {
+        switch (_state)
+        {
+            case CharacterState.Idle:
+                UpdateWallPassable(false);
+                break;
+            case CharacterState.Dash dash:
+                UpdateWallPassable(dash.isWallPassable);
+                GraduallyMove(dash.direction, dash.power * Time.deltaTime);
+                break;
+            case CharacterState.Rush rush:
+                UpdateWallPassable(rush.isWallPassable);
+                GraduallyMove(rush.direction, rush.power * Time.deltaTime);
+                break;
+            case CharacterState.Drive drive:
+                UpdateWallPassable(drive.isWallPassable);
+                break;
+            case CharacterState.ForcedMove forcedMove:
+                UpdateWallPassable(forcedMove.isWallPassable);
+                GraduallyMove(forcedMove.direction, forcedMove.power * Time.deltaTime);
+                break;
+        }
+    }
+
+    private void UpdateWallPassable(bool passable)
+    {
+        if (_isWallPassable == passable) return;
+
+        _isWallPassable = passable;
+        Physics2D.IgnoreLayerCollision(
+            LayerMask.NameToLayer(Team == Team.Left ? "LeftCharacter" : "RightCharacter"),
+            LayerMask.NameToLayer("Wall"), passable);
     }
 
 
@@ -152,11 +198,13 @@ public abstract class Character : MonoBehaviour
     {
         if (!IsMoveAble()) return;
 
+
         GraduallyMove(direction, GetMoveSpeed() * Time.deltaTime);
 
         //_rigidbody2D.MovePosition(transform.localPosition + (GetMoveSpeed() * Time.deltaTime * Utils.DirectionToVector3(direction)));
 
         Direction = direction;
+        _spinnedTransform.localRotation = Utils.DirectionToQuaternion(direction);
     }
 
 
@@ -214,6 +262,7 @@ public abstract class Character : MonoBehaviour
         }
 
         if (_state is CharacterState.Dash) return false;
+        if (_state is CharacterState.ForcedMove) return false;
 
         return true;
     }
@@ -228,6 +277,7 @@ public abstract class Character : MonoBehaviour
         }
 
         if (_state is CharacterState.Drive) return false;
+        if (_state is CharacterState.ForcedMove) return false;
 
         return true;
     }
@@ -243,6 +293,7 @@ public abstract class Character : MonoBehaviour
         }
 
         if (_state is CharacterState.Drive) return false;
+        if (_state is CharacterState.ForcedMove) return false;
 
         return true;
     }
@@ -270,19 +321,24 @@ public abstract class Character : MonoBehaviour
         return (float)_skillRemainCoolTime[skillIndex].TotalSeconds / (float)_skillCoolTime[skillIndex].TotalSeconds;
     }
 
-    protected void ChangeStateDash(Direction direction, float power, bool isWallPassable, TimeSpan dashTime)
+    public void ChangeStateDash(Direction direction, float power, bool isWallPassable, TimeSpan dashTime)
     {
         _state = new CharacterState.Dash(direction, power, isWallPassable, GameController.Instance.GetPlayerTime(Team) + dashTime);
     }
 
-    protected void ChangeStateRush(Direction direction, float power, bool isWallPassable)
+    public void ChangeStateRush(Direction direction, float power, bool isWallPassable)
     {
         _state = new CharacterState.Rush(direction, power, isWallPassable);
     }
 
-    protected void ChangeStateDrive(bool isWallPassable, TimeSpan driveTime)
+    public void ChangeStateDrive(bool isWallPassable, TimeSpan driveTime)
     {
         _state = new CharacterState.Drive(isWallPassable, GameController.Instance.GetPlayerTime(Team) + driveTime);
+    }
+
+    public void ChangeStateForcedMove(Direction direction, float power, bool isWallPassable, TimeSpan forcedMoveTime)
+    {
+        _state = new CharacterState.ForcedMove(direction, power, isWallPassable, GameController.Instance.GetPlayerTime(Team) + forcedMoveTime);
     }
 
 
@@ -296,25 +352,49 @@ public abstract class Character : MonoBehaviour
 
         if ((direction == Direction.Up) || (direction == Direction.UpLeft) || (direction == Direction.UpRight))
         {
-            RaycastHit2D hitUp = Physics2D.Raycast(transform.localPosition, Utils.DirectionToVector3(Direction.Up), 0.5f, layerMask);
+            Vector3 rayDirection = Utils.DirectionToVector3(Direction.Up);
+            RaycastHit2D hitUp = Physics2D.Raycast(transform.localPosition, rayDirection, 0.6f, layerMask);
+            
+            // Raycast 시각화 (빨간색: 충돌 없음, 초록색: 충돌 있음)
+            Color rayColor = hitUp.collider != null ? Color.green : Color.red;
+            Debug.DrawRay(transform.localPosition, rayDirection * 0.6f, rayColor, 0.1f);
+            
             if (hitUp.collider != null) return true;
         }
 
         if ((direction == Direction.Down) || (direction == Direction.DownLeft) || (direction == Direction.DownRight))
         {
-            RaycastHit2D hitDown = Physics2D.Raycast(transform.localPosition, Utils.DirectionToVector3(Direction.Down), 0.5f, layerMask);
+            Vector3 rayDirection = Utils.DirectionToVector3(Direction.Down);
+            RaycastHit2D hitDown = Physics2D.Raycast(transform.localPosition, rayDirection, 0.6f, layerMask);
+            
+            // Raycast 시각화
+            Color rayColor = hitDown.collider != null ? Color.green : Color.red;
+            Debug.DrawRay(transform.localPosition, rayDirection * 0.6f, rayColor, 0.1f);
+            
             if (hitDown.collider != null) return true;
         }
 
         if ((direction == Direction.Left) || (direction == Direction.UpLeft) || (direction == Direction.DownLeft))
         {
-            RaycastHit2D hitLeft = Physics2D.Raycast(transform.localPosition, Utils.DirectionToVector3(Direction.Left), 0.3f, layerMask);
+            Vector3 rayDirection = Utils.DirectionToVector3(Direction.Left);
+            RaycastHit2D hitLeft = Physics2D.Raycast(transform.localPosition, rayDirection, 0.4f, layerMask);
+            
+            // Raycast 시각화
+            Color rayColor = hitLeft.collider != null ? Color.green : Color.red;
+            Debug.DrawRay(transform.localPosition, rayDirection * 0.4f, rayColor, 0.1f);
+            
             if (hitLeft.collider != null) return true;
         }
         
         if ((direction == Direction.Right) || (direction == Direction.UpRight) || (direction == Direction.DownRight))
         {
-            RaycastHit2D hitRight = Physics2D.Raycast(transform.localPosition, Utils.DirectionToVector3(Direction.Right), 0.3f, layerMask);
+            Vector3 rayDirection = Utils.DirectionToVector3(Direction.Right);
+            RaycastHit2D hitRight = Physics2D.Raycast(transform.localPosition, rayDirection, 0.4f, layerMask);
+            
+            // Raycast 시각화
+            Color rayColor = hitRight.collider != null ? Color.green : Color.red;
+            Debug.DrawRay(transform.localPosition, rayDirection * 0.4f, rayColor, 0.1f);
+            
             if (hitRight.collider != null) return true;
         }
 
@@ -323,9 +403,9 @@ public abstract class Character : MonoBehaviour
 
     private void GraduallyMove(Direction direction, float power)
     {
-        float step = 0.05f;
+        float step = 0.01f;
 
-        if (IsSomething(direction))
+        if (!_isWallPassable && IsSomething(direction))
         {
             return;
         }
@@ -343,6 +423,11 @@ public abstract class Character : MonoBehaviour
     public Transform GetPlayerTransform()
     {
         return transform;
+    }
+
+    public Transform GetSpinnedTransform()
+    {
+        return _spinnedTransform;
     }
     
     
@@ -368,8 +453,8 @@ public abstract record CharacterState
     public sealed record Idle() : CharacterState;
     public sealed record Dash(Direction direction, float power, bool isWallPassable, TimeSpan endTime) : CharacterState;
     public sealed record Rush(Direction direction, float power, bool isWallPassable) : CharacterState;
-
     public sealed record Drive(bool isWallPassable, TimeSpan endTime) : CharacterState;
+    public sealed record ForcedMove(Direction direction, float power, bool isWallPassable, TimeSpan endTime) : CharacterState;
     
 
 

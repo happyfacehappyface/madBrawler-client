@@ -11,12 +11,12 @@ TagManager:
   - 
   - Water
   - UI
-  - Character
-  - Projectile
+  - LeftCharacter
+  - RightCharacter
+  - LeftProjectile
+  - RightProjectile
   - Wall
-  - 
-  - 
-  - 
+  - Barrier
   - 
   - 
   - 

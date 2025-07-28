@@ -4769,7 +4769,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sungjunProjectilePrefab: {fileID: 6157969881503051843, guid: 2c018595d5813a542af766544b1664ba, type: 3}
   _projectileParent: {fileID: 1775377696}
-  _sungjunSkill2Prefab: {fileID: 3549572633529245188, guid: e8a286a85848df14fbe0f0bb21d13cdb, type: 3}
+  _sungjunBasicAttackProjectilePrefab: {fileID: 4216708769023979321, guid: c7454866526a7c440a9d7f265d47935a, type: 3}
+  _sungjunSkill0Prefab: {fileID: 3549572633529245188, guid: e8a286a85848df14fbe0f0bb21d13cdb, type: 3}
+  _sungjunSkill1Prefab: {fileID: 4216708769023979321, guid: 76a0b31c8417619479c727e80b3ec5f8, type: 3}
+  _sungjunSkill2Prefab: {fileID: 0}
 --- !u!114 &1750896708
 MonoBehaviour:
   m_ObjectHideFlags: 0

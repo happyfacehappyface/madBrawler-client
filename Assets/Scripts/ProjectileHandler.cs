@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
 
 public class ProjectileHandler : MonoBehaviour
 {
@@ -9,6 +11,10 @@ public class ProjectileHandler : MonoBehaviour
     [SerializeField] private GameObject _sungjunProjectilePrefab;
     [SerializeField] private Transform _projectileParent;
 
+    [SerializeField] private GameObject _sungjunBasicAttackProjectilePrefab;
+
+    [SerializeField] private GameObject _sungjunSkill0Prefab;
+    [SerializeField] private GameObject _sungjunSkill1Prefab;
     [SerializeField] private GameObject _sungjunSkill2Prefab;
 
     int _leftProjectileID;
@@ -44,20 +50,7 @@ public class ProjectileHandler : MonoBehaviour
         }
     }
 
-    public void CreateSungjunProjectile(Vector2 origin, Vector2 direction, float speed, Team team)
-    {
-        GameObject newObject = Instantiate(_sungjunProjectilePrefab, _projectileParent);
-
-        newObject.transform.SetLocalPositionAndRotation(Utils.Vector2ToVector3(origin), Quaternion.Euler(Utils.Vector2ToVector3(direction)));
-
-        BasicProjectile newProjectile = newObject.GetComponent<BasicProjectile>();
-        newProjectile.ManualStart(team, team == Team.Left ? _leftProjectileID : _rightProjectileID);
-        newProjectile.Initialize(direction, false);
-
-        _projectiles.Add(newProjectile);
-
-        IncrementProjectileID(team);
-    }
+    
 
     private GameObject CreateProjectile(GameObject prefab, Transform parent, Vector2 origin, Direction direction, Team team)
     {
@@ -75,12 +68,35 @@ public class ProjectileHandler : MonoBehaviour
         return newObject;
     }
 
-    public void CreateSungjunSkill2(Team team)
+
+
+    public void CreateSungjunBasicAttack(Team team, Direction direction)
     {
         GameObject newObject = CreateProjectile(
-            _sungjunSkill2Prefab, GameController.Instance.GetPlayerTransform(team),
+            _sungjunBasicAttackProjectilePrefab, GameController.Instance.GetPlayerTransform(team),
+            Vector2.zero, direction, team);
+        newObject.GetComponent<SungjunBasicAttackProjectile>().Initialize(direction);
+    }
+
+    public void CreateSungjunSkill0(Team team, float lifeTime)
+    {
+        GameObject newObject = CreateProjectile(
+            _sungjunSkill0Prefab, GameController.Instance.GetPlayerSpinnedTransform(team),
             Vector3.zero, Direction.Right, team);
-        newObject.GetComponent<BasicProjectile>().Initialize(Utils.DirectionToVector2(Direction.Right), true);
+        newObject.GetComponent<SungjunSkill0Projectile>().Initialize(lifeTime);
+    }
+
+    public void CreateSungjunSkill1(Team team, Direction direction)
+    {
+        GameObject newObject = CreateProjectile(
+            _sungjunSkill1Prefab, _projectileParent,
+            GameController.Instance.GetPlayerTransform(team).position, direction, team);
+        newObject.GetComponent<SungjunSkill1Projectile>().Initialize(direction);
+    }
+
+    public void CreateSungjunSkill2(Team team, Direction direction)
+    {
+        
     }
 
 

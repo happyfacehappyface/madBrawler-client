@@ -14,7 +14,7 @@ public class CharacterSungjun : Character
         SpecialPoint = 0f;
         SpecialPointMax = 100f;
 
-        _basicAttackCoolTime = TimeSpan.FromSeconds(0.5f);
+        _basicAttackCoolTime = TimeSpan.FromSeconds(0.2f);
         _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
         {
             TimeSpan.FromSeconds(2.0f),
@@ -34,7 +34,7 @@ public class CharacterSungjun : Character
     {
         if (!base.OnPressBasicAttack()) return false;
         Debug.Log("Sungjun OnPressBasicAttack");
-        GameController.Instance.ProjectileHandler.CreateSungjunProjectile(GetPosition(), Utils.DirectionToVector2(GetDirection()), 10, Team);
+        GameController.Instance.ProjectileHandler.CreateSungjunBasicAttack(Team, GetDirection());
         return true;
     }
 
@@ -42,7 +42,9 @@ public class CharacterSungjun : Character
     {
         if (!base.OnPressSkill0()) return false;
         Debug.Log("Sungjun OnPressSkill0");
-        AddEffect(new CharacterEffect(Team, TimeSpan.FromSeconds(3), CharacterEffectType.Buff, new CharacterEffectCategory.MoveSpeed(3), "MoveSpeed", null));
+        GameController.Instance.ProjectileHandler.CreateSungjunSkill0(Team, 2.0f);
+        ChangeStateDrive(false, TimeSpan.FromSeconds(2.0f));
+        AddEffect(new CharacterEffect(Team, TimeSpan.FromSeconds(2.0f), CharacterEffectType.Buff, new CharacterEffectCategory.MoveSpeed(2.0f), "MoveSpeed", null));
         return true;
     }
 
@@ -50,9 +52,15 @@ public class CharacterSungjun : Character
     {
         if (!base.OnPressSkill1()) return false;
         Debug.Log("Sungjun OnPressSkill1");
-        GameController.Instance.ProjectileHandler.CreateSungjunSkill2(Team);
-        ChangeStateDrive(false, TimeSpan.FromSeconds(2.0f));
-        AddEffect(new CharacterEffect(Team, TimeSpan.FromSeconds(2.0f), CharacterEffectType.Buff, new CharacterEffectCategory.MoveSpeed(2.0f), "MoveSpeed", null));
+        GameController.Instance.ProjectileHandler.CreateSungjunSkill1(Team, GetDirection());
+        return true;
+    }
+
+    public override bool OnPressSkill2()
+    {
+        if (!base.OnPressSkill2()) return false;
+        Debug.Log("Sungjun OnPressSkill2");
+        GameController.Instance.ProjectileHandler.CreateSungjunSkill1(Team, GetDirection());
         return true;
     }
 

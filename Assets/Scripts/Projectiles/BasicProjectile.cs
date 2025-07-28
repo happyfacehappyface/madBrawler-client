@@ -5,29 +5,41 @@ using System;
 
 public class BasicProjectile : Projectile
 {
-    private Vector2 _direction;
-    private bool _isHit;
+    protected Direction _direction;
+    private bool _isHitByWall;
+    private bool _isHitByCharacter;
     private TimeSpan _timeFromStart;
 
 
-    [SerializeField] private float _lifeTime;
-    [SerializeField] private float _speed;
-    [SerializeField] private float _acceleration;
-    [SerializeField] private float _damage;
+    private float _lifeTime;
+    private float _speed;
+    private float _damage;
 
     private bool _canBreakWall;
+    private bool _isDeletedByWall;
+
+    private bool _isDeletedByPlayer;
 
 
 
 
 
-    public void Initialize(Vector2 direction, bool canBreakWall)
+    protected void Initialize(
+        Direction direction, bool canBreakWall, bool isDeletedByWall, bool isDeletedByPlayer,
+        float lifeTime, float speed, float damage)
     {
-        _isHit = false;
+        _isHitByWall = false;
+        _isHitByCharacter = false;
         _timeFromStart = TimeSpan.Zero;
         _direction = direction;
+        _lifeTime = lifeTime;
+        _speed = speed;
+        _damage = damage;
         HitIntervalTime = TimeSpan.FromSeconds(_lifeTime);
         _canBreakWall = canBreakWall;
+        _isDeletedByWall = isDeletedByWall;
+        _isDeletedByPlayer = isDeletedByPlayer;
+        transform.localRotation = Utils.DirectionToQuaternion(direction);
     }
 
     
@@ -35,21 +47,22 @@ public class BasicProjectile : Projectile
     public override void ManualUpdate()
     {
         _timeFromStart += TimeSpan.FromSeconds(Time.deltaTime);
-        transform.position += Time.deltaTime * _speed * Utils.Vector2ToVector3(_direction);
+        transform.position += Time.deltaTime * _speed * Utils.DirectionToVector3(_direction);
         
     }
 
     public override bool ShouldBeDestroyed()
     {
-        return (_timeFromStart > TimeSpan.FromSeconds(_lifeTime));
-        //return (_timeFromStart > TimeSpan.FromSeconds(_lifeTime)) || _isHit;
+        return (_timeFromStart > TimeSpan.FromSeconds(_lifeTime))
+        || (_isDeletedByWall && _isHitByWall)
+        || (_isDeletedByPlayer && _isHitByCharacter);
     }
 
     public override bool OnHitByCharacter(Character character)
     {
         if (!base.OnHitByCharacter(character)) return false;
 
-        _isHit = true;
+        _isHitByCharacter = true;
         character.AddHitPoint((-1) * _damage);
         return true;
     }
@@ -61,6 +74,6 @@ public class BasicProjectile : Projectile
             wall.Deactivate();
         }
         
-        _isHit = true;
+        _isHitByWall = true;
     }
 }
