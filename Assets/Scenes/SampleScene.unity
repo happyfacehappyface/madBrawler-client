@@ -11719,7 +11719,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f495c06604cee004bb79f16e54b2f9eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPrefab: {fileID: 6069569794982285138, guid: 6d3c9f518ca7ac84a828955adce28daf, type: 3}
+  _characterSungjunPrefab: {fileID: 6069569794982285138, guid: 6d3c9f518ca7ac84a828955adce28daf, type: 3}
+  _characterSinniPrefab: {fileID: 6069569794982285138, guid: 16fb09d8223741f489fbfafdb4c90c06, type: 3}
   _projectileHandler: {fileID: 1750896707}
   _wallHandler: {fileID: 1750896708}
   _gameUIDrawer: {fileID: 263206883}
@@ -11757,6 +11758,7 @@ MonoBehaviour:
   _sungjunSkill1Prefab: {fileID: 4216708769023979321, guid: 76a0b31c8417619479c727e80b3ec5f8, type: 3}
   _sungjunSkill2Prefab: {fileID: 3289116017576895808, guid: 570c27097cb1c7745b592cc323f696df, type: 3}
   _sungjunSkill2AfterPrefab: {fileID: 3289116017576895808, guid: a237eef1c0b4636448f8eac40e68e31f, type: 3}
+  _sinniBasicAttackProjectilePrefab: {fileID: 4216708769023979321, guid: 2b313162af7165341a9e4da0a53a3639, type: 3}
 --- !u!114 &1750896708
 MonoBehaviour:
   m_ObjectHideFlags: 0

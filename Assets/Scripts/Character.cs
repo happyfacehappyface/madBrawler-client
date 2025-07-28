@@ -9,6 +9,8 @@ public abstract class Character : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidbody2D;
     [SerializeField] private Transform _spinnedTransform;
     [SerializeField] private Transform _bodyTransform;
+
+    
     protected Direction Direction;
     protected Team Team;
 
@@ -34,11 +36,13 @@ public abstract class Character : MonoBehaviour
     private bool _isFlying;
 
 
+
     public virtual void ManualStart(Team team)
     {
         InitializeBaseStats();
         Team = team;
         gameObject.layer = LayerMask.NameToLayer(Team == Team.Left ? "LeftCharacter" : "RightCharacter");
+        
         _effects = new List<CharacterEffect>();
 
         _basicAttackRemainCoolTime = TimeSpan.Zero;
@@ -115,41 +119,53 @@ public abstract class Character : MonoBehaviour
 
     private void UpdateBodyTransform()
     {
-        float maxHeight = 1.0f;
+        float maxHeight = 2.0f;
+        float maxScale = 2.0f;
         float height = 0.0f;
+        float scale = 1.0f;
         TimeSpan currentTime = GameController.Instance.GetPlayerTime(Team);
         float progress;
 
-        if (!_isFlying) height = 0.0f;
+        if (!_isFlying)
+        {
+            height = 0.0f;
+            scale = 1.0f;
+        }
         else
         {
             switch (_state)
             {
                 case CharacterState.Idle:
                     height = maxHeight;
+                    scale = maxScale;
                     break;
                 case CharacterState.Dash dash:
                     GraduallyMove(dash.direction, dash.power * Time.deltaTime);
                     progress = (float)(currentTime - dash.startTime).TotalSeconds / (float)(dash.endTime - dash.startTime).TotalSeconds;
                     height = (-4) * maxHeight * progress * (progress - 1);
+                    scale = (-4) * (maxHeight - 1) * progress * (progress - 1) + 1;
                     break;
                 case CharacterState.Rush rush:
                     GraduallyMove(rush.direction, rush.power * Time.deltaTime);
                     height = maxHeight;
+                    scale = maxScale;
                     break;
                 case CharacterState.Drive drive:
                     progress = (float)(currentTime - drive.startTime).TotalSeconds / (float)(drive.endTime - drive.startTime).TotalSeconds;
                     height = (-4) * maxHeight * progress * (progress - 1);
+                    scale = (-4) * (maxHeight - 1) * progress * (progress - 1) + 1;
                     break;
                 case CharacterState.ForcedMove forcedMove:
                     GraduallyMove(forcedMove.direction, forcedMove.power * Time.deltaTime);
                     progress = (float)(currentTime - forcedMove.startTime).TotalSeconds / (float)(forcedMove.endTime - forcedMove.startTime).TotalSeconds;
                     height = (-4) * maxHeight * progress * (progress - 1);
+                    scale = (-4) * (maxHeight - 1) * progress * (progress - 1) + 1;
                     break;
             }
         }
 
         _bodyTransform.localPosition = new Vector3(0.0f, height, 0.0f);
+        _bodyTransform.localScale = new Vector3(scale, scale, scale);
     }
 
     private void UpdateWallPassable(bool passable)

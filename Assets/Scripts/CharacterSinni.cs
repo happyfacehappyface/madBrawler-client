@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterSungjun : Character
+public class CharacterSinni : Character
 {
     protected override void InitializeBaseStats()
     {
         _hitPoint = 100f;
         _hitPointMax = 100f;
-        _moveSpeed = 5f;
+        _moveSpeed = 6f;
         
-        _specialPoint = 0f;
+        _specialPoint = 50f;
         _speicalPointMax = 100f;
 
         _basicAttackCoolTime = TimeSpan.FromSeconds(0.2f);
@@ -33,8 +33,8 @@ public class CharacterSungjun : Character
     public override bool OnPressBasicAttack()
     {
         if (!base.OnPressBasicAttack()) return false;
-        Debug.Log("Sungjun OnPressBasicAttack");
-        GameController.Instance.ProjectileHandler.CreateSungjunBasicAttack(Team, GetDirection());
+        Debug.Log("Sinni OnPressBasicAttack");
+        GameController.Instance.ProjectileHandler.CreateSinniBasicAttack(Team, GetDirection());
         return true;
     }
 

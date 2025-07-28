@@ -21,7 +21,9 @@ public class GameController : MonoBehaviour
 
     
 
-    [SerializeField] private GameObject _playerPrefab;
+
+    [SerializeField] private GameObject _characterSungjunPrefab;
+    [SerializeField] private GameObject _characterSinniPrefab;
     [SerializeField] private ProjectileHandler _projectileHandler;
     [SerializeField] private WallHandler _wallHandler;
     [SerializeField] private GameUIDrawer _gameUIDrawer;
@@ -33,12 +35,12 @@ public class GameController : MonoBehaviour
     {
         Instance = this;
 
-        GameObject leftPlayer = Instantiate(_playerPrefab);
-        GameObject rightPlayer = Instantiate(_playerPrefab);
+        GameObject leftPlayer = Instantiate(_characterSungjunPrefab);
+        GameObject rightPlayer = Instantiate(_characterSinniPrefab);
 
-        _leftPlayerCharacter = leftPlayer.GetComponent<CharacterSungjun>();
+        _leftPlayerCharacter = leftPlayer.GetComponent<Character>();
         _leftPlayerCharacter.ManualStart(Team.Left);
-        _rightPlayerCharacter = rightPlayer.GetComponent<CharacterSungjun>();
+        _rightPlayerCharacter = rightPlayer.GetComponent<Character>();
         _rightPlayerCharacter.ManualStart(Team.Right);
 
         _currentTime = TimeSpan.Zero;

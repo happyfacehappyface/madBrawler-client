@@ -18,6 +18,8 @@ public class ProjectileHandler : MonoBehaviour
     [SerializeField] private GameObject _sungjunSkill2Prefab;
     [SerializeField] private GameObject _sungjunSkill2AfterPrefab;
 
+    [SerializeField] private GameObject _sinniBasicAttackProjectilePrefab;
+
     int _leftProjectileID;
     int _rightProjectileID;
 
@@ -109,6 +111,14 @@ public class ProjectileHandler : MonoBehaviour
             _sungjunSkill2AfterPrefab, _projectileParent,
             GameController.Instance.GetPlayerTransform(team).position, direction, team);
         newObject.GetComponent<SungjunSkill2ProjectileAfter>().Initialize(bounceTime);
+    }
+
+    public void CreateSinniBasicAttack(Team team, Direction direction)
+    {
+        GameObject newObject = CreateProjectile(
+            _sinniBasicAttackProjectilePrefab, GameController.Instance.GetPlayerTransform(team),
+            Vector2.zero, direction, team);
+        newObject.GetComponent<SinniBasicAttackProjectile>().Initialize(direction);
     }
 
 
