@@ -18,7 +18,7 @@ public class HookProjectile : BasicProjectile
     public override bool OnHitByCharacter(Character character)
     {
         base.OnHitByCharacter(character);
-        character.ChangeStateForcedMove(_direction, _hookPower, true, _hookTime);
+        character.ChangeStateForcedMove(_direction, _hookPower, _hookTime, true, false);
         return true;
     }
 }

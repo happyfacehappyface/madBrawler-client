@@ -16,6 +16,7 @@ public class ProjectileHandler : MonoBehaviour
     [SerializeField] private GameObject _sungjunSkill0Prefab;
     [SerializeField] private GameObject _sungjunSkill1Prefab;
     [SerializeField] private GameObject _sungjunSkill2Prefab;
+    [SerializeField] private GameObject _sungjunSkill2AfterPrefab;
 
     int _leftProjectileID;
     int _rightProjectileID;
@@ -94,9 +95,20 @@ public class ProjectileHandler : MonoBehaviour
         newObject.GetComponent<SungjunSkill1Projectile>().Initialize(direction);
     }
 
-    public void CreateSungjunSkill2(Team team, Direction direction)
+    public void CreateSungjunSkill2(Team team, Direction direction, float bounceTime)
     {
-        
+        GameObject newObject = CreateProjectile(
+            _sungjunSkill2Prefab, _projectileParent,
+            GameController.Instance.GetPlayerTransform(team).position, direction, team);
+        newObject.GetComponent<SungjunSkill2Projectile>().Initialize(bounceTime);
+    }
+
+    public void CreateSungjunSkill2After(Team team, Direction direction, float bounceTime)
+    {
+        GameObject newObject = CreateProjectile(
+            _sungjunSkill2AfterPrefab, _projectileParent,
+            GameController.Instance.GetPlayerTransform(team).position, direction, team);
+        newObject.GetComponent<SungjunSkill2ProjectileAfter>().Initialize(bounceTime);
     }
 
 

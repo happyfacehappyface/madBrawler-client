@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class SungjunSkill2Projectile : MonoBehaviour
+public class SungjunSkill2Projectile : BasicProjectile
 {
-    // Start is called before the first frame update
-    void Start()
+    private float _bounceTime;
+    public void Initialize(float bounceTime)
     {
-        
+        base.Initialize(
+            Direction.Right, false, false, false,
+            0.1f, 0.0f, 0.0f, 0.0f);
+        _bounceTime = bounceTime;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override bool OnHitByCharacter(Character character)
     {
+        if (!base.OnHitByCharacter(character)) return false;
+
         
+        character.ChangeStateForcedMove(_direction, 0, TimeSpan.FromSeconds(_bounceTime), true, true);
+        
+        return true;
     }
 }

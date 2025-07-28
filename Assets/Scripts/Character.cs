@@ -8,6 +8,7 @@ public abstract class Character : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D _rigidbody2D;
     [SerializeField] private Transform _spinnedTransform;
+    [SerializeField] private Transform _bodyTransform;
     protected Direction Direction;
     protected Team Team;
 
@@ -30,6 +31,7 @@ public abstract class Character : MonoBehaviour
     private TimeSpan _lastProjectileHitTimeCleanTime;
 
     private bool _isWallPassable;
+    private bool _isFlying;
 
 
     public virtual void ManualStart(Team team)
@@ -44,12 +46,15 @@ public abstract class Character : MonoBehaviour
 
         _projectileHitTime = new Dictionary<int, TimeSpan>();
         _lastProjectileHitTimeCleanTime = TimeSpan.Zero;
+
+        ChangeStateIdle();
     }
 
     public virtual void ManualUpdate()
     {
         UpdateState();
         UpdateByState();
+        UpdateBodyTransform();
         CleanEffects();
         UpdateCoolTime();
         if (GameController.Instance.GetPlayerTime(Team) - _lastProjectileHitTimeCleanTime > TimeSpan.FromSeconds(0.3f))
@@ -68,7 +73,7 @@ public abstract class Character : MonoBehaviour
             case CharacterState.Dash dash:
                 if (dash.endTime < GameController.Instance.GetPlayerTime(Team))
                 {
-                    _state = new CharacterState.Idle();
+                    ChangeStateIdle();
                 }
                 break;
             case CharacterState.Rush rush:
@@ -76,13 +81,13 @@ public abstract class Character : MonoBehaviour
             case CharacterState.Drive drive:
                 if (drive.endTime < GameController.Instance.GetPlayerTime(Team))
                 {
-                    _state = new CharacterState.Idle();
+                    ChangeStateIdle();
                 }
                 break;
             case CharacterState.ForcedMove forcedMove:
                 if (forcedMove.endTime < GameController.Instance.GetPlayerTime(Team))
                 {
-                    _state = new CharacterState.Idle();
+                    ChangeStateIdle();
                 }
                 break;
         }
@@ -93,24 +98,58 @@ public abstract class Character : MonoBehaviour
         switch (_state)
         {
             case CharacterState.Idle:
-                UpdateWallPassable(false);
                 break;
             case CharacterState.Dash dash:
-                UpdateWallPassable(dash.isWallPassable);
                 GraduallyMove(dash.direction, dash.power * Time.deltaTime);
                 break;
             case CharacterState.Rush rush:
-                UpdateWallPassable(rush.isWallPassable);
                 GraduallyMove(rush.direction, rush.power * Time.deltaTime);
                 break;
             case CharacterState.Drive drive:
-                UpdateWallPassable(drive.isWallPassable);
                 break;
             case CharacterState.ForcedMove forcedMove:
-                UpdateWallPassable(forcedMove.isWallPassable);
                 GraduallyMove(forcedMove.direction, forcedMove.power * Time.deltaTime);
                 break;
         }
+    }
+
+    private void UpdateBodyTransform()
+    {
+        float maxHeight = 1.0f;
+        float height = 0.0f;
+        TimeSpan currentTime = GameController.Instance.GetPlayerTime(Team);
+        float progress;
+
+        if (!_isFlying) height = 0.0f;
+        else
+        {
+            switch (_state)
+            {
+                case CharacterState.Idle:
+                    height = maxHeight;
+                    break;
+                case CharacterState.Dash dash:
+                    GraduallyMove(dash.direction, dash.power * Time.deltaTime);
+                    progress = (float)(currentTime - dash.startTime).TotalSeconds / (float)(dash.endTime - dash.startTime).TotalSeconds;
+                    height = (-4) * maxHeight * progress * (progress - 1);
+                    break;
+                case CharacterState.Rush rush:
+                    GraduallyMove(rush.direction, rush.power * Time.deltaTime);
+                    height = maxHeight;
+                    break;
+                case CharacterState.Drive drive:
+                    progress = (float)(currentTime - drive.startTime).TotalSeconds / (float)(drive.endTime - drive.startTime).TotalSeconds;
+                    height = (-4) * maxHeight * progress * (progress - 1);
+                    break;
+                case CharacterState.ForcedMove forcedMove:
+                    GraduallyMove(forcedMove.direction, forcedMove.power * Time.deltaTime);
+                    progress = (float)(currentTime - forcedMove.startTime).TotalSeconds / (float)(forcedMove.endTime - forcedMove.startTime).TotalSeconds;
+                    height = (-4) * maxHeight * progress * (progress - 1);
+                    break;
+            }
+        }
+
+        _bodyTransform.localPosition = new Vector3(0.0f, height, 0.0f);
     }
 
     private void UpdateWallPassable(bool passable)
@@ -121,6 +160,17 @@ public abstract class Character : MonoBehaviour
         Physics2D.IgnoreLayerCollision(
             LayerMask.NameToLayer(Team == Team.Left ? "LeftCharacter" : "RightCharacter"),
             LayerMask.NameToLayer("Wall"), passable);
+    }
+
+    private void UpdateFlying(bool flying)
+    {
+        if (_isFlying == flying) return;
+
+        _isFlying = flying;
+        Physics2D.IgnoreLayerCollision(
+            LayerMask.NameToLayer(Team == Team.Left ? "LeftCharacter" : "RightCharacter"),
+            LayerMask.NameToLayer(Team == Team.Left ? "RightProjectile" : "LeftProjectile"), flying);
+
     }
 
 
@@ -360,24 +410,42 @@ public abstract class Character : MonoBehaviour
         return (float)_skillRemainCoolTime[skillIndex].TotalSeconds / (float)_skillCoolTime[skillIndex].TotalSeconds;
     }
 
-    public void ChangeStateDash(Direction direction, float power, bool isWallPassable, TimeSpan dashTime)
+    public void ChangeStateIdle()
     {
-        _state = new CharacterState.Dash(direction, power, isWallPassable, GameController.Instance.GetPlayerTime(Team) + dashTime);
+        _state = new CharacterState.Idle();
+        UpdateWallPassable(false);
+        UpdateFlying(false);
     }
 
-    public void ChangeStateRush(Direction direction, float power, bool isWallPassable)
+    public void ChangeStateDash(Direction direction, float power, TimeSpan dashTime, bool isWallPassable, bool isFlying)
     {
-        _state = new CharacterState.Rush(direction, power, isWallPassable);
+        _state = new CharacterState.Dash(
+            direction, power,
+            GameController.Instance.GetPlayerTime(Team), GameController.Instance.GetPlayerTime(Team) + dashTime);
+        UpdateWallPassable(isWallPassable);
+        UpdateFlying(isFlying);
     }
 
-    public void ChangeStateDrive(bool isWallPassable, TimeSpan driveTime)
+    public void ChangeStateRush(Direction direction, float power, bool isWallPassable, bool isFlying)
     {
-        _state = new CharacterState.Drive(isWallPassable, GameController.Instance.GetPlayerTime(Team) + driveTime);
+        _state = new CharacterState.Rush(direction, power);
+        UpdateWallPassable(isWallPassable);
+        UpdateFlying(isFlying);
     }
 
-    public void ChangeStateForcedMove(Direction direction, float power, bool isWallPassable, TimeSpan forcedMoveTime)
+    public void ChangeStateDrive(TimeSpan driveTime, bool isWallPassable, bool isFlying)
     {
-        _state = new CharacterState.ForcedMove(direction, power, isWallPassable, GameController.Instance.GetPlayerTime(Team) + forcedMoveTime);
+        _state = new CharacterState.Drive(GameController.Instance.GetPlayerTime(Team), GameController.Instance.GetPlayerTime(Team) + driveTime);
+        UpdateWallPassable(isWallPassable);
+        UpdateFlying(isFlying);
+    }
+
+    public void ChangeStateForcedMove(Direction direction, float power, TimeSpan forcedMoveTime, bool isWallPassable, bool isFlying)
+    {
+        _state = new CharacterState.ForcedMove(direction, power,
+            GameController.Instance.GetPlayerTime(Team), GameController.Instance.GetPlayerTime(Team) + forcedMoveTime);
+        UpdateWallPassable(isWallPassable);
+        UpdateFlying(isFlying);
     }
 
 
@@ -490,11 +558,9 @@ public enum Direction
 public abstract record CharacterState
 {
     public sealed record Idle() : CharacterState;
-    public sealed record Dash(Direction direction, float power, bool isWallPassable, TimeSpan endTime) : CharacterState;
-    public sealed record Rush(Direction direction, float power, bool isWallPassable) : CharacterState;
-    public sealed record Drive(bool isWallPassable, TimeSpan endTime) : CharacterState;
-    public sealed record ForcedMove(Direction direction, float power, bool isWallPassable, TimeSpan endTime) : CharacterState;
-    
-
+    public sealed record Dash(Direction direction, float power, TimeSpan startTime, TimeSpan endTime) : CharacterState;
+    public sealed record Rush(Direction direction, float power) : CharacterState;
+    public sealed record Drive(TimeSpan startTime, TimeSpan endTime) : CharacterState;
+    public sealed record ForcedMove(Direction direction, float power, TimeSpan startTime, TimeSpan endTime) : CharacterState;
 
 }

@@ -10,12 +10,9 @@ public class SungjunSkill0Projectile : BasicProjectile
 
     public void Initialize(float lifeTime)
     {
-
-        
-
         base.Initialize(
             Direction.Right, true, false, false,
-            lifeTime, 0f, _damage);
+            lifeTime, 0.0f, 0.0f, _damage);
     }
 
 }

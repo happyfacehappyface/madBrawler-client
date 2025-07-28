@@ -43,7 +43,7 @@ public class CharacterSungjun : Character
         if (!base.OnPressSkill0()) return false;
         Debug.Log("Sungjun OnPressSkill0");
         GameController.Instance.ProjectileHandler.CreateSungjunSkill0(Team, 2.0f);
-        ChangeStateDrive(true, TimeSpan.FromSeconds(2.0f));
+        ChangeStateDrive(TimeSpan.FromSeconds(2.0f), true, false);
         AddEffect(new CharacterEffect(Team, TimeSpan.FromSeconds(2.0f), CharacterEffectType.Buff, new CharacterEffectCategory.MoveSpeed(2.0f), "MoveSpeed", null));
         return true;
     }
@@ -60,7 +60,10 @@ public class CharacterSungjun : Character
     {
         if (!base.OnPressSkill2()) return false;
         Debug.Log("Sungjun OnPressSkill2");
-        GameController.Instance.ProjectileHandler.CreateSungjunSkill1(Team, GetDirection());
+        float bounceTime = 0.8f;
+        GameController.Instance.ProjectileHandler.CreateSungjunSkill2(Team, GetDirection(), bounceTime);
+        GameController.Instance.ProjectileHandler.CreateSungjunSkill2After(Team, GetDirection(), bounceTime);
+        ChangeStateForcedMove(GetDirection(), 0, TimeSpan.FromSeconds(bounceTime), true, true);
         return true;
     }
 

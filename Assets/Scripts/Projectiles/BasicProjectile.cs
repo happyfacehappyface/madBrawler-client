@@ -9,9 +9,11 @@ public class BasicProjectile : Projectile
     private bool _isHitByWall;
     private bool _isHitByCharacter;
     private TimeSpan _timeFromStart;
+    
 
 
     private float _lifeTime;
+    private float _timeDelay;
     private float _speed;
     private float _damage;
 
@@ -26,13 +28,14 @@ public class BasicProjectile : Projectile
 
     protected void Initialize(
         Direction direction, bool canBreakWall, bool isDeletedByWall, bool isDeletedByPlayer,
-        float lifeTime, float speed, float damage)
+        float lifeTime, float timeDelay, float speed, float damage)
     {
         _isHitByWall = false;
         _isHitByCharacter = false;
         _timeFromStart = TimeSpan.Zero;
         _direction = direction;
         _lifeTime = lifeTime;
+        _timeDelay = timeDelay;
         _speed = speed;
         _damage = damage;
         HitIntervalTime = TimeSpan.FromSeconds(_lifeTime);
@@ -48,7 +51,11 @@ public class BasicProjectile : Projectile
     {
         _timeFromStart += TimeSpan.FromSeconds(Time.deltaTime);
         transform.position += Time.deltaTime * _speed * Utils.DirectionToVector3(_direction);
-        
+    }
+
+    protected bool IsHarmful()
+    {
+        return _timeFromStart > TimeSpan.FromSeconds(_timeDelay);
     }
 
     public override bool ShouldBeDestroyed()
@@ -60,6 +67,7 @@ public class BasicProjectile : Projectile
 
     public override bool OnHitByCharacter(Character character)
     {
+        if (!IsHarmful()) return false;
         if (!base.OnHitByCharacter(character)) return false;
 
         _isHitByCharacter = true;
@@ -69,6 +77,8 @@ public class BasicProjectile : Projectile
 
     public override void OnHitByWall(Wall wall)
     {
+        if (!IsHarmful()) return;
+
         if (_canBreakWall)
         {
             wall.Deactivate();

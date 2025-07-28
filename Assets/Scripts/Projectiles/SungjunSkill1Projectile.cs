@@ -18,14 +18,14 @@ public class SungjunSkill1Projectile : BasicProjectile
     {
         base.Initialize(
             direction, false, false, true,
-            _lifeTime, _speed, _damage);
+            _lifeTime, 0.0f, _speed, _damage);
     }
 
     public override bool OnHitByCharacter(Character character)
     {
         if (!base.OnHitByCharacter(character)) return false;
 
-        character.ChangeStateForcedMove(_direction, (-1) *_hookPower, true, TimeSpan.FromSeconds(_hookTime));
+        character.ChangeStateForcedMove(_direction, (-1) *_hookPower, TimeSpan.FromSeconds(_hookTime), true, false);
         
         return true;
     }
