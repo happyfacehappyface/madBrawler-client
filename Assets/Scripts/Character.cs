@@ -11,11 +11,11 @@ public abstract class Character : MonoBehaviour
     protected Direction Direction;
     protected Team Team;
 
-    protected float HitPoint;
-    protected float HitPointMax;
-    protected float MoveSpeed;
-    protected float SpecialPoint;
-    protected float SpecialPointMax;
+    protected float _hitPoint;
+    protected float _hitPointMax;
+    protected float _moveSpeed;
+    protected float _specialPoint;
+    protected float _speicalPointMax;
 
     protected List<CharacterEffect> _effects = new List<CharacterEffect>();
     protected CharacterState _state;
@@ -154,15 +154,54 @@ public abstract class Character : MonoBehaviour
     private void UpdateCoolTime()
     {
         _basicAttackRemainCoolTime -= GameController.Instance.GetPlayerDeltaTime(Team);
+
+        if (_basicAttackRemainCoolTime < TimeSpan.Zero)
+        {
+            _basicAttackRemainCoolTime = TimeSpan.Zero;
+        }
+
         for (int i = 0; i < GameConst.SkillCount; i++)
         {
             _skillRemainCoolTime[i] -= GameController.Instance.GetPlayerDeltaTime(Team);
+            if (_skillRemainCoolTime[i] < TimeSpan.Zero)
+            {
+                _skillRemainCoolTime[i] = TimeSpan.Zero;
+            }
         }
+    }
+
+    public int GetHitPoint()
+    {
+        return Mathf.CeilToInt(_hitPoint);
     }
 
     public float HitPointRatio()
     {
-        return (float)HitPoint / (float)HitPointMax;
+        return (float)_hitPoint / (float)_hitPointMax;
+    }
+
+    public int GetCoolTime(int attackIndex)
+    {
+        if (attackIndex == 0)
+        {
+            return (int) _basicAttackRemainCoolTime.TotalSeconds;
+        }
+        else
+        {
+            return (int) _skillCoolTime[attackIndex - 1].TotalSeconds;
+        }
+    }
+
+    public float GetCoolTimeRatio(int attackIndex)
+    {
+        if (attackIndex == 0)
+        {
+            return (float) _basicAttackRemainCoolTime.TotalSeconds / (float) _basicAttackCoolTime.TotalSeconds;
+        }
+        else
+        {
+            return (float) _skillRemainCoolTime[attackIndex - 1].TotalSeconds / (float) _skillCoolTime[attackIndex - 1].TotalSeconds;
+        }
     }
 
 
@@ -184,12 +223,12 @@ public abstract class Character : MonoBehaviour
 
     public void AddHitPoint(float amount)
     {
-        HitPoint = Mathf.Clamp(HitPoint + amount, 0, HitPointMax);
+        _hitPoint = Mathf.Clamp(_hitPoint + amount, 0, _hitPointMax);
     }
 
     public void AddSpecialPoint(float amount)
     {
-        SpecialPoint = Mathf.Clamp(SpecialPoint + amount, 0, SpecialPointMax);
+        _specialPoint = Mathf.Clamp(_specialPoint + amount, 0, _speicalPointMax);
     }
 
     protected abstract void InitializeBaseStats();
@@ -308,7 +347,7 @@ public abstract class Character : MonoBehaviour
                 ratio *= moveSpeed.Rate;
             }
         }
-        return MoveSpeed * ratio;
+        return _moveSpeed * ratio;
     }
 
     public float GetBasicAttackCoolTimeRatio()

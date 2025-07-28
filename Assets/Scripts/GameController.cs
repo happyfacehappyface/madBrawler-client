@@ -47,6 +47,8 @@ public class GameController : MonoBehaviour
 
         _projectileHandler.ManualStart();
         _wallHandler.ManualStart();
+
+        _gameUIDrawer.ManualStart();
     }
 
     private void ManualUpdate()
