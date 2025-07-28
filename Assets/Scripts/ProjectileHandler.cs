@@ -19,6 +19,10 @@ public class ProjectileHandler : MonoBehaviour
     [SerializeField] private GameObject _sungjunSkill2AfterPrefab;
 
     [SerializeField] private GameObject _sinniBasicAttackProjectilePrefab;
+    [SerializeField] private GameObject _sinniSkill0Prefab;
+    [SerializeField] private GameObject _sinniSkill2Prefab;
+    [SerializeField] private GameObject _sinniSkill2AfterPrefab;
+
 
     int _leftProjectileID;
     int _rightProjectileID;
@@ -116,9 +120,33 @@ public class ProjectileHandler : MonoBehaviour
     public void CreateSinniBasicAttack(Team team, Direction direction)
     {
         GameObject newObject = CreateProjectile(
-            _sinniBasicAttackProjectilePrefab, GameController.Instance.GetPlayerTransform(team),
-            Vector2.zero, direction, team);
+            _sinniBasicAttackProjectilePrefab, _projectileParent,
+            GameController.Instance.GetPlayerTransform(team).position, direction, team);
         newObject.GetComponent<SinniBasicAttackProjectile>().Initialize(direction);
+    }
+
+    public void CreateSinniSkill0(Team team, Direction direction, float scale)
+    {
+        GameObject newObject = CreateProjectile(
+            _sinniSkill0Prefab, GameController.Instance.GetPlayerNotSpinnedTransform(team),
+            Vector2.zero, direction, team);
+        newObject.GetComponent<SinniSkill0Projectile>().Initialize(direction, scale);
+    }
+
+    public void CreateSinniSkill2(Team team, Direction direction)
+    {
+        GameObject newObject = CreateProjectile(
+            _sinniSkill2Prefab, _projectileParent,
+            GameController.Instance.GetPlayerTransform(team).position, direction, team);
+        newObject.GetComponent<SinniSkill2Projectile>().Initialize();
+    }
+
+    public void CreateSinniSkill2After(Team team, Direction direction)
+    {
+        GameObject newObject = CreateProjectile(
+            _sinniSkill2AfterPrefab, _projectileParent,
+            GameController.Instance.GetPlayerTransform(team).position, direction, team);
+        newObject.GetComponent<SinniSkill2ProjectileAfter>().Initialize();
     }
 
 

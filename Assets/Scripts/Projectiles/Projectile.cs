@@ -35,7 +35,12 @@ public abstract class Projectile : MonoBehaviour
     {
         _team = team;
         ProjectileID = projectileID;
-        gameObject.layer = LayerMask.NameToLayer(_team == Team.Left ? "LeftProjectile" : "RightProjectile");
+        
+        if (gameObject.layer != LayerMask.NameToLayer("Wall") && 
+            gameObject.layer != LayerMask.NameToLayer("Barrier"))
+        {
+            gameObject.layer = LayerMask.NameToLayer(_team == Team.Left ? "LeftProjectile" : "RightProjectile");
+        }
     }
 
     public abstract void ManualUpdate();

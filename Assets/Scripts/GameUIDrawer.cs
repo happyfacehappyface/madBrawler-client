@@ -48,7 +48,10 @@ public class GameUIDrawer : MonoBehaviour
         _rightPlayerHitPointBar.fillAmount = GameController.Instance.RightPlayerCharacter.HitPointRatio();
         _rightPlayerHitPointText.text = GameController.Instance.RightPlayerCharacter.GetHitPoint().ToString();
 
-        // TODO: Special Point
+        _leftPlayerSpecialPointBar.fillAmount = GameController.Instance.LeftPlayerCharacter.SpecialPointRatio();
+        _leftPlayerSpecialPointText.text = GameController.Instance.LeftPlayerCharacter.GetSpecialPoint().ToString();
+        _rightPlayerSpecialPointBar.fillAmount = GameController.Instance.RightPlayerCharacter.SpecialPointRatio();
+        _rightPlayerSpecialPointText.text = GameController.Instance.RightPlayerCharacter.GetSpecialPoint().ToString();
 
         for (int i = 0; i < 4; i++)
         {

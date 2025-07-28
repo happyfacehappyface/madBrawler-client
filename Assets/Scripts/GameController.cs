@@ -256,7 +256,17 @@ public class GameController : MonoBehaviour
         }
     }
 
-    
+    public Transform GetPlayerNotSpinnedTransform(Team team)
+    {
+        if (team == Team.Left)
+        {
+            return _leftPlayerCharacter.GetNotSpinnedTransform();
+        }
+        else
+        {
+            return _rightPlayerCharacter.GetNotSpinnedTransform();
+        }
+    }
 
 
     protected void Start()

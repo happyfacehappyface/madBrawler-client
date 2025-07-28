@@ -4,6 +4,14 @@ using UnityEngine;
 
 public static class Utils
 {
+
+    public static void Log(string message)
+    {
+        #if UNITY_EDITOR
+        Debug.Log(message);
+        #endif
+    }
+
     public static Vector3 Vector2ToVector3(Vector2 vector2)
     {
         return new Vector3(vector2.x, vector2.y, 0);

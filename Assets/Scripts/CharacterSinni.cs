@@ -23,6 +23,13 @@ public class CharacterSinni : Character
         };
     }
 
+    public override void ManualUpdate()
+    {
+        base.ManualUpdate();
+
+        AddSpecialPoint((float)GameController.Instance.GetPlayerDeltaTime(Team).TotalSeconds * 3f);
+    }
+
 
     public override void OnPressDirection(Direction direction)
     {
@@ -33,37 +40,36 @@ public class CharacterSinni : Character
     public override bool OnPressBasicAttack()
     {
         if (!base.OnPressBasicAttack()) return false;
-        Debug.Log("Sinni OnPressBasicAttack");
         GameController.Instance.ProjectileHandler.CreateSinniBasicAttack(Team, GetDirection());
         return true;
+    }
+
+    protected override bool IsSkill0Able()
+    {
+        return base.IsSkill0Able() && _specialPoint >= 10f;
     }
 
     public override bool OnPressSkill0()
     {
         if (!base.OnPressSkill0()) return false;
-        Debug.Log("Sungjun OnPressSkill0");
-        GameController.Instance.ProjectileHandler.CreateSungjunSkill0(Team, 2.0f);
-        ChangeStateDrive(TimeSpan.FromSeconds(2.0f), true, false);
-        AddEffect(new CharacterEffect(Team, TimeSpan.FromSeconds(2.0f), CharacterEffectType.Buff, new CharacterEffectCategory.MoveSpeed(2.0f), "MoveSpeed", null));
+        GameController.Instance.ProjectileHandler.CreateSinniSkill0(Team, Direction.Right, _specialPoint / 10f);
+        AddSpecialPoint((-1) * _specialPoint);
         return true;
     }
 
     public override bool OnPressSkill1()
     {
         if (!base.OnPressSkill1()) return false;
-        Debug.Log("Sungjun OnPressSkill1");
-        GameController.Instance.ProjectileHandler.CreateSungjunSkill1(Team, GetDirection());
+
+        ChangeStateDash(GetDirection(), 4f, TimeSpan.FromSeconds(0.3f), true, true);
+
         return true;
     }
 
     public override bool OnPressSkill2()
     {
         if (!base.OnPressSkill2()) return false;
-        Debug.Log("Sungjun OnPressSkill2");
-        float bounceTime = 0.8f;
-        GameController.Instance.ProjectileHandler.CreateSungjunSkill2(Team, GetDirection(), bounceTime);
-        GameController.Instance.ProjectileHandler.CreateSungjunSkill2After(Team, GetDirection(), bounceTime);
-        ChangeStateForcedMove(GetDirection(), 0, TimeSpan.FromSeconds(bounceTime), true, true);
+        GameController.Instance.ProjectileHandler.CreateSinniSkill2(Team, GetDirection());
         return true;
     }
 

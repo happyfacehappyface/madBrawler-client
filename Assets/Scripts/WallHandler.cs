@@ -14,8 +14,12 @@ public class WallHandler : MonoBehaviour
         foreach (Transform child in _wallParent)
         {
             Wall wall = child.GetComponent<Wall>();
-            wall.ManualStart();
-            _walls.Add(wall);
+            if (wall != null)
+            {
+                wall.ManualStart();
+                _walls.Add(wall);
+            }
+            
         }
     }
 

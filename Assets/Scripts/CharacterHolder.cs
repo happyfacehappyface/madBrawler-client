@@ -8,6 +8,8 @@ public class CharacterHolder : MonoBehaviour
     public Rigidbody2D Rigidbody2D => _rigidbody2D;
     [SerializeField] private Transform _spinnedTransform;
     public Transform SpinnedTransform => _spinnedTransform;
+    [SerializeField] private Transform _notSpinnedTransform;
+    public Transform NotSpinnedTransform => _notSpinnedTransform;
     [SerializeField] private Transform _bodyTransform;
     public Transform BodyTransform => _bodyTransform;
 

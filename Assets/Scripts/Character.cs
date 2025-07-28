@@ -17,6 +17,7 @@ public abstract class Character : MonoBehaviour
 
     private Rigidbody2D _rigidbody2D;
     private Transform _spinnedTransform;
+    private Transform _notSpinnedTransform;
     private Transform _bodyTransform;
 
 
@@ -62,6 +63,7 @@ public abstract class Character : MonoBehaviour
 
         _rigidbody2D = characterHolder.Rigidbody2D;
         _spinnedTransform = characterHolder.SpinnedTransform;
+        _notSpinnedTransform = characterHolder.NotSpinnedTransform;
         _bodyTransform = characterHolder.BodyTransform;
 
         
@@ -257,7 +259,19 @@ public abstract class Character : MonoBehaviour
 
     public float HitPointRatio()
     {
+        if (_hitPointMax == 0) return 0f;
         return (float)_hitPoint / (float)_hitPointMax;
+    }
+
+    public int GetSpecialPoint()
+    {
+        return Mathf.FloorToInt(_specialPoint);
+    }
+
+    public float SpecialPointRatio()
+    {
+        if (_speicalPointMax == 0) return 0f;
+        return (float)_specialPoint / (float)_speicalPointMax;
     }
 
     public int GetCoolTime(int attackIndex)
@@ -336,7 +350,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual bool OnPressSkill0()
     {
-        if (!IsSkillAble(0))
+        if (!IsSkill0Able())
         {
             Debug.Log("Skill0 is not able to use");
             return false;
@@ -347,14 +361,14 @@ public abstract class Character : MonoBehaviour
 
     public virtual bool OnPressSkill1()
     {
-        if (!IsSkillAble(1)) return false;
+        if (!IsSkill1Able()) return false;
         _skillRemainCoolTime[1] = _skillCoolTime[1];
         return true;
     }
 
     public virtual bool OnPressSkill2()
     {
-        if (!IsSkillAble(2)) return false;
+        if (!IsSkill2Able()) return false;
         _skillRemainCoolTime[2] = _skillCoolTime[2];
         return true;
     }
@@ -386,7 +400,27 @@ public abstract class Character : MonoBehaviour
         return true;
     }
 
-    private bool IsBasicAttackAble()
+    protected virtual bool IsBasicAttackAble()
+    {
+        return IsBasicAble();
+    }
+
+    protected virtual bool IsSkill0Able()
+    {
+        return IsSkillAble(0);
+    }
+
+    protected virtual bool IsSkill1Able()
+    {
+        return IsSkillAble(1);
+    }
+
+    protected virtual bool IsSkill2Able()
+    {
+        return IsSkillAble(2);
+    }
+
+    private bool IsBasicAble()
     {
         if (_basicAttackRemainCoolTime > TimeSpan.Zero) return false;
 
@@ -401,6 +435,7 @@ public abstract class Character : MonoBehaviour
         return true;
     }
 
+    
     private bool IsSkillAble(int skillIndex)
     {
         if (_skillRemainCoolTime[skillIndex] > TimeSpan.Zero) return false;
@@ -483,7 +518,8 @@ public abstract class Character : MonoBehaviour
 
     private bool IsSomething(Direction direction)
     {
-        int layerMask = LayerMask.GetMask("Wall");
+
+        int layerMask = _isWallPassable ? LayerMask.GetMask("Barrier") : LayerMask.GetMask("Wall", "Barrier");
         
         //RaycastHit2D hit = Physics2D.Raycast(transform.localPosition, Utils.DirectionToVector3(direction), 0.3f, layerMask);
 
@@ -542,7 +578,7 @@ public abstract class Character : MonoBehaviour
     {
         float step = 0.01f;
 
-        if (!_isWallPassable && IsSomething(direction))
+        if (IsSomething(direction))
         {
             return;
         }
@@ -565,6 +601,11 @@ public abstract class Character : MonoBehaviour
     public Transform GetSpinnedTransform()
     {
         return _spinnedTransform;
+    }
+
+    public Transform GetNotSpinnedTransform()
+    {
+        return _notSpinnedTransform;
     }
     
     

@@ -48,6 +48,7 @@ public class SinniBasicAttackProjectile : BasicProjectile
 
         _projectileSprite.color = new Color(1.0f, 1.0f, 1.0f, _alpha);
         transform.localScale = new Vector3(_scale, _scale, _scale);
+
     }
 
     protected override bool IsHarmful()
