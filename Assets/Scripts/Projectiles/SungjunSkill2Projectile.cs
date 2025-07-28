@@ -10,7 +10,7 @@ public class SungjunSkill2Projectile : BasicProjectile
     {
         base.Initialize(
             Direction.Right, false, false, false,
-            0.1f, 0.0f, 0.0f, 0.0f);
+            0.1f, 0.0f, 0.0f);
         _bounceTime = bounceTime;
     }
 

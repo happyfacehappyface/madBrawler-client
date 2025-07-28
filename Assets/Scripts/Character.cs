@@ -2,15 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using TreeEditor;
+
+
+public enum CharacterType
+{
+    Sungjun,
+    Sinni
+}
+
+
 
 public abstract class Character : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D _rigidbody2D;
-    [SerializeField] private Transform _spinnedTransform;
-    [SerializeField] private Transform _bodyTransform;
 
-    
+    private Rigidbody2D _rigidbody2D;
+    private Transform _spinnedTransform;
+    private Transform _bodyTransform;
+
+
     protected Direction Direction;
     protected Team Team;
 
@@ -37,7 +46,7 @@ public abstract class Character : MonoBehaviour
 
 
 
-    public virtual void ManualStart(Team team)
+    public void ManualStart(Team team, CharacterHolder characterHolder)
     {
         InitializeBaseStats();
         Team = team;
@@ -51,6 +60,11 @@ public abstract class Character : MonoBehaviour
         _projectileHitTime = new Dictionary<int, TimeSpan>();
         _lastProjectileHitTimeCleanTime = TimeSpan.Zero;
 
+        _rigidbody2D = characterHolder.Rigidbody2D;
+        _spinnedTransform = characterHolder.SpinnedTransform;
+        _bodyTransform = characterHolder.BodyTransform;
+
+        
         ChangeStateIdle();
     }
 

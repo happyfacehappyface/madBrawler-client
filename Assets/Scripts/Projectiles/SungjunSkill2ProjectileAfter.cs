@@ -6,11 +6,18 @@ using System;
 public class SungjunSkill2ProjectileAfter : BasicProjectile
 {
     private const float _damage = 30f;
+    private float _delayTime;
     public void Initialize(float delayTime)
     {
         base.Initialize(
             Direction.Right, true, false, false,
-            delayTime + 0.2f, delayTime, 0.0f, _damage);
+            delayTime + 0.2f, 0.0f, _damage);
+        _delayTime = delayTime;
+    }
+
+    protected override bool IsHarmful()
+    {
+        return _timeFromStart > TimeSpan.FromSeconds(_delayTime);
     }
 
     public override bool OnHitByCharacter(Character character)

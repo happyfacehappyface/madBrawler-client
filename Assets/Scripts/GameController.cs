@@ -18,12 +18,12 @@ public class GameController : MonoBehaviour
     private Character _rightPlayerCharacter;
     public Character RightPlayerCharacter => _rightPlayerCharacter;
 
-
+    private CharacterHolder _leftCharacterHolder;
+    private CharacterHolder _rightCharacterHolder;
     
 
 
-    [SerializeField] private GameObject _characterSungjunPrefab;
-    [SerializeField] private GameObject _characterSinniPrefab;
+    [SerializeField] private GameObject _characterPrefab;
     [SerializeField] private ProjectileHandler _projectileHandler;
     [SerializeField] private WallHandler _wallHandler;
     [SerializeField] private GameUIDrawer _gameUIDrawer;
@@ -35,13 +35,19 @@ public class GameController : MonoBehaviour
     {
         Instance = this;
 
-        GameObject leftPlayer = Instantiate(_characterSungjunPrefab);
-        GameObject rightPlayer = Instantiate(_characterSinniPrefab);
+        GameObject leftPlayer = Instantiate(_characterPrefab);
+        GameObject rightPlayer = Instantiate(_characterPrefab);
+
+        _leftCharacterHolder = leftPlayer.GetComponent<CharacterHolder>();
+        _rightCharacterHolder = rightPlayer.GetComponent<CharacterHolder>();
+
+        _leftCharacterHolder.ManualStart(CharacterType.Sungjun);
+        _rightCharacterHolder.ManualStart(CharacterType.Sinni);
 
         _leftPlayerCharacter = leftPlayer.GetComponent<Character>();
-        _leftPlayerCharacter.ManualStart(Team.Left);
+        _leftPlayerCharacter.ManualStart(Team.Left, _leftCharacterHolder);
         _rightPlayerCharacter = rightPlayer.GetComponent<Character>();
-        _rightPlayerCharacter.ManualStart(Team.Right);
+        _rightPlayerCharacter.ManualStart(Team.Right, _rightCharacterHolder);
 
         _currentTime = TimeSpan.Zero;
         _leftTime = TimeSpan.Zero;

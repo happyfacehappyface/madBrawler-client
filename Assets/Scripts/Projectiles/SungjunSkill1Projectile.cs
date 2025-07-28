@@ -18,7 +18,7 @@ public class SungjunSkill1Projectile : BasicProjectile
     {
         base.Initialize(
             direction, false, false, true,
-            _lifeTime, 0.0f, _speed, _damage);
+            _lifeTime, _speed, _damage);
     }
 
     public override bool OnHitByCharacter(Character character)

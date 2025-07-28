@@ -11719,8 +11719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f495c06604cee004bb79f16e54b2f9eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterSungjunPrefab: {fileID: 6069569794982285138, guid: 6d3c9f518ca7ac84a828955adce28daf, type: 3}
-  _characterSinniPrefab: {fileID: 6069569794982285138, guid: 16fb09d8223741f489fbfafdb4c90c06, type: 3}
+  _characterPrefab: {fileID: 6069569794982285138, guid: c74f9c8c7c3266343bfd742483561bcd, type: 3}
   _projectileHandler: {fileID: 1750896707}
   _wallHandler: {fileID: 1750896708}
   _gameUIDrawer: {fileID: 263206883}

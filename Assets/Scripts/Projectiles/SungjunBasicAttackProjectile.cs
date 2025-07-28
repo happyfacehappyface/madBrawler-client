@@ -12,7 +12,7 @@ public class SungjunBasicAttackProjectile : BasicProjectile
     {
         base.Initialize(
             direction, false, false, false,
-            _lifeTime, 0.0f, _speed, _damage);
+            _lifeTime, _speed, _damage);
     }
 
 }

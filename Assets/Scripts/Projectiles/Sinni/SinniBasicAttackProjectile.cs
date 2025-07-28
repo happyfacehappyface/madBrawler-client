@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class SinniBasicAttackProjectile : BasicProjectile
 {
@@ -10,10 +11,13 @@ public class SinniBasicAttackProjectile : BasicProjectile
     private const float _damageDelta = -15f;
     private const float _scaleDelta = 2.5f;
     private const float _alphaDelta = -2.0f;
+    private const float _harmfulTime = 0.4f;
 
     private float _currentDamage = 10f;
     private float _scale = 0.5f;
     private float _alpha = 1.0f;
+
+    
 
 
 
@@ -25,7 +29,7 @@ public class SinniBasicAttackProjectile : BasicProjectile
     {
         base.Initialize(
             direction, false, false, false,
-            _lifeTime, 0.0f, _speed, 0);
+            _lifeTime, _speed, 0);
 
         _projectileSprite.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -44,6 +48,11 @@ public class SinniBasicAttackProjectile : BasicProjectile
 
         _projectileSprite.color = new Color(1.0f, 1.0f, 1.0f, _alpha);
         transform.localScale = new Vector3(_scale, _scale, _scale);
+    }
+
+    protected override bool IsHarmful()
+    {
+        return _timeFromStart < TimeSpan.FromSeconds(_harmfulTime);
     }
 
     public override bool OnHitByCharacter(Character character)

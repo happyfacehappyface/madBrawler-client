@@ -10,4 +10,18 @@ public class CharacterHolder : MonoBehaviour
     public Transform SpinnedTransform => _spinnedTransform;
     [SerializeField] private Transform _bodyTransform;
     public Transform BodyTransform => _bodyTransform;
+
+    public void ManualStart(CharacterType characterType)
+    {
+        switch (characterType)
+        {
+            case CharacterType.Sungjun:
+                gameObject.AddComponent<CharacterSungjun>();
+                break;
+            case CharacterType.Sinni:
+                gameObject.AddComponent<CharacterSinni>();
+                break;
+        }
+
+    }
 }
