@@ -43,8 +43,8 @@ public class GameController : MonoBehaviour
         _leftCharacterHolder = leftPlayer.GetComponent<CharacterHolder>();
         _rightCharacterHolder = rightPlayer.GetComponent<CharacterHolder>();
 
-        _leftCharacterHolder.ManualStart(CharacterType.Gwangho);
-        _rightCharacterHolder.ManualStart(CharacterType.Seowoo);
+        _leftCharacterHolder.ManualStart(CharacterType.Sungjun);
+        _rightCharacterHolder.ManualStart(CharacterType.Sungjun);
 
         _leftPlayerCharacter = leftPlayer.GetComponent<Character>();
         _leftPlayerCharacter.ManualStart(Team.Left, _leftCharacterHolder);

@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class BasicProjectile : Projectile
+public class RotatingProjectile : Projectile
 {
-    protected Direction _direction;
+    protected float _angle;
     private bool _isHitByWall;
     private bool _isHitByCharacter;
     protected TimeSpan _timeFromStart;
     
 
 
-    protected float _currentLifeTime;
-    protected float _currentSpeed;
-    protected float _currentDamage;
+    private float _currentLifeTime;
+    private float _currentSpeed;
+    private float _currentDamage;
 
     private bool _canBreakWall;
     private bool _isDeletedByWall;
@@ -26,13 +26,13 @@ public class BasicProjectile : Projectile
 
 
     protected void Initialize(
-        Direction direction, bool canBreakWall, bool isDeletedByWall, bool isDeletedByPlayer,
+        float angle, bool canBreakWall, bool isDeletedByWall, bool isDeletedByPlayer,
         float lifeTime, float speed, float damage)
     {
         _isHitByWall = false;
         _isHitByCharacter = false;
         _timeFromStart = TimeSpan.Zero;
-        _direction = direction;
+        _angle = angle;
         _currentLifeTime = lifeTime;
         _currentSpeed = speed;
         _currentDamage = damage;
@@ -40,7 +40,7 @@ public class BasicProjectile : Projectile
         _canBreakWall = canBreakWall;
         _isDeletedByWall = isDeletedByWall;
         _isDeletedByPlayer = isDeletedByPlayer;
-        transform.localRotation = Utils.DirectionToQuaternion(direction);
+        transform.localRotation = Utils.AngleToQuaternion(_angle);
     }
 
     
@@ -48,7 +48,7 @@ public class BasicProjectile : Projectile
     public override void ManualUpdate()
     {
         _timeFromStart += TimeSpan.FromSeconds(Time.deltaTime);
-        transform.position += Time.deltaTime * _currentSpeed * Utils.DirectionToVector3(_direction);
+        transform.position += Time.deltaTime * _currentSpeed * Utils.AngleToVector3(_angle);
     }
 
     protected override bool IsHarmful()

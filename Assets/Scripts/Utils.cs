@@ -134,4 +134,14 @@ public static class Utils
                 return direction;
         }
     }
+
+    public static Vector3 AngleToVector3(float angle)
+    {
+        return new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
+    }
+
+    public static Quaternion AngleToQuaternion(float angle)
+    {
+        return Quaternion.Euler(0f, 0f, angle);
+    }
 }
