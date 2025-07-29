@@ -14,6 +14,8 @@ public class SungjunSkill1Projectile : BasicProjectile
 
     private const float _hookPower = 10f;
     private const float _hookTime = 0.5f;
+    private const float _slowDuration = 1.0f;
+    private const float _slowFactor = 0.5f;
     public void Initialize(Direction direction)
     {
         base.Initialize(
@@ -26,6 +28,7 @@ public class SungjunSkill1Projectile : BasicProjectile
         if (!base.OnHitByCharacter(character)) return false;
 
         character.ChangeStateForcedMove(_direction, (-1) *_hookPower, TimeSpan.FromSeconds(_hookTime), true, false);
+        character.AddEffect(GameController.Instance.CharacterEffectFactory.SungjunSkill1DebuffMoveSpeed(TimeSpan.FromSeconds(_slowDuration), _slowFactor));
         
         return true;
     }

@@ -11,6 +11,7 @@ public class JaehyeonSkill2Projectile : RotatingProjectile
     private const float _extendTime = 0.5f;
     private const float _collapseTime = 0.5f;
     private const float _damage = 15f;
+    private const float _bondDuration = 2.0f;
 
     private Vector2 _origin;
     private Vector2 _destination;
@@ -60,6 +61,8 @@ public class JaehyeonSkill2Projectile : RotatingProjectile
     public override bool OnHitByCharacter(Character character)
     {
         if (!base.OnHitByCharacter(character)) return false;
+
+        character.AddEffect(GameController.Instance.CharacterEffectFactory.JaehyeonSkill2DebuffBond(TimeSpan.FromSeconds(_bondDuration)));
 
         return true;
     }

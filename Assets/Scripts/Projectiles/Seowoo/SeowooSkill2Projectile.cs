@@ -11,6 +11,8 @@ public class SeowooSkill2Projectile : BasicProjectile
     private const float _speed = 0.01f;
     private const float _damage = 45f;
 
+    private const float _stunDuration = 1.0f;
+
     public void Initialize(Direction direction)
     {
         base.Initialize(

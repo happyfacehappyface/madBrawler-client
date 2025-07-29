@@ -154,8 +154,9 @@ public class CharacterGwangho : Character
             _isSkill0Controlling = false;
 
             float scale = 0.5f + (SpecialPointRatio() * 3.0f);
+            bool isStun = SpecialPointRatio() >= 1.0f;
 
-            GameController.Instance.ProjectileHandler.CreateGwanghoSkill0After(Team, _skill0Controllable.GetPosition(), scale);
+            GameController.Instance.ProjectileHandler.CreateGwanghoSkill0After(Team, _skill0Controllable.GetPosition(), scale, isStun);
             Destroy(_skill0Controllable.gameObject);
             _skill0Controllable = null;
             

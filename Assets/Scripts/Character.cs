@@ -48,7 +48,7 @@ public abstract class Character : MonoBehaviour
     private bool _isWallPassable;
     private bool _isFlying;
 
-
+    private CharacterHolder _characterHolder;
 
     public void ManualStart(Team team, CharacterHolder characterHolder)
     {
@@ -69,7 +69,7 @@ public abstract class Character : MonoBehaviour
         _notSpinnedTransform = characterHolder.NotSpinnedTransform;
         _bodyTransform = characterHolder.BodyTransform;
 
-        
+        _characterHolder = characterHolder;
         ChangeStateIdle();
     }
 
@@ -79,6 +79,7 @@ public abstract class Character : MonoBehaviour
         UpdateByState();
         UpdateBodyTransform();
         CleanEffects();
+        ShowEffects();
         UpdateCoolTime();
         if (GameController.Instance.GetPlayerTime(Team) - _lastProjectileHitTimeCleanTime > TimeSpan.FromSeconds(0.3f))
         {
@@ -209,15 +210,60 @@ public abstract class Character : MonoBehaviour
     }
 
 
-    public void AddEffect(CharacterEffect effect)
+    public void AddEffect(CharacterEffect newEffect)
     {
-        effect.ManualStart();
-        _effects.Add(effect);
+        foreach (var effect in _effects)
+        {
+            if (effect.TryAddStack(newEffect))
+            {
+                return;
+            }
+        }
+
+        newEffect.ManualStart(Team);
+        _effects.Add(newEffect);  
     }
 
     private void CleanEffects()
     {
         _effects.RemoveAll(effect => effect.IsEnded());
+    }
+
+    private void ShowEffects()
+    {
+        bool isStun = false;
+        bool isBond = false;
+        bool isMoveSpeedUp = false;
+        bool isMoveSpeedDown = false;
+
+        foreach (var effect in _effects)
+        {
+            switch (effect.EffectCategory)
+            {
+                case CharacterEffectCategory.Stun:
+                    isStun = true;
+                    break;
+                case CharacterEffectCategory.Bond:
+                    isBond = true;
+                    break;
+                case CharacterEffectCategory.MoveSpeed moveSpeed:
+                    if (moveSpeed.Rate > 1.0f)
+                    {
+                        isMoveSpeedUp = true;
+                    }
+                    else
+                    {
+                        isMoveSpeedDown = true;
+                    }
+                    break;
+            }
+        }
+
+        _characterHolder.SetActiveStunEffect(isStun);
+        _characterHolder.SetActiveBondEffect(isBond);
+        _characterHolder.SetActiveMoveSpeedUpEffect(isMoveSpeedUp);
+        _characterHolder.SetActiveMoveSpeedDownEffect(isMoveSpeedDown);
+        
     }
 
     private void CleanProjectileHitTime()

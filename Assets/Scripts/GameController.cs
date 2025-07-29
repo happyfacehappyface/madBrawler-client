@@ -29,8 +29,14 @@ public class GameController : MonoBehaviour
     [SerializeField] private WallHandler _wallHandler;
     [SerializeField] private GameUIDrawer _gameUIDrawer;
 
+    private CharacterEffectFactory _characterEffectFactory;
+
     public ProjectileHandler ProjectileHandler => _projectileHandler;
     public ControllableHandler ControllableHandler => _controllableHandler;
+
+    public CharacterEffectFactory CharacterEffectFactory => _characterEffectFactory;
+
+
 
 
     private void ManualStart()
@@ -43,8 +49,8 @@ public class GameController : MonoBehaviour
         _leftCharacterHolder = leftPlayer.GetComponent<CharacterHolder>();
         _rightCharacterHolder = rightPlayer.GetComponent<CharacterHolder>();
 
-        _leftCharacterHolder.ManualStart(CharacterType.Jaehyeon);
-        _rightCharacterHolder.ManualStart(CharacterType.Sungjun);
+        _leftCharacterHolder.ManualStart(CharacterType.Seowoo);
+        _rightCharacterHolder.ManualStart(CharacterType.Jaehyeon);
 
         _leftPlayerCharacter = leftPlayer.GetComponent<Character>();
         _leftPlayerCharacter.ManualStart(Team.Left, _leftCharacterHolder);
@@ -54,6 +60,8 @@ public class GameController : MonoBehaviour
         _currentTime = TimeSpan.Zero;
         _leftTime = TimeSpan.Zero;
         _rightTime = TimeSpan.Zero;
+
+        _characterEffectFactory = new CharacterEffectFactory();
 
         _projectileHandler.ManualStart();
         _controllableHandler.ManualStart();

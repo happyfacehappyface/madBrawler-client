@@ -7,6 +7,8 @@ public class SungjunSkill2ProjectileAfter : BasicProjectile
 {
     private const float _damage = 30f;
     private float _delayTime;
+    private const float _slowDuration = 1.0f;
+    private const float _slowFactor = 0.5f;
     public void Initialize(float delayTime)
     {
         base.Initialize(
@@ -23,9 +25,7 @@ public class SungjunSkill2ProjectileAfter : BasicProjectile
     public override bool OnHitByCharacter(Character character)
     {
         if (!base.OnHitByCharacter(character)) return false;
-
-        // TODO: 둔화 효과 추가
-        
+        character.AddEffect(GameController.Instance.CharacterEffectFactory.SungjunSkill2DebuffMoveSpeed(TimeSpan.FromSeconds(_slowDuration), _slowFactor));
         return true;
     }
 }

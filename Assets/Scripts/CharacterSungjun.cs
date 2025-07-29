@@ -44,7 +44,7 @@ public class CharacterSungjun : Character
         Debug.Log("Sungjun OnPressSkill0");
         GameController.Instance.ProjectileHandler.CreateSungjunSkill0(Team, 2.0f);
         ChangeStateDrive(TimeSpan.FromSeconds(2.0f), true, false);
-        AddEffect(new CharacterEffect(Team, TimeSpan.FromSeconds(2.0f), CharacterEffectType.Buff, new CharacterEffectCategory.MoveSpeed(2.0f), "MoveSpeed", null));
+        AddEffect(GameController.Instance.CharacterEffectFactory.SungjunSkill0BuffMoveSpeed(TimeSpan.FromSeconds(2.0f), 1.5f));
         return true;
     }
 

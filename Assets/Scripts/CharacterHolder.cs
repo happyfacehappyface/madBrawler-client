@@ -13,6 +13,12 @@ public class CharacterHolder : MonoBehaviour
     [SerializeField] private Transform _bodyTransform;
     public Transform BodyTransform => _bodyTransform;
 
+
+    [SerializeField] private GameObject _stunEffect;
+    [SerializeField] private GameObject _bondEffect;
+    [SerializeField] private GameObject _moveSpeedUpEffect;
+    [SerializeField] private GameObject _moveSpeedDownEffect;
+
     public void ManualStart(CharacterType characterType)
     {
         switch (characterType)
@@ -33,6 +39,10 @@ public class CharacterHolder : MonoBehaviour
                 gameObject.AddComponent<CharacterJaehyeon>();
                 break;
         }
-
     }
+
+    public void SetActiveStunEffect(bool isActive) => _stunEffect.SetActive(isActive);
+    public void SetActiveBondEffect(bool isActive) => _bondEffect.SetActive(isActive);
+    public void SetActiveMoveSpeedUpEffect(bool isActive) => _moveSpeedUpEffect.SetActive(isActive);
+    public void SetActiveMoveSpeedDownEffect(bool isActive) => _moveSpeedDownEffect.SetActive(isActive);
 }

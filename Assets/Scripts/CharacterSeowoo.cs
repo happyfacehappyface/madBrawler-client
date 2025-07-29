@@ -10,6 +10,11 @@ public class CharacterSeowoo : Character
     private const float _skill1SpecialCost = 0f;
     private const float _skill2SpecialCost = 20f;
 
+    private const float _skill1BuffDuration = 0.6f;
+    private const float _skill1BuffFactor = 1.3f;
+
+    private const float _skill2DebuffDuration = 1.0f;
+
 
     private bool _isPortalExist = false;
     private Controllable _portalControllable = null;
@@ -79,6 +84,8 @@ public class CharacterSeowoo : Character
             Destroy(_portalControllable.gameObject);
             _portalControllable = null;
             _isPortalExist = false;
+
+            AddEffect(GameController.Instance.CharacterEffectFactory.SeowooSkill1BuffMoveSpeed(TimeSpan.FromSeconds(_skill1BuffDuration), _skill1BuffFactor));
         }
         else
         {
@@ -94,6 +101,8 @@ public class CharacterSeowoo : Character
     {
         if (!base.OnPressSkill2()) return false;
         GameController.Instance.ProjectileHandler.CreateSeowooSkill2(Team, GetDirection());
+        AddSpecialPoint((-1) * _skill2SpecialCost);
+        AddEffect(GameController.Instance.CharacterEffectFactory.SeowooSkill2DebuffStun(TimeSpan.FromSeconds(_skill2DebuffDuration)));
         return true;
     }
 

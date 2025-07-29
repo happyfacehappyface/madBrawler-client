@@ -8,6 +8,9 @@ public class CharacterJaehyeon : Character
 
     private List<Controllable> _computers;
 
+    private const float _skill0BuffDuration = 0.2f;
+    private const float _skill0BuffFactor = 1.2f;
+
     protected override void InitializeBaseStats()
     {
         _hitPoint = 100f;
@@ -28,6 +31,16 @@ public class CharacterJaehyeon : Character
         _computers = new List<Controllable>();
     }
 
+    public override void ManualUpdate()
+    {
+        base.ManualUpdate();
+
+        if (GetComputerMinDistance() <= 1.0f)
+        {
+            AddEffect(GameController.Instance.CharacterEffectFactory.JaehyeonSkill0BuffMoveSpeed(TimeSpan.FromSeconds(_skill0BuffDuration), _skill0BuffFactor));
+        }
+    }
+
 
     public override void OnPressDirection(Direction direction)
     {
@@ -40,6 +53,11 @@ public class CharacterJaehyeon : Character
         if (!base.OnPressBasicAttack()) return false;
         GameController.Instance.ProjectileHandler.CreateJaehyeonBasicAttack(Team, GetDirection());
         return true;
+    }
+
+    protected override bool IsSkill0Able()
+    {
+        return base.IsSkill0Able() && GetComputerMinDistance() > 1.0f;
     }
 
     public override bool OnPressSkill0()
@@ -94,5 +112,16 @@ public class CharacterJaehyeon : Character
         }
         
         return true;
+    }
+
+    private float GetComputerMinDistance()
+    {
+        float minDistance = float.MaxValue;
+        foreach (Controllable computer in _computers)
+        {
+            float distance = Vector2.Distance(transform.position, computer.GetPosition());
+            minDistance = Mathf.Min(minDistance, distance);
+        }
+        return minDistance;
     }
 }

@@ -194,12 +194,12 @@ public class ProjectileHandler : MonoBehaviour
         newObject.GetComponent<GwanghoBasicAttackProjectileStrong>().Initialize(direction, lifeTime);
     }
 
-    public void CreateGwanghoSkill0After(Team team, Vector2 position, float scale)
+    public void CreateGwanghoSkill0After(Team team, Vector2 position, float scale, bool isStun)
     {
         GameObject newObject = CreateProjectile(
             _gwanghoSkill0AfterPrefab, _projectileParent,
             position, Direction.Right, team);
-        newObject.GetComponent<GwanghoSkill0ProjectileAfter>().Initialize(scale);
+        newObject.GetComponent<GwanghoSkill0ProjectileAfter>().Initialize(scale, isStun);
     }
 
     public void CreateGwanghoSkill1(Team team, Direction direction, float duration)
