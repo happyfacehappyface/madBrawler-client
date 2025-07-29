@@ -8,7 +8,8 @@ public enum CharacterType
 {
     Sungjun,
     Sinni,
-    Gwangho
+    Gwangho,
+    Seowoo
 }
 
 
@@ -388,6 +389,7 @@ public abstract class Character : MonoBehaviour
     {
         if (!CanHitByProjectile(projectile)) return;
         _projectileHitTime[projectile.ProjectileID] = GameController.Instance.GetPlayerTime(Team) + projectile.HitIntervalTime;
+        Utils.Log($"OnHitByProjectile called with {projectile.name}");
     }
 
     public bool CanHitByProjectile(Projectile projectile)

@@ -30,12 +30,6 @@ public class CharacterSinni : Character
         AddSpecialPoint((float)GameController.Instance.GetPlayerDeltaTime(Team).TotalSeconds * 3f);
     }
 
-
-    public override void OnPressDirection(Direction direction)
-    {
-        base.OnPressDirection(direction);
-    }
-
     
     public override bool OnPressBasicAttack()
     {

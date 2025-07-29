@@ -29,6 +29,10 @@ public class ProjectileHandler : MonoBehaviour
     [SerializeField] private GameObject _gwanghoSkill0AfterPrefab;
     [SerializeField] private GameObject _gwanghoSkill1Prefab;
 
+    [SerializeField] private GameObject _seowooBasicAttackProjectilePrefab;
+    [SerializeField] private GameObject _seowooSkill0Prefab;
+    [SerializeField] private GameObject _seowooSkill2Prefab;
+
 
     int _leftProjectileID;
     int _rightProjectileID;
@@ -185,6 +189,31 @@ public class ProjectileHandler : MonoBehaviour
             _gwanghoSkill1Prefab, GameController.Instance.GetPlayerNotSpinnedTransform(team),
             Vector2.zero, direction, team);
         newObject.GetComponent<GwanghoSkill1Projectile>().Initialize(duration);
+    }
+
+    public void CreateSeowooBasicAttack(Team team, Direction direction)
+    {
+        GameObject newObject = CreateProjectile(
+            _seowooBasicAttackProjectilePrefab, _projectileParent,
+            GameController.Instance.GetPlayerTransform(team).position, direction, team);
+        newObject.GetComponent<SeowooBasicAttackProjectile>().Initialize(direction);
+    }
+
+    public void CreateSeowooSkill0(Team team, Direction direction)
+    {
+        GameObject newObject = CreateProjectile(
+            _seowooSkill0Prefab, _projectileParent,
+            GameController.Instance.GetPlayerTransform(team).position, direction, team);
+        newObject.GetComponent<SeowooSkill0Projectile>().Initialize(direction);
+    }
+
+    public void CreateSeowooSkill2(Team team, Direction direction)
+    {
+        GameObject newObject = CreateProjectile(
+            _seowooSkill2Prefab, _projectileParent,
+            GameController.Instance.GetPlayerTransform(team).position + Utils.DirectionToVector3(direction) * 3f,
+            direction, team);
+        newObject.GetComponent<SeowooSkill2Projectile>().Initialize(direction);
     }
 
     private void IncrementProjectileID(Team team)

@@ -21,6 +21,8 @@ public abstract class Projectile : MonoBehaviour
     {
         if (Team == character.GetTeam()) return false;
         if (!character.CanHitByProjectile(this)) return false;
+        if (!IsHarmful()) return false;
+        
 
         character.OnHitByProjectile(this);
         return true;
@@ -28,6 +30,8 @@ public abstract class Projectile : MonoBehaviour
 
     public abstract void OnHitByWall(Wall wall);
     public abstract void OnHitByBarrier(Barrier barrier);
+
+    protected abstract bool IsHarmful();
 
     public virtual void OnDestroy()
     {

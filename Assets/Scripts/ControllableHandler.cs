@@ -5,8 +5,10 @@ using UnityEngine;
 public class ControllableHandler : MonoBehaviour
 {
 
-    [SerializeField] private GameObject _gwanghoSkill0ControllablePrefab;
     [SerializeField] private Transform _controllableParent;
+    [SerializeField] private GameObject _gwanghoSkill0ControllablePrefab;
+
+    [SerializeField] private GameObject _seowooSkill1ControllablePrefab;
 
     public void ManualStart()
     {
@@ -35,5 +37,13 @@ public class ControllableHandler : MonoBehaviour
             _gwanghoSkill0ControllablePrefab, _controllableParent, GameController.Instance.GetPlayerTransform(team).position);
         newObject.GetComponent<GwanghoSkill0Controllable>().Initialize();
         return newObject.GetComponent<GwanghoSkill0Controllable>();
+    }
+
+    public Controllable CreateSeowooSkill1(Team team)
+    {
+        GameObject newObject = CreateControllable(
+            _seowooSkill1ControllablePrefab, _controllableParent, GameController.Instance.GetPlayerTransform(team).position);
+        newObject.GetComponent<SeowooSkill1Controllable>().Initialize();
+        return newObject.GetComponent<SeowooSkill1Controllable>();
     }
 }

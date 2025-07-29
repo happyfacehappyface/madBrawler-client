@@ -51,7 +51,7 @@ public class BasicProjectile : Projectile
         transform.position += Time.deltaTime * _speed * Utils.DirectionToVector3(_direction);
     }
 
-    protected virtual bool IsHarmful()
+    protected override bool IsHarmful()
     {
         return true;
     }
@@ -65,7 +65,6 @@ public class BasicProjectile : Projectile
 
     public override bool OnHitByCharacter(Character character)
     {
-        if (!IsHarmful()) return false;
         if (!base.OnHitByCharacter(character)) return false;
 
         _isHitByCharacter = true;
@@ -75,7 +74,6 @@ public class BasicProjectile : Projectile
 
     public override void OnHitByWall(Wall wall)
     {
-        Debug.Log("BasicProjectile OnHitByWall called");
         if (!IsHarmful()) return;
 
         if (_canBreakWall)
