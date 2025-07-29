@@ -406,6 +406,7 @@ public abstract class Character : MonoBehaviour
         }
 
         if (_state is CharacterState.Dash) return false;
+        if (_state is CharacterState.Rush) return false;
         if (_state is CharacterState.ForcedMove) return false;
 
         return true;
@@ -591,6 +592,12 @@ public abstract class Character : MonoBehaviour
 
         if (IsSomething(direction))
         {
+            if (_state is CharacterState.Rush)
+            {
+                ChangeStateIdle();
+                OnRushEnd();
+            }
+
             return;
         }
 
@@ -602,6 +609,11 @@ public abstract class Character : MonoBehaviour
         {
             GraduallyMove(direction, power - step);
         }
+    }
+
+    protected virtual void OnRushEnd()
+    {
+
     }
 
     public Transform GetPlayerTransform()

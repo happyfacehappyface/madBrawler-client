@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GwanghoBasicAttackProjectile : BasicProjectile
+public class GwanghoBasicAttackProjectileStrong : BasicProjectile
 {
     private const float _speed = 12f;
-    private const float _damage = 6f;
+    private const float _damage = 12f;
 
     private GameObject _lastHitWall;
 

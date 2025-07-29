@@ -24,7 +24,10 @@ public class ProjectileHandler : MonoBehaviour
     [SerializeField] private GameObject _sinniSkill2AfterPrefab;
 
     [SerializeField] private GameObject _gwanghoBasicAttackProjectilePrefab;
+    [SerializeField] private GameObject _gwanghoBasicAttackProjectileStrongPrefab;
+
     [SerializeField] private GameObject _gwanghoSkill0AfterPrefab;
+    [SerializeField] private GameObject _gwanghoSkill1Prefab;
 
 
     int _leftProjectileID;
@@ -152,12 +155,20 @@ public class ProjectileHandler : MonoBehaviour
         newObject.GetComponent<SinniSkill2ProjectileAfter>().Initialize();
     }
 
-    public void CreateGwanghoBasicAttack(Team team, Direction direction)
+    public void CreateGwanghoBasicAttack(Team team, Direction direction, float lifeTime)
     {
         GameObject newObject = CreateProjectile(
             _gwanghoBasicAttackProjectilePrefab, _projectileParent,
             GameController.Instance.GetPlayerTransform(team).position, direction, team);
-        newObject.GetComponent<GwanghoBasicAttackProjectile>().Initialize(direction);
+        newObject.GetComponent<GwanghoBasicAttackProjectile>().Initialize(direction, lifeTime);
+    }
+
+    public void CreateGwanghoBasicAttackStrong(Team team, Direction direction, float lifeTime)
+    {
+        GameObject newObject = CreateProjectile(
+            _gwanghoBasicAttackProjectileStrongPrefab, _projectileParent,
+            GameController.Instance.GetPlayerTransform(team).position, direction, team);
+        newObject.GetComponent<GwanghoBasicAttackProjectileStrong>().Initialize(direction, lifeTime);
     }
 
     public void CreateGwanghoSkill0After(Team team, Vector2 position, float scale)
@@ -168,7 +179,13 @@ public class ProjectileHandler : MonoBehaviour
         newObject.GetComponent<GwanghoSkill0ProjectileAfter>().Initialize(scale);
     }
 
-
+    public void CreateGwanghoSkill1(Team team, Direction direction, float duration)
+    {
+        GameObject newObject = CreateProjectile(
+            _gwanghoSkill1Prefab, GameController.Instance.GetPlayerNotSpinnedTransform(team),
+            Vector2.zero, direction, team);
+        newObject.GetComponent<GwanghoSkill1Projectile>().Initialize(duration);
+    }
 
     private void IncrementProjectileID(Team team)
     {

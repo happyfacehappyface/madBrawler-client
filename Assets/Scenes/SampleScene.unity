@@ -7902,7 +7902,9 @@ MonoBehaviour:
   _sinniSkill2Prefab: {fileID: 3289116017576895808, guid: 60835dcb143837443974dc41671df1fc, type: 3}
   _sinniSkill2AfterPrefab: {fileID: 6688086599718333776, guid: f4ebbaa288726e346a913d448282f169, type: 3}
   _gwanghoBasicAttackProjectilePrefab: {fileID: 4216708769023979321, guid: 1363ca5a2b283e346b351c67c5d58ba6, type: 3}
+  _gwanghoBasicAttackProjectileStrongPrefab: {fileID: 4216708769023979321, guid: 6e181d570ead21d46b34234636a2188e, type: 3}
   _gwanghoSkill0AfterPrefab: {fileID: 7621706779271629489, guid: 83918d191104db34bbb08e05c7d57386, type: 3}
+  _gwanghoSkill1Prefab: {fileID: 1025738545914846713, guid: 450bb4dd868c5c14f907c695574f51f2, type: 3}
 --- !u!114 &1750896708
 MonoBehaviour:
   m_ObjectHideFlags: 0
