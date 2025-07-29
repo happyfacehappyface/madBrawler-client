@@ -84,4 +84,54 @@ public static class Utils
 
         return Quaternion.Euler(0f, 0f, angle);
     }
+
+    public static Direction GetVerticalFlippedDirection(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Up:
+                return Direction.Down;
+            case Direction.Down:
+                return Direction.Up;
+            case Direction.Left:
+                return Direction.Left;
+            case Direction.Right:
+                return Direction.Right;
+            case Direction.UpLeft:
+                return Direction.DownLeft;
+            case Direction.UpRight:
+                return Direction.DownRight;
+            case Direction.DownLeft:
+                return Direction.UpLeft;
+            case Direction.DownRight:
+                return Direction.UpRight;
+            default:
+                return direction;
+        }
+    }
+
+    public static Direction GetHorizontalFlippedDirection(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Up:
+                return Direction.Up;
+            case Direction.Down:
+                return Direction.Down;
+            case Direction.Left:
+                return Direction.Right;
+            case Direction.Right:
+                return Direction.Left;
+            case Direction.UpLeft:
+                return Direction.UpRight;
+            case Direction.UpRight:
+                return Direction.UpLeft;
+            case Direction.DownLeft:
+                return Direction.DownRight;
+            case Direction.DownRight:
+                return Direction.DownLeft;
+            default:
+                return direction;
+        }
+    }
 }

@@ -75,6 +75,7 @@ public class BasicProjectile : Projectile
 
     public override void OnHitByWall(Wall wall)
     {
+        Debug.Log("BasicProjectile OnHitByWall called");
         if (!IsHarmful()) return;
 
         if (_canBreakWall)
@@ -82,6 +83,11 @@ public class BasicProjectile : Projectile
             wall.Deactivate();
         }
         
+        _isHitByWall = true;
+    }
+
+    public override void OnHitByBarrier(Barrier barrier)
+    {
         _isHitByWall = true;
     }
 }

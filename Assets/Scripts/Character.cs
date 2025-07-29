@@ -7,7 +7,8 @@ using System;
 public enum CharacterType
 {
     Sungjun,
-    Sinni
+    Sinni,
+    Gwangho
 }
 
 
@@ -296,6 +297,16 @@ public abstract class Character : MonoBehaviour
         {
             return (float) _skillRemainCoolTime[attackIndex - 1].TotalSeconds / (float) _skillCoolTime[attackIndex - 1].TotalSeconds;
         }
+    }
+
+    protected void ResetBasicAttackCoolTime()
+    {
+        _basicAttackRemainCoolTime = TimeSpan.Zero;
+    }
+
+    protected void ResetSkillCoolTime(int skillIndex)
+    {
+        _skillRemainCoolTime[skillIndex] = TimeSpan.Zero;
     }
 
 

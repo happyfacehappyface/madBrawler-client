@@ -25,10 +25,12 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private GameObject _characterPrefab;
     [SerializeField] private ProjectileHandler _projectileHandler;
+    [SerializeField] private ControllableHandler _controllableHandler;
     [SerializeField] private WallHandler _wallHandler;
     [SerializeField] private GameUIDrawer _gameUIDrawer;
 
     public ProjectileHandler ProjectileHandler => _projectileHandler;
+    public ControllableHandler ControllableHandler => _controllableHandler;
 
 
     private void ManualStart()
@@ -41,7 +43,7 @@ public class GameController : MonoBehaviour
         _leftCharacterHolder = leftPlayer.GetComponent<CharacterHolder>();
         _rightCharacterHolder = rightPlayer.GetComponent<CharacterHolder>();
 
-        _leftCharacterHolder.ManualStart(CharacterType.Sungjun);
+        _leftCharacterHolder.ManualStart(CharacterType.Gwangho);
         _rightCharacterHolder.ManualStart(CharacterType.Sinni);
 
         _leftPlayerCharacter = leftPlayer.GetComponent<Character>();
@@ -54,6 +56,7 @@ public class GameController : MonoBehaviour
         _rightTime = TimeSpan.Zero;
 
         _projectileHandler.ManualStart();
+        _controllableHandler.ManualStart();
         _wallHandler.ManualStart();
 
         _gameUIDrawer.ManualStart();
@@ -265,6 +268,18 @@ public class GameController : MonoBehaviour
         else
         {
             return _rightPlayerCharacter.GetNotSpinnedTransform();
+        }
+    }
+
+    public Character GetPlayerCharacter(Team team)
+    {
+        if (team == Team.Left)
+        {
+            return _leftPlayerCharacter;
+        }
+        else
+        {
+            return _rightPlayerCharacter;
         }
     }
 

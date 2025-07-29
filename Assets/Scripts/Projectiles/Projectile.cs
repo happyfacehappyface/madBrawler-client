@@ -12,6 +12,8 @@ public abstract class Projectile : MonoBehaviour
     private Team _team;
     public Team Team => _team;
 
+    protected Character _owner;
+
 
     public abstract bool ShouldBeDestroyed();
 
@@ -25,15 +27,17 @@ public abstract class Projectile : MonoBehaviour
     }
 
     public abstract void OnHitByWall(Wall wall);
+    public abstract void OnHitByBarrier(Barrier barrier);
 
     public virtual void OnDestroy()
     {
         Destroy(gameObject);
     }
 
-    public void ManualStart(Team team, int projectileID)
+    public void ManualStart(Team team, int projectileID, Character owner)
     {
         _team = team;
+        _owner = owner;
         ProjectileID = projectileID;
         
         if (gameObject.layer != LayerMask.NameToLayer("Wall") && 
@@ -56,6 +60,11 @@ public abstract class Projectile : MonoBehaviour
         if (other.TryGetComponent<Wall>(out Wall wall))
         {
             OnHitByWall(wall);
+        }
+
+        if (other.TryGetComponent<Barrier>(out Barrier barrier))
+        {
+            OnHitByBarrier(barrier);
         }
     }
 

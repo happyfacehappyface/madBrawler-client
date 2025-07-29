@@ -23,6 +23,9 @@ public class CharacterHolder : MonoBehaviour
             case CharacterType.Sinni:
                 gameObject.AddComponent<CharacterSinni>();
                 break;
+            case CharacterType.Gwangho:
+                gameObject.AddComponent<CharacterGwangho>();
+                break;
         }
 
     }

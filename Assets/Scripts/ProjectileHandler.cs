@@ -23,6 +23,9 @@ public class ProjectileHandler : MonoBehaviour
     [SerializeField] private GameObject _sinniSkill2Prefab;
     [SerializeField] private GameObject _sinniSkill2AfterPrefab;
 
+    [SerializeField] private GameObject _gwanghoBasicAttackProjectilePrefab;
+    [SerializeField] private GameObject _gwanghoSkill0AfterPrefab;
+
 
     int _leftProjectileID;
     int _rightProjectileID;
@@ -66,7 +69,7 @@ public class ProjectileHandler : MonoBehaviour
         newObject.transform.SetLocalPositionAndRotation(Utils.Vector2ToVector3(origin), Quaternion.Euler(Utils.DirectionToVector3(direction)));
 
         Projectile newProjectile = newObject.GetComponent<Projectile>();
-        newProjectile.ManualStart(team, team == Team.Left ? _leftProjectileID : _rightProjectileID);
+        newProjectile.ManualStart(team, team == Team.Left ? _leftProjectileID : _rightProjectileID, GameController.Instance.GetPlayerCharacter(team));
 
         IncrementProjectileID(team);
 
@@ -147,6 +150,22 @@ public class ProjectileHandler : MonoBehaviour
             _sinniSkill2AfterPrefab, _projectileParent,
             GameController.Instance.GetPlayerTransform(team).position, direction, team);
         newObject.GetComponent<SinniSkill2ProjectileAfter>().Initialize();
+    }
+
+    public void CreateGwanghoBasicAttack(Team team, Direction direction)
+    {
+        GameObject newObject = CreateProjectile(
+            _gwanghoBasicAttackProjectilePrefab, _projectileParent,
+            GameController.Instance.GetPlayerTransform(team).position, direction, team);
+        newObject.GetComponent<GwanghoBasicAttackProjectile>().Initialize(direction);
+    }
+
+    public void CreateGwanghoSkill0After(Team team, Vector2 position, float scale)
+    {
+        GameObject newObject = CreateProjectile(
+            _gwanghoSkill0AfterPrefab, _projectileParent,
+            position, Direction.Right, team);
+        newObject.GetComponent<GwanghoSkill0ProjectileAfter>().Initialize(scale);
     }
 
 
