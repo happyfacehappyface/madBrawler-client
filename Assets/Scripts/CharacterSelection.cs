@@ -807,7 +807,7 @@ public class CharacterSelection : MonoBehaviour
             outGameController.SetSelectedCharacters(leftPlayerCharacter, rightPlayerCharacter);
         }
         
-        UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("InGameScene");
     }
 }
 
