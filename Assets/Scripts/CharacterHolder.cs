@@ -29,6 +29,9 @@ public class CharacterHolder : MonoBehaviour
             case CharacterType.Seowoo:
                 gameObject.AddComponent<CharacterSeowoo>();
                 break;
+            case CharacterType.Jaehyeon:
+                gameObject.AddComponent<CharacterJaehyeon>();
+                break;
         }
 
     }

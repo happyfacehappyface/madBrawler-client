@@ -7,7 +7,6 @@ using System;
 public class ProjectileHandler : MonoBehaviour
 {
     private List<Projectile> _projectiles;
-
     [SerializeField] private GameObject _sungjunProjectilePrefab;
     [SerializeField] private Transform _projectileParent;
 
@@ -32,6 +31,10 @@ public class ProjectileHandler : MonoBehaviour
     [SerializeField] private GameObject _seowooBasicAttackProjectilePrefab;
     [SerializeField] private GameObject _seowooSkill0Prefab;
     [SerializeField] private GameObject _seowooSkill2Prefab;
+
+    [SerializeField] private GameObject _jaehyeonBasicAttackProjectilePrefab;
+    [SerializeField] private GameObject _jaehyeonSkill1Prefab;
+    [SerializeField] private GameObject _jaehyeonSkill2Prefab;
 
 
     int _leftProjectileID;
@@ -74,6 +77,22 @@ public class ProjectileHandler : MonoBehaviour
         GameObject newObject = Instantiate(prefab, parent);
 
         newObject.transform.SetLocalPositionAndRotation(Utils.Vector2ToVector3(origin), Quaternion.Euler(Utils.DirectionToVector3(direction)));
+
+        Projectile newProjectile = newObject.GetComponent<Projectile>();
+        newProjectile.ManualStart(team, team == Team.Left ? _leftProjectileID : _rightProjectileID, GameController.Instance.GetPlayerCharacter(team));
+
+        IncrementProjectileID(team);
+
+        _projectiles.Add(newProjectile);
+
+        return newObject;
+    }
+
+    private GameObject CreateRotatingProjectile(GameObject prefab, Transform parent, Vector2 origin, float angle, Team team)
+    {
+        GameObject newObject = Instantiate(prefab, parent);
+
+        newObject.transform.SetLocalPositionAndRotation(Utils.Vector2ToVector3(origin), Utils.AngleToQuaternion(angle));
 
         Projectile newProjectile = newObject.GetComponent<Projectile>();
         newProjectile.ManualStart(team, team == Team.Left ? _leftProjectileID : _rightProjectileID, GameController.Instance.GetPlayerCharacter(team));
@@ -215,6 +234,35 @@ public class ProjectileHandler : MonoBehaviour
             direction, team);
         newObject.GetComponent<SeowooSkill2Projectile>().Initialize(direction);
     }
+
+    public void CreateJaehyeonBasicAttack(Team team, Direction direction)
+    {
+        GameObject newObject = CreateProjectile(
+            _jaehyeonBasicAttackProjectilePrefab, _projectileParent,
+            GameController.Instance.GetPlayerTransform(team).position, direction, team);
+        newObject.GetComponent<JaehyeonBasicAttackProjectile>().Initialize(direction);
+    }
+
+    public void CreateJaehyeonSkill1(Team team, float angle, Vector2 position)
+    {
+        GameObject newObject = CreateRotatingProjectile(
+            _jaehyeonSkill1Prefab, _projectileParent,
+            position, angle, team);
+        newObject.GetComponent<JaehyeonSkill1Projectile>().Initialize(angle);
+    }
+
+    public void CreateJaehyeonSkill2(Team team, Vector2 origin, Vector2 destination)
+    {
+        float angle = Mathf.Atan2(destination.y - origin.y, destination.x - origin.x) * Mathf.Rad2Deg;
+        float distance = Vector2.Distance(origin, destination);
+
+        GameObject newObject = CreateRotatingProjectile(
+            _jaehyeonSkill2Prefab, _projectileParent,
+            origin, angle, team);
+        newObject.GetComponent<JaehyeonSkill2Projectile>().Initialize(origin, destination);
+    }
+
+
 
     private void IncrementProjectileID(Team team)
     {

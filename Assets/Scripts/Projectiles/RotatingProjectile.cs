@@ -12,9 +12,9 @@ public class RotatingProjectile : Projectile
     
 
 
-    private float _currentLifeTime;
-    private float _currentSpeed;
-    private float _currentDamage;
+    protected float _currentLifeTime;
+    protected float _currentSpeed;
+    protected float _currentDamage;
 
     private bool _canBreakWall;
     private bool _isDeletedByWall;

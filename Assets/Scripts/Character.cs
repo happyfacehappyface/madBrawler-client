@@ -9,7 +9,8 @@ public enum CharacterType
     Sungjun,
     Sinni,
     Gwangho,
-    Seowoo
+    Seowoo,
+    Jaehyeon
 }
 
 

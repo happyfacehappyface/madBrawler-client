@@ -7908,6 +7908,9 @@ MonoBehaviour:
   _seowooBasicAttackProjectilePrefab: {fileID: 8171246536757733898, guid: 76b4229b806072042a0b523c2c83343f, type: 3}
   _seowooSkill0Prefab: {fileID: 1969063042771311840, guid: a83657fdd22d95f4c95f831a9b8cb8df, type: 3}
   _seowooSkill2Prefab: {fileID: 6860901940257906316, guid: 8ccb82428d0feea48a0b326159339bc9, type: 3}
+  _jaehyeonBasicAttackProjectilePrefab: {fileID: 434564524752603335, guid: 99d6cf369e010ad4b9341c51e751e51b, type: 3}
+  _jaehyeonSkill1Prefab: {fileID: 9108113251756447277, guid: 9743a71fa9ab9a54588b6afa1f6ce510, type: 3}
+  _jaehyeonSkill2Prefab: {fileID: 968557851284231604, guid: 33a76730148c62b43b543ca1334e9d66, type: 3}
 --- !u!114 &1750896708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7936,6 +7939,7 @@ MonoBehaviour:
   _controllableParent: {fileID: 1738181337}
   _gwanghoSkill0ControllablePrefab: {fileID: 7251405946908553394, guid: 43e85a89877ec7248aa1a5fd847616ae, type: 3}
   _seowooSkill1ControllablePrefab: {fileID: 4046563934452054776, guid: aa67810888644b94182de348cd41f967, type: 3}
+  _jaehyeonSkill0ControllablePrefab: {fileID: 2402929087685364769, guid: a47b68860da2d8344b3e2b5f1955ad2c, type: 3}
 --- !u!1 &1772366485
 GameObject:
   m_ObjectHideFlags: 0

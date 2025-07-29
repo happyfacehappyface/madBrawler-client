@@ -13,7 +13,6 @@ public class SinniBasicAttackProjectile : BasicProjectile
     private const float _alphaDelta = -2.0f;
     private const float _harmfulTime = 0.4f;
 
-    private float _currentDamage = 10f;
     private float _scale = 0.5f;
     private float _alpha = 1.0f;
 

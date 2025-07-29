@@ -144,4 +144,46 @@ public static class Utils
     {
         return Quaternion.Euler(0f, 0f, angle);
     }
+
+    public static float DirectionToAngle(Direction direction)
+    {
+        float angle = 0f;
+        switch (direction)
+        {
+            case Direction.Right:
+                angle = 0f;
+                break;
+            case Direction.UpRight:
+                angle = 45f;
+                break;
+            case Direction.Up:
+                angle = 90f;
+                break;
+            case Direction.UpLeft:
+                angle = 135f;
+                break;
+            case Direction.Left:
+                angle = 180f;
+                break;
+            case Direction.DownLeft:
+                angle = 225f;
+                break;
+            case Direction.Down:
+                angle = 270f;
+                break;
+            case Direction.DownRight:
+                angle = 315f;
+                break;
+            default:
+                angle = 0f;
+                break;
+        }
+
+        return angle;
+    }
+
+    public static Team GetOppositeTeam(Team team)
+    {
+        return team == Team.Left ? Team.Right : Team.Left;
+    }
 }

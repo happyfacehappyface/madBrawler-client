@@ -10,6 +10,8 @@ public class ControllableHandler : MonoBehaviour
 
     [SerializeField] private GameObject _seowooSkill1ControllablePrefab;
 
+    [SerializeField] private GameObject _jaehyeonSkill0ControllablePrefab;
+
     public void ManualStart()
     {
 
@@ -45,5 +47,13 @@ public class ControllableHandler : MonoBehaviour
             _seowooSkill1ControllablePrefab, _controllableParent, GameController.Instance.GetPlayerTransform(team).position);
         newObject.GetComponent<SeowooSkill1Controllable>().Initialize();
         return newObject.GetComponent<SeowooSkill1Controllable>();
+    }
+
+    public Controllable CreateJaehyeonSkill0(Team team)
+    {
+        GameObject newObject = CreateControllable(
+            _jaehyeonSkill0ControllablePrefab, _controllableParent, GameController.Instance.GetPlayerTransform(team).position);
+        newObject.GetComponent<JaehyeonSkill0Controllable>().Initialize();
+        return newObject.GetComponent<JaehyeonSkill0Controllable>();
     }
 }

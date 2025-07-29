@@ -6,7 +6,7 @@ public class JaehyeonBasicAttackProjectile : BasicProjectile
 {
     private const float _lifeTime = 5.0f;
     private const float _speed = 1f;
-    private const float _speedAcceleration = 3f;
+    private const float _speedAcceleration = 10f;
     private const float _damage = 5f;
 
     public void Initialize(Direction direction)
