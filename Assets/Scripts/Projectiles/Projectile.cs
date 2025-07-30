@@ -60,6 +60,7 @@ public abstract class Projectile : MonoBehaviour
 
     private void ManualCheckCollision()
     {
+        if (!IsHarmful()) return;
         
         Vector2 currentPos = transform.position;
         Vector2 dir = currentPos - _prevPos;

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8908272322067879644}
   - component: {fileID: 1162733906134083314}
   - component: {fileID: 6464889422802370664}
+  - component: {fileID: 8929714939074282388}
   m_Layer: 0
   m_Name: SungjunSkill2After
   m_TagString: Untagged
@@ -81,6 +82,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c75a70c6e5511646942906a9ae024a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &8929714939074282388
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3289116017576895808}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4350503352592489689
 GameObject:
   m_ObjectHideFlags: 0
