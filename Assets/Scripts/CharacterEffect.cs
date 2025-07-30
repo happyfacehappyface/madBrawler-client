@@ -44,6 +44,11 @@ public class CharacterEffect
         return _duration - (GameController.Instance.GetPlayerTime(_team) - _startTime);
     }
 
+    private TimeSpan GetLastTime()
+    {
+        return GameController.Instance.GetPlayerTime(_team) - _startTime;
+    }
+
     public bool IsEnded()
     {
         return GetLeftTime() <= TimeSpan.Zero;
@@ -56,7 +61,8 @@ public class CharacterEffect
             _stack += other._stack;
             if (GetLeftTime() < other.GetLeftTime())
             {
-                _duration = GameController.Instance.GetPlayerTime(_team) + other.GetLeftTime();
+                _duration = GetLastTime() + other.GetLeftTime();
+                
             }
             return true;
         }

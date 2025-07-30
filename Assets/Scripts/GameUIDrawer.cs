@@ -64,6 +64,10 @@ public class GameUIDrawer : MonoBehaviour
 
         _leftPlayerSpecialPointNameText.text = GameController.Instance.LeftPlayerCharacter.GetSpecialPointName();
         _rightPlayerSpecialPointNameText.text = GameController.Instance.RightPlayerCharacter.GetSpecialPointName();
+
+
+        _leftPlayerPortrait.sprite = AssetManager.Instance.GetCharacterSprite(GameController.Instance.LeftPlayerCharacter.GetCharacterType());
+        _rightPlayerPortrait.sprite = AssetManager.Instance.GetCharacterSprite(GameController.Instance.RightPlayerCharacter.GetCharacterType());
     }
 
     private void ClearSkillComponent()

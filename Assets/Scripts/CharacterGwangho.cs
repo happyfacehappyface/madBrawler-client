@@ -17,19 +17,26 @@ public class CharacterGwangho : Character
 
     protected override void InitializeBaseStats()
     {
-        _hitPoint = 100f;
-        _hitPointMax = 100f;
-        _moveSpeed = 5f;
+        _hitPoint = 85f;
+        _hitPointMax = 85f;
+        _moveSpeed = 3.7f;
         
         _specialPoint = 30f;
         _speicalPointMax = 100f;
 
-        _basicAttackCoolTime = TimeSpan.FromSeconds(0.2f);
+        _basicAttackCoolTime = TimeSpan.FromSeconds(0.7f);
         _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
         {
-            TimeSpan.FromSeconds(2.0f),
-            TimeSpan.FromSeconds(2.0f),
-            TimeSpan.FromSeconds(2.0f)
+            TimeSpan.FromSeconds(9.0f),
+            TimeSpan.FromSeconds(5.0f),
+            TimeSpan.FromSeconds(30.0f)
+        };
+
+        _skillRemainCoolTime = new TimeSpan[GameConst.SkillCount]
+        {
+            TimeSpan.FromSeconds(0.0f),
+            TimeSpan.FromSeconds(10.0f),
+            TimeSpan.FromSeconds(20.0f)
         };
 
         _stockState = new StockState.Random(-10, 10, GameController.Instance.GetPlayerTime(Team) + TimeSpan.FromSeconds(5.0f));
@@ -182,8 +189,8 @@ public class CharacterGwangho : Character
     {
         if (!base.OnPressSkill1()) return false;
 
-        float distance = 5f;
-        float power = 8f + (SpecialPointRatio() * 20.0f);
+        float distance = 8f;
+        float power = 4f + (SpecialPointRatio() * 16.0f);
         float lifeTime = distance / power;
 
         ChangeStateDash(GetDirection(), power, TimeSpan.FromSeconds(lifeTime), false, false);

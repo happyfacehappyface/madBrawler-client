@@ -7,19 +7,26 @@ public class CharacterSungjun : Character
 {
     protected override void InitializeBaseStats()
     {
-        _hitPoint = 100f;
-        _hitPointMax = 100f;
-        _moveSpeed = 5f;
+        _hitPoint = 120f;
+        _hitPointMax = 120f;
+        _moveSpeed = 4.8f;
         
         _specialPoint = 0f;
         _speicalPointMax = 100f;
 
-        _basicAttackCoolTime = TimeSpan.FromSeconds(0.2f);
+        _basicAttackCoolTime = TimeSpan.FromSeconds(0.3f);
         _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
         {
-            TimeSpan.FromSeconds(2.0f),
-            TimeSpan.FromSeconds(2.0f),
-            TimeSpan.FromSeconds(2.0f)
+            TimeSpan.FromSeconds(5.0f),
+            TimeSpan.FromSeconds(6.0f),
+            TimeSpan.FromSeconds(12.0f)
+        };
+
+        _skillRemainCoolTime = new TimeSpan[GameConst.SkillCount]
+        {
+            TimeSpan.FromSeconds(0.0f),
+            TimeSpan.FromSeconds(12.0f),
+            TimeSpan.FromSeconds(21.0f)
         };
     }
 
@@ -43,9 +50,9 @@ public class CharacterSungjun : Character
     {
         if (!base.OnPressSkill0()) return false;
         Debug.Log("Sungjun OnPressSkill0");
-        GameController.Instance.ProjectileHandler.CreateSungjunSkill0(Team, 2.0f);
-        ChangeStateDrive(TimeSpan.FromSeconds(2.0f), true, false);
-        AddEffect(GameController.Instance.CharacterEffectFactory.SungjunSkill0BuffMoveSpeed(TimeSpan.FromSeconds(2.0f), 1.5f));
+        GameController.Instance.ProjectileHandler.CreateSungjunSkill0(Team, 1.6f);
+        ChangeStateDrive(TimeSpan.FromSeconds(1.6f), true, false);
+        AddEffect(GameController.Instance.CharacterEffectFactory.SungjunSkill0BuffMoveSpeed(TimeSpan.FromSeconds(1.6f), 1.5f));
         SoundManager.Instance.PlayVoiceSungjunSkill0(0.0f);
         return true;
     }

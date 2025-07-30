@@ -60,7 +60,7 @@ public class SinniSkill0Projectile : BasicProjectile
 
         if (_isSilenceActivated)
         {
-            character.AddEffect(GameController.Instance.CharacterEffectFactory.SinniSkill0DebuffSilence(TimeSpan.FromSeconds(0.2f)));
+            character.AddEffect(GameController.Instance.CharacterEffectFactory.SinniSkill0DebuffSilence(TimeSpan.FromSeconds(0.3f)));
         }
         
         return true;

@@ -58,8 +58,30 @@ public class GameController : MonoBehaviour
 
     private void ResetGame()
     {
+        // 레이어 충돌 매트릭스 초기화
+        ResetLayerCollisions();
+        
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         ManualStart();
+    }
+    
+    private void ResetLayerCollisions()
+    {
+        // 모든 레이어 간 충돌을 기본값으로 설정
+        for (int i = 0; i < 32; i++)
+        {
+            for (int j = 0; j < 32; j++)
+            {
+                Physics2D.IgnoreLayerCollision(i, j, false);
+            }
+        }
+        
+        // 특정 충돌만 비활성화 (같은 팀 캐릭터와 프로젝타일)
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("LeftProjectile"), LayerMask.NameToLayer("LeftCharacter"), true);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("RightProjectile"), LayerMask.NameToLayer("RightCharacter"), true);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("LeftProjectile"), LayerMask.NameToLayer("RightProjectile"), true);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("LeftProjectile"), LayerMask.NameToLayer("LeftProjectile"), true);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("RightProjectile"), LayerMask.NameToLayer("RightProjectile"), true);
     }
 
     private void ManualStart()
@@ -76,8 +98,8 @@ public class GameController : MonoBehaviour
         _leftCharacterHolder = leftPlayer.GetComponent<CharacterHolder>();
         _rightCharacterHolder = rightPlayer.GetComponent<CharacterHolder>();
 
-        _leftCharacterHolder.ManualStart(CharacterType.Gwangho);
-        _rightCharacterHolder.ManualStart(CharacterType.Sinni);
+        _leftCharacterHolder.ManualStart(CharacterType.Jaehyeon);
+        _rightCharacterHolder.ManualStart(CharacterType.Sungjun);
 
         _leftPlayerCharacter = leftPlayer.GetComponent<Character>();
         _leftPlayerCharacter.ManualStart(Team.Left, _leftCharacterHolder);

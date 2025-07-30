@@ -7,19 +7,26 @@ public class CharacterSinni : Character
 {
     protected override void InitializeBaseStats()
     {
-        _hitPoint = 100f;
-        _hitPointMax = 100f;
+        _hitPoint = 105f;
+        _hitPointMax = 105f;
         _moveSpeed = 6f;
         
-        _specialPoint = 50f;
+        _specialPoint = 30f;
         _speicalPointMax = 100f;
 
         _basicAttackCoolTime = TimeSpan.FromSeconds(0.2f);
         _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
         {
-            TimeSpan.FromSeconds(2.0f),
-            TimeSpan.FromSeconds(2.0f),
-            TimeSpan.FromSeconds(2.0f)
+            TimeSpan.FromSeconds(7.0f),
+            TimeSpan.FromSeconds(5.0f),
+            TimeSpan.FromSeconds(26.0f)
+        };
+
+        _skillRemainCoolTime = new TimeSpan[GameConst.SkillCount]
+        {
+            TimeSpan.FromSeconds(0.0f),
+            TimeSpan.FromSeconds(10.0f),
+            TimeSpan.FromSeconds(30.0f)
         };
     }
 

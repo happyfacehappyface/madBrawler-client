@@ -59,7 +59,7 @@ public abstract class Character : MonoBehaviour
         _effects = new List<CharacterEffect>();
 
         _basicAttackRemainCoolTime = TimeSpan.Zero;
-        _skillRemainCoolTime = new TimeSpan[GameConst.SkillCount];
+        
 
         _projectileHitTime = new Dictionary<int, TimeSpan>();
         _lastProjectileHitTimeCleanTime = TimeSpan.Zero;
@@ -70,7 +70,13 @@ public abstract class Character : MonoBehaviour
         _bodyTransform = characterHolder.BodyTransform;
 
         _characterHolder = characterHolder;
+        
+        // 상태 초기화 추가
+        _isWallPassable = false;
+        _isFlying = false;
+        
         ChangeStateIdle();
+        transform.position = Team == Team.Left ? new Vector3(-5f, 0f, 0f) : new Vector3(5f, 0f, 0f);
     }
 
     public virtual void ManualUpdate()
@@ -115,6 +121,11 @@ public abstract class Character : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    public CharacterType GetCharacterType()
+    {
+        return _characterHolder.Character;
     }
 
     private void UpdateByState()
@@ -212,6 +223,8 @@ public abstract class Character : MonoBehaviour
 
     public void AddEffect(CharacterEffect newEffect)
     {
+        newEffect.ManualStart(Team);
+
         foreach (var effect in _effects)
         {
             if (effect.TryAddStack(newEffect))
@@ -220,7 +233,7 @@ public abstract class Character : MonoBehaviour
             }
         }
 
-        newEffect.ManualStart(Team);
+        
         _effects.Add(newEffect);  
     }
 
@@ -235,6 +248,7 @@ public abstract class Character : MonoBehaviour
         bool isBond = false;
         bool isMoveSpeedUp = false;
         bool isMoveSpeedDown = false;
+        bool isSilence = false;
 
         foreach (var effect in _effects)
         {
@@ -256,6 +270,9 @@ public abstract class Character : MonoBehaviour
                         isMoveSpeedDown = true;
                     }
                     break;
+                case CharacterEffectCategory.Silence:
+                    isSilence = true;
+                    break;
             }
         }
 
@@ -263,6 +280,7 @@ public abstract class Character : MonoBehaviour
         _characterHolder.SetActiveBondEffect(isBond);
         _characterHolder.SetActiveMoveSpeedUpEffect(isMoveSpeedUp);
         _characterHolder.SetActiveMoveSpeedDownEffect(isMoveSpeedDown);
+        _characterHolder.SetActiveSilenceEffect(isSilence);
         
     }
 

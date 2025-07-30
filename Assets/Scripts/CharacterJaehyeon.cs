@@ -9,23 +9,30 @@ public class CharacterJaehyeon : Character
     private List<Controllable> _computers;
 
     private const float _skill0BuffDuration = 0.2f;
-    private const float _skill0BuffFactor = 1.2f;
+    private const float _skill0BuffFactor = 1.8f;
 
     protected override void InitializeBaseStats()
     {
-        _hitPoint = 100f;
-        _hitPointMax = 100f;
-        _moveSpeed = 5f;
+        _hitPoint = 80f;
+        _hitPointMax = 80f;
+        _moveSpeed = 4.6f;
         
         _specialPoint = 0f;
         _speicalPointMax = 100f;
 
-        _basicAttackCoolTime = TimeSpan.FromSeconds(0.2f);
+        _basicAttackCoolTime = TimeSpan.FromSeconds(0.3f);
         _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
         {
             TimeSpan.FromSeconds(2.0f),
-            TimeSpan.FromSeconds(2.0f),
-            TimeSpan.FromSeconds(2.0f)
+            TimeSpan.FromSeconds(4.0f),
+            TimeSpan.FromSeconds(17.0f)
+        };
+
+        _skillRemainCoolTime = new TimeSpan[GameConst.SkillCount]
+        {
+            TimeSpan.FromSeconds(0.0f),
+            TimeSpan.FromSeconds(8.0f),
+            TimeSpan.FromSeconds(26.0f)
         };
 
         _computers = new List<Controllable>();
@@ -35,10 +42,15 @@ public class CharacterJaehyeon : Character
     {
         base.ManualUpdate();
 
-        if (GetComputerMinDistance() <= 1.0f)
+        if (IsComputerNearby())
         {
             AddEffect(GameController.Instance.CharacterEffectFactory.JaehyeonSkill0BuffMoveSpeed(TimeSpan.FromSeconds(_skill0BuffDuration), _skill0BuffFactor));
         }
+    }
+
+    private bool IsComputerNearby()
+    {
+        return GetComputerMinDistance() <= 1.0f;
     }
 
 
@@ -69,6 +81,13 @@ public class CharacterJaehyeon : Character
     public override bool OnPressSkill0()
     {
         if (!base.OnPressSkill0()) return false;
+
+        if (_computers.Count >= 6)
+        {
+            Destroy(_computers[0].gameObject);
+            _computers.RemoveAt(0);
+        }
+
 
         Controllable computer = GameController.Instance.ControllableHandler.CreateJaehyeonSkill0(Team);
         _computers.Add(computer);

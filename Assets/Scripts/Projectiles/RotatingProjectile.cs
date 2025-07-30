@@ -34,7 +34,14 @@ public class RotatingProjectile : Projectile
         _timeFromStart = TimeSpan.Zero;
         _angle = angle;
         _currentLifeTime = lifeTime;
-        _currentSpeed = speed;
+        if (speed == 0f)
+        {
+            _currentSpeed = 0.001f;
+        }
+        else
+        {
+            _currentSpeed = speed;
+        }
         _currentDamage = damage;
         HitIntervalTime = TimeSpan.FromSeconds(_currentLifeTime);
         _canBreakWall = canBreakWall;

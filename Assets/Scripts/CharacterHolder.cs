@@ -18,10 +18,12 @@ public class CharacterHolder : MonoBehaviour
     [SerializeField] private GameObject _bondEffect;
     [SerializeField] private GameObject _moveSpeedUpEffect;
     [SerializeField] private GameObject _moveSpeedDownEffect;
+    [SerializeField] private GameObject _silenceEffect;
 
     [SerializeField] private SpriteRenderer _characterImage;
 
     private CharacterType _characterType;
+    public CharacterType Character => _characterType;
 
     public void ManualStart(CharacterType characterType)
     {
@@ -57,4 +59,5 @@ public class CharacterHolder : MonoBehaviour
     public void SetActiveBondEffect(bool isActive) => _bondEffect.SetActive(isActive);
     public void SetActiveMoveSpeedUpEffect(bool isActive) => _moveSpeedUpEffect.SetActive(isActive);
     public void SetActiveMoveSpeedDownEffect(bool isActive) => _moveSpeedDownEffect.SetActive(isActive);
+    public void SetActiveSilenceEffect(bool isActive) => _silenceEffect.SetActive(isActive);
 }
