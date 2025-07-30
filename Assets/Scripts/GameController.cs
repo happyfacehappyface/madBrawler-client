@@ -85,7 +85,7 @@ public class GameController : MonoBehaviour
 
         if (_gameState == GameState.PreGame)
         {
-            if (Input.GetKey(KeyCode.Space) && Input.GetKey(KeyCode.Keypad0))
+            if (Input.GetKeyDown(KeyCode.Return))
             {
                 _gameState = GameState.InGame;
                 _preGameUI.SetActive(false);
