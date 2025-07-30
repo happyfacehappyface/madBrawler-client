@@ -16,6 +16,9 @@ public class OutGameController : MonoBehaviour
     // CharacterSelection 추가
     [SerializeField] private CharacterSelection _characterSelection;
     
+    // ResultScreenController 추가
+    [SerializeField] private ResultScreenController _resultScreenController;
+    
     // 선택된 캐릭터 정보 저장
     private CharacterData _leftPlayerCharacterData;
     private CharacterData _rightPlayerCharacterData;
@@ -124,5 +127,23 @@ public class OutGameController : MonoBehaviour
     public bool IsGameEnded()
     {
         return _gameEnded;
+    }
+
+    // 결과 화면 표시 함수 추가
+    public void ShowResultScreen()
+    {
+        if (_resultScreenController != null)
+        {
+            _resultScreenController.ShowResultScreen();
+        }
+    }
+    
+    // 결과 화면 숨기기 함수 추가
+    public void HideResultScreen()
+    {
+        if (_resultScreenController != null)
+        {
+            _resultScreenController.HideResultScreen();
+        }
     }
 }
