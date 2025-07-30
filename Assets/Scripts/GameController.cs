@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TMPro;
 
 public class GameController : MonoBehaviour
 {
@@ -29,6 +30,11 @@ public class GameController : MonoBehaviour
     [SerializeField] private WallHandler _wallHandler;
     [SerializeField] private GameUIDrawer _gameUIDrawer;
 
+
+    [SerializeField] private GameObject _preGameUI;
+    [SerializeField] private GameObject _postGameUI;
+    [SerializeField] private TextMeshProUGUI _postGameResultText;
+
     private CharacterEffectFactory _characterEffectFactory;
 
     public ProjectileHandler ProjectileHandler => _projectileHandler;
@@ -36,12 +42,16 @@ public class GameController : MonoBehaviour
 
     public CharacterEffectFactory CharacterEffectFactory => _characterEffectFactory;
 
-
+    private GameState _gameState;
 
 
     private void ManualStart()
     {
         Instance = this;
+
+        _gameState = GameState.PreGame;
+        _preGameUI.SetActive(true);
+        _postGameUI.SetActive(false);
 
         GameObject leftPlayer = Instantiate(_characterPrefab);
         GameObject rightPlayer = Instantiate(_characterPrefab);
@@ -72,6 +82,21 @@ public class GameController : MonoBehaviour
 
     private void ManualUpdate()
     {
+
+        if (_gameState == GameState.PreGame)
+        {
+            if (Input.GetKey(KeyCode.Space) && Input.GetKey(KeyCode.Keypad0))
+            {
+                _gameState = GameState.InGame;
+                _preGameUI.SetActive(false);
+            }
+        }
+
+        if (_gameState != GameState.InGame)
+        {
+            return;
+        }
+
         _currentTime += TimeSpan.FromSeconds(Time.deltaTime);
         _leftTime += TimeSpan.FromSeconds(Time.deltaTime);
         _rightTime += TimeSpan.FromSeconds(Time.deltaTime);
@@ -84,10 +109,26 @@ public class GameController : MonoBehaviour
 
         HandleInput();
         _gameUIDrawer.ManualUpdate();
+
+        if (_leftPlayerCharacter.IsDead())
+        {
+            _gameState = GameState.PostGame;
+            _postGameUI.SetActive(true);
+            _postGameResultText.text = $"{_rightPlayerCharacter.GetCharacterName()} 이(가) 이겼습니다!\n승자: 오른쪽 플레이어";
+        }
+        else if (_rightPlayerCharacter.IsDead())
+        {
+            _gameState = GameState.PostGame;
+            _postGameUI.SetActive(true);
+            _postGameResultText.text = $"{_leftPlayerCharacter.GetCharacterName()} 이(가) 이겼습니다!\n승자: 왼쪽 플레이어";
+        }
     }
 
     private void HandleInput()
     {
+
+
+
         if (Input.GetKey(KeyCode.W))
         {
             if (Input.GetKey(KeyCode.A))
@@ -310,6 +351,13 @@ public enum Team
 {
     Left,
     Right
+}
+
+public enum GameState
+{
+    PreGame,
+    InGame,
+    PostGame
 }
 
 

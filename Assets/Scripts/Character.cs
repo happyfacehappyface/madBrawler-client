@@ -301,6 +301,11 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+    public bool IsDead()
+    {
+        return _hitPoint <= 0;
+    }
+
     public int GetHitPoint()
     {
         return Mathf.CeilToInt(_hitPoint);
