@@ -8,6 +8,8 @@ public class CharacterGwangho : Character
     private bool _isSkill0Controlling = false;
     private Controllable _skill0Controllable = null;
 
+    private float _skill0Ratio;
+
     private StockState _stockState;
 
     private TimeSpan _lastSpecialPointUpdateTime;
@@ -154,8 +156,8 @@ public class CharacterGwangho : Character
         {
             _isSkill0Controlling = false;
 
-            float scale = 0.5f + (SpecialPointRatio() * 3.0f);
-            bool isStun = SpecialPointRatio() >= 1.0f;
+            float scale = 0.5f + (_skill0Ratio * 3.0f);
+            bool isStun = _skill0Ratio >= 1.0f;
 
             GameController.Instance.ProjectileHandler.CreateGwanghoSkill0After(Team, _skill0Controllable.GetPosition(), scale, isStun);
             Destroy(_skill0Controllable.gameObject);
@@ -165,7 +167,11 @@ public class CharacterGwangho : Character
         else
         {
             _isSkill0Controlling = true;
-            _skill0Controllable = GameController.Instance.ControllableHandler.CreateGwanghoSkill0(Team);
+
+            _skill0Ratio = SpecialPointRatio();
+            float skill0Scale = 0.5f + (_skill0Ratio * 3.0f);
+            
+            _skill0Controllable = GameController.Instance.ControllableHandler.CreateGwanghoSkill0(Team, skill0Scale);
             ResetSkillCoolTime(0);
         }
 

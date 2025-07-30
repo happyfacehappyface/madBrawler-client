@@ -33,11 +33,11 @@ public class ControllableHandler : MonoBehaviour
         return newObject;
     }
 
-    public Controllable CreateGwanghoSkill0(Team team)
+    public Controllable CreateGwanghoSkill0(Team team, float scale)
     {
         GameObject newObject = CreateControllable(
             _gwanghoSkill0ControllablePrefab, _controllableParent, GameController.Instance.GetPlayerTransform(team).position);
-        newObject.GetComponent<GwanghoSkill0Controllable>().Initialize();
+        newObject.GetComponent<GwanghoSkill0Controllable>().Initialize(scale);
         return newObject.GetComponent<GwanghoSkill0Controllable>();
     }
 

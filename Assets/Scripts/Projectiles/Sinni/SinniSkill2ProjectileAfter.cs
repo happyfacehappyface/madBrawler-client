@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SinniSkill2ProjectileAfter : BasicProjectile
 {
-    private const float _lifeTime = 5f;
+    private const float _lifeTime = 3.0f;
 
     public void Initialize()
     {

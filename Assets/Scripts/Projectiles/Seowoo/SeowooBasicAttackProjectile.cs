@@ -21,6 +21,7 @@ public class SeowooBasicAttackProjectile : BasicProjectile
     {
         if (!base.OnHitByCharacter(character)) return false;
         SoundManager.Instance.PlaySfxFireballHit(0.0f);
+        GameController.Instance.ProjectileHandler.CreateSeowooBasicAttackAfter(Team, Direction.Right, transform.position);
         return true;
     }
 
@@ -28,6 +29,7 @@ public class SeowooBasicAttackProjectile : BasicProjectile
     {
         if (!base.OnHitByWall(wall)) return false;
         SoundManager.Instance.PlaySfxFireballHit(0.0f);
+        GameController.Instance.ProjectileHandler.CreateSeowooBasicAttackAfter(Team, Direction.Right, transform.position);
         return true;
     }
 
@@ -35,6 +37,7 @@ public class SeowooBasicAttackProjectile : BasicProjectile
     {
         if (!base.OnHitByBarrier(barrier)) return false;
         SoundManager.Instance.PlaySfxFireballHit(0.0f);
+        GameController.Instance.ProjectileHandler.CreateSeowooBasicAttackAfter(Team, Direction.Right, transform.position);
         return true;
     }
 }

@@ -10,7 +10,6 @@ public class SeowooSkill0Projectile : BasicProjectile
     private const float _damage = 3f;
     private const float _stunDuration = 1.0f;
 
-    private Vector2 _prevPos;
 
     public void Initialize(Direction direction)
     {
@@ -33,7 +32,7 @@ public class SeowooSkill0Projectile : BasicProjectile
 
         character.AddEffect(GameController.Instance.CharacterEffectFactory.SeowooSkill0DebuffStun(TimeSpan.FromSeconds(_stunDuration)));
         SoundManager.Instance.PlaySfxStupefyHit(0.0f);
-        
+
         return true;
     }
 }

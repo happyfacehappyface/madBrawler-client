@@ -8807,6 +8807,7 @@ MonoBehaviour:
   _gwanghoSkill0AfterPrefab: {fileID: 7621706779271629489, guid: 83918d191104db34bbb08e05c7d57386, type: 3}
   _gwanghoSkill1Prefab: {fileID: 1025738545914846713, guid: 450bb4dd868c5c14f907c695574f51f2, type: 3}
   _seowooBasicAttackProjectilePrefab: {fileID: 8171246536757733898, guid: 76b4229b806072042a0b523c2c83343f, type: 3}
+  _seowooBasicAttackProjectileAfterPrefab: {fileID: 3062288537329604334, guid: 35423f810e8f0114499660e594ccd7dc, type: 3}
   _seowooSkill0Prefab: {fileID: 1969063042771311840, guid: a83657fdd22d95f4c95f831a9b8cb8df, type: 3}
   _seowooSkill2Prefab: {fileID: 6860901940257906316, guid: 8ccb82428d0feea48a0b326159339bc9, type: 3}
   _jaehyeonBasicAttackProjectilePrefab: {fileID: 434564524752603335, guid: 99d6cf369e010ad4b9341c51e751e51b, type: 3}
@@ -10062,6 +10063,10 @@ MonoBehaviour:
   _sfxJump: {fileID: 8300000, guid: 952de5bbf63e628478bcf551ac21ea20, type: 3}
   _sfxWaveHit: {fileID: 8300000, guid: f314e4e13362aca499c9d4c28aea392f, type: 3}
   _sfxDebris: {fileID: 8300000, guid: c14e40a87cbf1904481cd96c535dabb7, type: 3}
+  _sfxChain: {fileID: 0}
+  _sfxLaser: {fileID: 0}
+  _sfxLaserHit: {fileID: 0}
+  _sfxComputer: {fileID: 0}
 --- !u!4 &1993111547
 Transform:
   m_ObjectHideFlags: 0

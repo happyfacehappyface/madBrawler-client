@@ -5,10 +5,18 @@ using System;
 
 public class SinniSkill0Projectile : BasicProjectile
 {
-    private const float _lifeTime = 5.0f;
+    private const float _lifeTime = 2.0f;
     private const float _damage = 2f;
 
+    private const float _lastTime = 1.5f;
+
     private bool _isSilenceActivated;
+
+    [SerializeField] private Animator _animator;
+
+    [SerializeField] private GameObject _particle;
+
+    [SerializeField] private SpriteRenderer _radiusSprite;
     
 
     public void Initialize(Direction direction, float specialRatio)
@@ -22,9 +30,28 @@ public class SinniSkill0Projectile : BasicProjectile
         _isSilenceActivated = specialRatio >= 1.0f;
 
         transform.localScale = new Vector3(scale, scale, scale);
+        _particle.transform.localScale = new Vector3(scale, scale, scale);
+
+        _radiusSprite.color = _isSilenceActivated ? new Color(189f/255f, 154f/255f, 197f/255f, 130f/255f) : new Color(182f/255f, 0f/255f, 224f/255f, 165f/255f);
 
         HitIntervalTime = TimeSpan.FromSeconds(0.1f);
         SoundManager.Instance.PlaySfxClap(0.0f);
+    }
+
+
+    protected override bool IsHarmful()
+    {
+        return _timeFromStart < TimeSpan.FromSeconds(_lastTime);
+    }
+
+    public override void ManualUpdate()
+    {
+        base.ManualUpdate();
+
+        if (_timeFromStart > TimeSpan.FromSeconds(_lastTime))
+        {
+            _animator.SetTrigger("End");
+        }
     }
 
     public override bool OnHitByCharacter(Character character)

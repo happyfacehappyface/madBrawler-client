@@ -5,11 +5,34 @@ using System;
 
 public class SinniSkill2Projectile : BasicProjectile
 {
-    public void Initialize()
+    [SerializeField] private Animator _animator;
+
+    private const float _lastTime = 0.7f;
+    private const float _delayTime = 0.3f;
+
+    public void Initialize(Direction direction)
     {
         base.Initialize(
-            Direction.Right, false, false, true,
-            0.1f, 0.0f, 0.0f);
+            direction, false, false, false,
+            1.5f, 0.0f, 0.0f);
+    }
+
+
+    protected override bool IsHarmful()
+    {
+        return base.IsHarmful() &&
+        _timeFromStart < TimeSpan.FromSeconds(_lastTime) &&
+        _timeFromStart > TimeSpan.FromSeconds(_delayTime);
+    }
+
+    public override void ManualUpdate()
+    {
+        base.ManualUpdate();
+
+        if (_timeFromStart > TimeSpan.FromSeconds(_lastTime))
+        {
+            _animator.SetTrigger("End");
+        }
     }
 
     public override bool OnHitByCharacter(Character character)
@@ -18,6 +41,8 @@ public class SinniSkill2Projectile : BasicProjectile
 
         
         //character.ChangeStateForcedMove(_direction, 0, TimeSpan.FromSeconds(_bounceTime), true, true);
+
+        _owner.transform.position = character.GetPosition();
 
         GameController.Instance.ProjectileHandler.CreateSinniSkill2After(Team, _direction);
         _owner.AddSpecialPoint(100f);
