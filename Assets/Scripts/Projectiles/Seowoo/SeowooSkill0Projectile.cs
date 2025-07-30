@@ -6,9 +6,11 @@ using System;
 public class SeowooSkill0Projectile : BasicProjectile
 {
     private const float _lifeTime = 2.0f;
-    private const float _speed = 46f;
+    private const float _speed = 75f;
     private const float _damage = 3f;
     private const float _stunDuration = 1.0f;
+
+    private Vector2 _prevPos;
 
     public void Initialize(Direction direction)
     {
@@ -16,6 +18,12 @@ public class SeowooSkill0Projectile : BasicProjectile
             direction, false, true, true,
             _lifeTime, _speed, _damage);
     }
+
+    public override void ManualUpdate()
+    {
+        base.ManualUpdate();
+    }
+
 
     public override bool OnHitByCharacter(Character character)
     {

@@ -47,6 +47,7 @@ public class BasicProjectile : Projectile
 
     public override void ManualUpdate()
     {
+        base.ManualUpdate();
         _timeFromStart += TimeSpan.FromSeconds(Time.deltaTime);
         transform.position += Time.deltaTime * _currentSpeed * Utils.DirectionToVector3(_direction);
     }

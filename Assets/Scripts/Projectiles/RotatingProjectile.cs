@@ -47,6 +47,7 @@ public class RotatingProjectile : Projectile
 
     public override void ManualUpdate()
     {
+        base.ManualUpdate();
         _timeFromStart += TimeSpan.FromSeconds(Time.deltaTime);
         transform.position += Time.deltaTime * _currentSpeed * Utils.AngleToVector3(_angle);
     }
