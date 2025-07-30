@@ -32,7 +32,7 @@ public class SinniSkill0Projectile : BasicProjectile
         transform.localScale = new Vector3(scale, scale, scale);
         _particle.transform.localScale = new Vector3(scale, scale, scale);
 
-        _radiusSprite.color = _isSilenceActivated ? new Color(189f/255f, 154f/255f, 197f/255f, 130f/255f) : new Color(182f/255f, 0f/255f, 224f/255f, 165f/255f);
+        _radiusSprite.color = _isSilenceActivated ? new Color(182f/255f, 0f/255f, 224f/255f, 165f/255f) : new Color(189f/255f, 154f/255f, 197f/255f, 130f/255f);
 
         HitIntervalTime = TimeSpan.FromSeconds(0.1f);
         SoundManager.Instance.PlaySfxClap(0.0f);

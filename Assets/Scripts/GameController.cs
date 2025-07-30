@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -44,6 +45,22 @@ public class GameController : MonoBehaviour
 
     private GameState _gameState;
 
+
+    public void OnClickResetGame() 
+    {
+        ResetGame();
+    }
+
+    public void OnClickReturnToTitle()
+    {
+        SceneManager.LoadScene("OutGameScene");
+    }
+
+    private void ResetGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        ManualStart();
+    }
 
     private void ManualStart()
     {
@@ -115,12 +132,14 @@ public class GameController : MonoBehaviour
             _gameState = GameState.PostGame;
             _postGameUI.SetActive(true);
             _postGameResultText.text = $"{_rightPlayerCharacter.GetCharacterName()} 이(가) 이겼습니다!\n승자: 오른쪽 플레이어";
+            _leftCharacterHolder.SetCharacterImageToDefeated();
         }
         else if (_rightPlayerCharacter.IsDead())
         {
             _gameState = GameState.PostGame;
             _postGameUI.SetActive(true);
             _postGameResultText.text = $"{_leftPlayerCharacter.GetCharacterName()} 이(가) 이겼습니다!\n승자: 왼쪽 플레이어";
+            _rightCharacterHolder.SetCharacterImageToDefeated();
         }
     }
 

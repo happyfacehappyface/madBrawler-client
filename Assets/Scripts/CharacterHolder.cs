@@ -19,8 +19,13 @@ public class CharacterHolder : MonoBehaviour
     [SerializeField] private GameObject _moveSpeedUpEffect;
     [SerializeField] private GameObject _moveSpeedDownEffect;
 
+    [SerializeField] private SpriteRenderer _characterImage;
+
+    private CharacterType _characterType;
+
     public void ManualStart(CharacterType characterType)
     {
+        _characterType = characterType;
         switch (characterType)
         {
             case CharacterType.Sungjun:
@@ -39,6 +44,13 @@ public class CharacterHolder : MonoBehaviour
                 gameObject.AddComponent<CharacterJaehyeon>();
                 break;
         }
+
+        _characterImage.sprite = AssetManager.Instance.GetCharacterSprite(characterType);
+    }
+
+    public void SetCharacterImageToDefeated()
+    {
+        _characterImage.sprite = AssetManager.Instance.GetCharacterDefeatedSprite(_characterType);
     }
 
     public void SetActiveStunEffect(bool isActive) => _stunEffect.SetActive(isActive);

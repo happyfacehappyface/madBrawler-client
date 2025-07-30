@@ -9765,7 +9765,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 32d5c5eaec506934a8680f72b80f2d07, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 10983271622a79b4e9e631e281b71a27, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -24484,7 +24484,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.5, y: 1}
+  m_Size: {x: 0.5, y: 0.8}
   m_Direction: 0
 --- !u!114 &5425697593476398824
 MonoBehaviour:
@@ -24506,6 +24506,7 @@ MonoBehaviour:
   _bondEffect: {fileID: 6723783724445293894}
   _moveSpeedUpEffect: {fileID: 2196120769420019081}
   _moveSpeedDownEffect: {fileID: 6967118069590932861}
+  _characterImage: {fileID: 3891882610577596016}
 --- !u!1 &6723783724445293894
 GameObject:
   m_ObjectHideFlags: 0
