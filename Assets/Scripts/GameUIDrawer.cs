@@ -12,11 +12,8 @@ public class GameUIDrawer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _leftPlayerHitPointText;
     [SerializeField] private Image _leftPlayerSpecialPointBar;
     [SerializeField] private TextMeshProUGUI _leftPlayerSpecialPointText;
+    [SerializeField] private TextMeshProUGUI _leftPlayerSpecialPointNameText;
 
-    [SerializeField] private Image[] _leftPlayerSkillCooldownBar;
-    [SerializeField] private TextMeshProUGUI[] _leftPlayerSkillCooldownText;
-    [SerializeField] private GameObject[] _leftPlayerSkillAvailable;
-    [SerializeField] private TextMeshProUGUI[] _leftPlayerSkillButtonText;
 
     [SerializeField] private Image _rightPlayerPortrait;
     [SerializeField] private TextMeshProUGUI _rightPlayerNameText;
@@ -24,21 +21,103 @@ public class GameUIDrawer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _rightPlayerHitPointText;
     [SerializeField] private Image _rightPlayerSpecialPointBar;
     [SerializeField] private TextMeshProUGUI _rightPlayerSpecialPointText;
+    [SerializeField] private TextMeshProUGUI _rightPlayerSpecialPointNameText;
 
-    [SerializeField] private Image[] _rightPlayerSkillCooldownBar;
-    [SerializeField] private TextMeshProUGUI[] _rightPlayerSkillCooldownText;
-    [SerializeField] private GameObject[] _rightPlayerSkillAvailable;
-    [SerializeField] private TextMeshProUGUI[] _rightPlayerSkillButtonText;
+
+    [SerializeField] private GameObject _playerSkillComponent;
+    [SerializeField] private Transform _leftPlayerSkillComponentParent;
+    [SerializeField] private Transform _rightPlayerSkillComponentParent;
+
+
+    private InGameSkillComponent _leftPlayerBasicAttackComponent;
+    private InGameSkillComponent[] _leftPlayerSkillComponent;
+    private InGameSkillComponent _rightPlayerBasicAttackComponent;
+    private InGameSkillComponent[] _rightPlayerSkillComponent;
 
 
     public void ManualStart()
     {
-        //_leftPlayerPortrait.sprite = GameController.Instance.LeftPlayerCharacter.Portrait;
-        //_rightPlayerPortrait.sprite = GameController.Instance.RightPlayerCharacter.Portrait;
+        ClearSkillComponent();
 
-        //_leftPlayerNameText.text = GameController.Instance.LeftPlayerCharacter.Name;
-        //_rightPlayerNameText.text = GameController.Instance.RightPlayerCharacter.Name;
+        _leftPlayerBasicAttackComponent = Instantiate(_playerSkillComponent, _leftPlayerSkillComponentParent).GetComponent<InGameSkillComponent>();
+        _leftPlayerSkillComponent = new InGameSkillComponent[3];
+        _leftPlayerBasicAttackComponent.ManualStart(GameController.Instance.LeftPlayerCharacter.GetBasicAttackName(), GetButtonText(Team.Left, 0));
+        for (int i = 0; i < 3; i++)
+        {
+            _leftPlayerSkillComponent[i] = Instantiate(_playerSkillComponent, _leftPlayerSkillComponentParent).GetComponent<InGameSkillComponent>();
 
+            _leftPlayerSkillComponent[i].ManualStart(GameController.Instance.LeftPlayerCharacter.GetSkillName(i), GetButtonText(Team.Left, i + 1));
+        }
+
+        _rightPlayerBasicAttackComponent = Instantiate(_playerSkillComponent, _rightPlayerSkillComponentParent).GetComponent<InGameSkillComponent>();
+        _rightPlayerSkillComponent = new InGameSkillComponent[3];
+        _rightPlayerBasicAttackComponent.ManualStart(GameController.Instance.RightPlayerCharacter.GetBasicAttackName(), GetButtonText(Team.Right, 0));
+
+        for (int i = 0; i < 3; i++)
+        {
+            _rightPlayerSkillComponent[i] = Instantiate(_playerSkillComponent, _rightPlayerSkillComponentParent).GetComponent<InGameSkillComponent>();
+            _rightPlayerSkillComponent[i].ManualStart(GameController.Instance.RightPlayerCharacter.GetSkillName(i), GetButtonText(Team.Right, i + 1));
+        }
+
+        _leftPlayerNameText.text = GameController.Instance.LeftPlayerCharacter.GetCharacterName();
+        _rightPlayerNameText.text = GameController.Instance.RightPlayerCharacter.GetCharacterName();
+
+        _leftPlayerSpecialPointNameText.text = GameController.Instance.LeftPlayerCharacter.GetSpecialPointName();
+        _rightPlayerSpecialPointNameText.text = GameController.Instance.RightPlayerCharacter.GetSpecialPointName();
+    }
+
+    private void ClearSkillComponent()
+    {
+        foreach (Transform component in _leftPlayerSkillComponentParent)
+        {
+            Destroy(component.gameObject);
+        }
+        foreach (Transform component in _rightPlayerSkillComponentParent)
+        {
+            Destroy(component.gameObject);
+        }
+    }
+
+    private string GetButtonText(Team team, int index)
+    {
+        if (team == Team.Left)
+        {
+            if (index == 0)
+            {
+                return "Space";
+            }
+            else if (index == 1)
+            {
+                return "B";
+            }
+            else if (index == 2)
+            {
+                return "N";
+            }
+            else
+            {
+                return "M";
+            }
+        }
+        else
+        {
+            if (index == 0)
+            {
+                return "0";
+            }
+            else if (index == 1)
+            {
+                return "1";
+            }
+            else if (index == 2)
+            {
+                return "2";
+            }
+            else
+            {
+                return "3";
+            }
+        }
     }
 
     public void ManualUpdate()
@@ -55,13 +134,42 @@ public class GameUIDrawer : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            _leftPlayerSkillCooldownBar[i].fillAmount = GameController.Instance.LeftPlayerCharacter.GetCoolTimeRatio(i);
-            _leftPlayerSkillCooldownText[i].text = GameController.Instance.LeftPlayerCharacter.GetCoolTime(i).ToString();
-            _leftPlayerSkillAvailable[i].SetActive(GameController.Instance.LeftPlayerCharacter.GetCoolTime(i) <= 0);
 
-            _rightPlayerSkillCooldownBar[i].fillAmount = GameController.Instance.RightPlayerCharacter.GetCoolTimeRatio(i);
-            _rightPlayerSkillCooldownText[i].text = GameController.Instance.RightPlayerCharacter.GetCoolTime(i).ToString();
-            _rightPlayerSkillAvailable[i].SetActive(GameController.Instance.RightPlayerCharacter.GetCoolTime(i) <= 0);
+            bool isLeftPlayerAble;
+            bool isRightPlayerAble;
+            if (i == 0)
+            {
+                isLeftPlayerAble = GameController.Instance.LeftPlayerCharacter.IsBasicAttackAble();
+                isRightPlayerAble = GameController.Instance.RightPlayerCharacter.IsBasicAttackAble();
+            }
+            else if (i == 1)
+            {
+                isLeftPlayerAble = GameController.Instance.LeftPlayerCharacter.IsSkill0Able();
+                isRightPlayerAble = GameController.Instance.RightPlayerCharacter.IsSkill0Able();
+            }
+            else if (i == 2)
+            {
+                isLeftPlayerAble = GameController.Instance.LeftPlayerCharacter.IsSkill1Able();
+                isRightPlayerAble = GameController.Instance.RightPlayerCharacter.IsSkill1Able();
+            }
+            else
+            {
+                isLeftPlayerAble = GameController.Instance.LeftPlayerCharacter.IsSkill2Able();
+                isRightPlayerAble = GameController.Instance.RightPlayerCharacter.IsSkill2Able();
+            }
+
+            if (i == 0)
+            {
+                _leftPlayerBasicAttackComponent.ManualUpdate(GameController.Instance.LeftPlayerCharacter.GetCoolTimeRatio(i), GameController.Instance.LeftPlayerCharacter.GetCoolTime(i), !isLeftPlayerAble);
+                _rightPlayerBasicAttackComponent.ManualUpdate(GameController.Instance.RightPlayerCharacter.GetCoolTimeRatio(i), GameController.Instance.RightPlayerCharacter.GetCoolTime(i), !isRightPlayerAble);
+            }
+            else
+            {
+                _leftPlayerSkillComponent[i-1].ManualUpdate(GameController.Instance.LeftPlayerCharacter.GetCoolTimeRatio(i), GameController.Instance.LeftPlayerCharacter.GetCoolTime(i), !isLeftPlayerAble);
+                _rightPlayerSkillComponent[i-1].ManualUpdate(GameController.Instance.RightPlayerCharacter.GetCoolTimeRatio(i), GameController.Instance.RightPlayerCharacter.GetCoolTime(i), !isRightPlayerAble);
+            }
+
+            
         }
 
     }

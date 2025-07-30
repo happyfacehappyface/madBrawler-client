@@ -56,12 +56,12 @@ public class CharacterJaehyeon : Character
         return true;
     }
 
-    protected override bool IsSkill0Able()
+    public override bool IsSkill0Able()
     {
         return base.IsSkill0Able() && GetComputerMinDistance() > 1.0f;
     }
 
-    protected override bool IsSkill2Able()
+    public override bool IsSkill2Able()
     {
         return base.IsSkill2Able() && _computers.Count >= 2;
     }
@@ -133,5 +133,38 @@ public class CharacterJaehyeon : Character
             minDistance = Mathf.Min(minDistance, distance);
         }
         return minDistance;
+    }
+
+    
+    public override string GetCharacterName()
+    {
+        return "재현";
+    }
+
+    public override string GetBasicAttackName()
+    {
+        return "손가락 튕기기";
+    }
+
+
+    public override string GetSkillName(int skillIndex)
+    {
+        if (skillIndex == 0)
+        {
+            return "컴퓨터";
+        }
+        else if (skillIndex == 1)
+        {
+            return "P2P";
+        }
+        else
+        {
+            return "블록 체인";
+        }
+    }
+
+    public override string GetSpecialPointName()
+    {
+        return "";
     }
 }

@@ -323,15 +323,34 @@ public abstract class Character : MonoBehaviour
         return (float)_specialPoint / (float)_speicalPointMax;
     }
 
-    public int GetCoolTime(int attackIndex)
+    public string GetCoolTime(int attackIndex)
     {
         if (attackIndex == 0)
         {
-            return (int) _basicAttackRemainCoolTime.TotalSeconds;
+            float remainTime = (float) _basicAttackRemainCoolTime.TotalSeconds;
+
+            if (remainTime < 1.0f)
+            {
+                return remainTime.ToString("F1");
+            }
+            else
+            {
+                return remainTime.ToString("F0");
+            }
         }
         else
         {
-            return (int) _skillCoolTime[attackIndex - 1].TotalSeconds;
+
+            float remainTime = (float) _skillRemainCoolTime[attackIndex - 1].TotalSeconds;
+
+            if (remainTime < 1.0f)
+            {
+                return remainTime.ToString("F1");
+            }
+            else
+            {
+                return remainTime.ToString("F0");
+            }
         }
     }
 
@@ -461,22 +480,22 @@ public abstract class Character : MonoBehaviour
         return true;
     }
 
-    protected virtual bool IsBasicAttackAble()
+    public virtual bool IsBasicAttackAble()
     {
         return IsBasicAble();
     }
 
-    protected virtual bool IsSkill0Able()
+    public virtual bool IsSkill0Able()
     {
         return IsSkillAble(0);
     }
 
-    protected virtual bool IsSkill1Able()
+    public virtual bool IsSkill1Able()
     {
         return IsSkillAble(1);
     }
 
-    protected virtual bool IsSkill2Able()
+    public virtual bool IsSkill2Able()
     {
         return IsSkillAble(2);
     }
@@ -679,8 +698,15 @@ public abstract class Character : MonoBehaviour
     {
         return _notSpinnedTransform;
     }
+
+
+    public abstract string GetCharacterName();
+
+    public abstract string GetBasicAttackName();
+
+    public abstract string GetSkillName(int skillIndex);
     
-    
+    public abstract string GetSpecialPointName();
 
 
 }

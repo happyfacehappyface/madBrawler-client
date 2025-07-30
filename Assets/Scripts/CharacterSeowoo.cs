@@ -53,17 +53,17 @@ public class CharacterSeowoo : Character
         return true;
     }
 
-    protected override bool IsSkill0Able()
+    public override bool IsSkill0Able()
     {
         return base.IsSkill0Able() && _specialPoint >= _skill0SpecialCost;
     }
 
-    protected override bool IsSkill1Able()
+    public override bool IsSkill1Able()
     {
         return base.IsSkill1Able() && _specialPoint >= _skill1SpecialCost;
     }
 
-    protected override bool IsSkill2Able()
+    public override bool IsSkill2Able()
     {
         return base.IsSkill2Able() && _specialPoint >= _skill2SpecialCost;
     }
@@ -111,6 +111,39 @@ public class CharacterSeowoo : Character
         AddEffect(GameController.Instance.CharacterEffectFactory.SeowooSkill2DebuffStun(TimeSpan.FromSeconds(_skill2DebuffDuration)));
         SoundManager.Instance.PlayVoiceSeowooSkill2(0.0f);
         return true;
+    }
+
+
+    public override string GetCharacterName()
+    {
+        return "서우";
+    }
+
+    public override string GetBasicAttackName()
+    {
+        return "인센디오";
+    }
+
+
+    public override string GetSkillName(int skillIndex)
+    {
+        if (skillIndex == 0)
+        {
+            return "스투페파이";
+        }
+        else if (skillIndex == 1)
+        {
+            return "포트키";
+        }
+        else
+        {
+            return "아바다 케다브라";
+        }
+    }
+
+    public override string GetSpecialPointName()
+    {
+        return "마나";
     }
 
 

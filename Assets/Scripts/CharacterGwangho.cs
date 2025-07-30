@@ -204,6 +204,38 @@ public class CharacterGwangho : Character
         return true;
     }
 
+    public override string GetCharacterName()
+    {
+        return "광호";
+    }
+
+    public override string GetBasicAttackName()
+    {
+        return "테니스 공";
+    }
+
+
+    public override string GetSkillName(int skillIndex)
+    {
+        if (skillIndex == 0)
+        {
+            return "티라노사우르스 렉스";
+        }
+        else if (skillIndex == 1)
+        {
+            return "의자 끌기";
+        }
+        else
+        {
+            return "주식 떡상";
+        }
+    }
+
+    public override string GetSpecialPointName()
+    {
+        return "주식";
+    }
+
 
 
     private abstract record StockState

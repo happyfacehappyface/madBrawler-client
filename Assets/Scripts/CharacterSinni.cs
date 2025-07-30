@@ -39,7 +39,7 @@ public class CharacterSinni : Character
         return true;
     }
 
-    protected override bool IsSkill0Able()
+    public override bool IsSkill0Able()
     {
         return base.IsSkill0Able() && _specialPoint >= 10f;
     }
@@ -70,6 +70,38 @@ public class CharacterSinni : Character
         GameController.Instance.ProjectileHandler.CreateSinniSkill2(Team, GetDirection());
         SoundManager.Instance.PlayVoiceSinniSkill2(0.0f);
         return true;
+    }
+
+    public override string GetCharacterName()
+    {
+        return "신이";
+    }
+
+    public override string GetBasicAttackName()
+    {
+        return "야";
+    }
+
+
+    public override string GetSkillName(int skillIndex)
+    {
+        if (skillIndex == 0)
+        {
+            return "노래방";
+        }
+        else if (skillIndex == 1)
+        {
+            return "점프";
+        }
+        else
+        {
+            return "진대";
+        }
+    }
+
+    public override string GetSpecialPointName()
+    {
+        return "노래방";
     }
 
 
