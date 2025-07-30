@@ -19,6 +19,8 @@ public class GwanghoSkill0ProjectileAfter : BasicProjectile
         transform.localScale = new Vector3(scale, scale, scale);
 
         _isStun = isStun;
+
+        SoundManager.Instance.PlaySfxDinosaurStomp(0.0f);
     }
 
     public override bool OnHitByCharacter(Character character)

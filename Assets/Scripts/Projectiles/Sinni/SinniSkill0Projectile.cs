@@ -24,6 +24,7 @@ public class SinniSkill0Projectile : BasicProjectile
         transform.localScale = new Vector3(scale, scale, scale);
 
         HitIntervalTime = TimeSpan.FromSeconds(0.1f);
+        SoundManager.Instance.PlaySfxClap(0.0f);
     }
 
     public override bool OnHitByCharacter(Character character)

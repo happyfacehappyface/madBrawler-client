@@ -29,6 +29,8 @@ public class JaehyeonSkill2Projectile : RotatingProjectile
         base.Initialize(
             angle, false, false, false,
             _lifeTime, 0f, _damage);
+
+        SoundManager.Instance.PlaySfxChain(0.0f);
     }
 
     public override void ManualUpdate()
@@ -63,7 +65,7 @@ public class JaehyeonSkill2Projectile : RotatingProjectile
         if (!base.OnHitByCharacter(character)) return false;
 
         character.AddEffect(GameController.Instance.CharacterEffectFactory.JaehyeonSkill2DebuffBond(TimeSpan.FromSeconds(_bondDuration)));
-
+        SoundManager.Instance.PlaySfxSword(0.0f);
         return true;
     }
 }

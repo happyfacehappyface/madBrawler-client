@@ -13,5 +13,7 @@ public class GwanghoSkill1Projectile : BasicProjectile
         base.Initialize(
             Direction.Right, false, false, false,
             duration, 0.0f, _damage);
+        
+        SoundManager.Instance.PlaySfxRollingChair(0.0f);
     }
 }

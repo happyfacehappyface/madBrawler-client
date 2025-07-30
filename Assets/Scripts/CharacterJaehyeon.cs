@@ -52,6 +52,7 @@ public class CharacterJaehyeon : Character
     {
         if (!base.OnPressBasicAttack()) return false;
         GameController.Instance.ProjectileHandler.CreateJaehyeonBasicAttack(Team, GetDirection());
+        SoundManager.Instance.PlayVoiceJaehyeonBasicAttack(0.0f);
         return true;
     }
 
@@ -60,13 +61,18 @@ public class CharacterJaehyeon : Character
         return base.IsSkill0Able() && GetComputerMinDistance() > 1.0f;
     }
 
+    protected override bool IsSkill2Able()
+    {
+        return base.IsSkill2Able() && _computers.Count >= 2;
+    }
+
     public override bool OnPressSkill0()
     {
         if (!base.OnPressSkill0()) return false;
 
         Controllable computer = GameController.Instance.ControllableHandler.CreateJaehyeonSkill0(Team);
         _computers.Add(computer);
-
+        SoundManager.Instance.PlayVoiceJaehyeonSkill0(0.0f);
         return true;
     }
 
@@ -90,6 +96,8 @@ public class CharacterJaehyeon : Character
 
         }
 
+        SoundManager.Instance.PlayVoiceJaehyeonSkill1(0.0f);
+
         return true;
     }
 
@@ -110,6 +118,8 @@ public class CharacterJaehyeon : Character
                 GameController.Instance.ProjectileHandler.CreateJaehyeonSkill2(Team, origin, destination);
             }
         }
+
+        SoundManager.Instance.PlayVoiceJaehyeonSkill2(0.0f);
         
         return true;
     }

@@ -9,5 +9,6 @@ public class GwanghoSkill0Controllable : Controllable
     public void Initialize()
     {
         base.Initialize(_speed, true);
+        SoundManager.Instance.PlaySfxDinosaurRoar(0.0f);
     }
 }

@@ -15,6 +15,8 @@ public class GwanghoBasicAttackProjectile : BasicProjectile
         base.Initialize(
             direction, false, false, false,
             lifeTime, 0f, _damage);
+
+        SoundManager.Instance.PlaySfxDinosaurRoar(0.0f);
     }
 
     public override void ManualUpdate()
@@ -22,6 +24,7 @@ public class GwanghoBasicAttackProjectile : BasicProjectile
         base.ManualUpdate();
 
         GraduallyMove(_speed * Time.deltaTime);
+
     }
 
 

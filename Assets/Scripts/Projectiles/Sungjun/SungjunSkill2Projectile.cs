@@ -20,7 +20,7 @@ public class SungjunSkill2Projectile : BasicProjectile
 
         
         character.ChangeStateForcedMove(_direction, 0, TimeSpan.FromSeconds(_bounceTime), true, true);
-        
+        SoundManager.Instance.PlaySfxKarate(0.0f);
         return true;
     }
 }

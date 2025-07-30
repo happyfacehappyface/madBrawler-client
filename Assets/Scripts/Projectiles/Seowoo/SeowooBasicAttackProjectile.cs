@@ -13,5 +13,28 @@ public class SeowooBasicAttackProjectile : BasicProjectile
         base.Initialize(
             direction, false, true, true,
             _lifeTime, _speed, _damage);
+
+        SoundManager.Instance.PlaySfxFireball(0.0f);
+    }
+
+    public override bool OnHitByCharacter(Character character)
+    {
+        if (!base.OnHitByCharacter(character)) return false;
+        SoundManager.Instance.PlaySfxFireballHit(0.0f);
+        return true;
+    }
+
+    public override bool OnHitByWall(Wall wall)
+    {
+        if (!base.OnHitByWall(wall)) return false;
+        SoundManager.Instance.PlaySfxFireballHit(0.0f);
+        return true;
+    }
+
+    public override bool OnHitByBarrier(Barrier barrier)
+    {
+        if (!base.OnHitByBarrier(barrier)) return false;
+        SoundManager.Instance.PlaySfxFireballHit(0.0f);
+        return true;
     }
 }

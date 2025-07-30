@@ -23,4 +23,11 @@ public class JaehyeonBasicAttackProjectile : BasicProjectile
 
         _currentSpeed += _speedAcceleration * Time.deltaTime;
     }
+
+    public override bool OnHitByCharacter(Character character)
+    {
+        if (!base.OnHitByCharacter(character)) return false;
+        SoundManager.Instance.PlaySfxWaveHit(0.0f);
+        return true;
+    }
 }

@@ -20,7 +20,7 @@ public class SinniSkill2Projectile : BasicProjectile
         //character.ChangeStateForcedMove(_direction, 0, TimeSpan.FromSeconds(_bounceTime), true, true);
 
         GameController.Instance.ProjectileHandler.CreateSinniSkill2After(Team, _direction);
-
+        _owner.AddSpecialPoint(100f);
         
         return true;
     }

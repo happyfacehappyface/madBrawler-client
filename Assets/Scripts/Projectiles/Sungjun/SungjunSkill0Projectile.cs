@@ -13,6 +13,16 @@ public class SungjunSkill0Projectile : BasicProjectile
         base.Initialize(
             Direction.Right, true, false, false,
             lifeTime, 0.0f, _damage);
+
+        SoundManager.Instance.PlaySfxWind(0.0f);
     }
+
+    public override bool OnHitByCharacter(Character character)
+    {
+        if (!base.OnHitByCharacter(character)) return false;
+        SoundManager.Instance.PlaySfxBump(0.0f);
+        return true;
+    }
+
 
 }

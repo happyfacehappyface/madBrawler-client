@@ -17,6 +17,8 @@ public class SeowooSkill0Projectile : BasicProjectile
         base.Initialize(
             direction, false, true, true,
             _lifeTime, _speed, _damage);
+
+        SoundManager.Instance.PlaySfxStupefy(0.0f);
     }
 
     public override void ManualUpdate()
@@ -30,7 +32,8 @@ public class SeowooSkill0Projectile : BasicProjectile
         if (!base.OnHitByCharacter(character)) return false;
 
         character.AddEffect(GameController.Instance.CharacterEffectFactory.SeowooSkill0DebuffStun(TimeSpan.FromSeconds(_stunDuration)));
-
+        SoundManager.Instance.PlaySfxStupefyHit(0.0f);
+        
         return true;
     }
 }

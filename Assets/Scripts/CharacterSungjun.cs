@@ -35,6 +35,7 @@ public class CharacterSungjun : Character
         if (!base.OnPressBasicAttack()) return false;
         Debug.Log("Sungjun OnPressBasicAttack");
         GameController.Instance.ProjectileHandler.CreateSungjunBasicAttack(Team, GetDirection());
+        SoundManager.Instance.PlayVoiceSungjunBasicAttack(0.0f);
         return true;
     }
 
@@ -45,6 +46,7 @@ public class CharacterSungjun : Character
         GameController.Instance.ProjectileHandler.CreateSungjunSkill0(Team, 2.0f);
         ChangeStateDrive(TimeSpan.FromSeconds(2.0f), true, false);
         AddEffect(GameController.Instance.CharacterEffectFactory.SungjunSkill0BuffMoveSpeed(TimeSpan.FromSeconds(2.0f), 1.5f));
+        SoundManager.Instance.PlayVoiceSungjunSkill0(0.0f);
         return true;
     }
 
@@ -53,6 +55,7 @@ public class CharacterSungjun : Character
         if (!base.OnPressSkill1()) return false;
         Debug.Log("Sungjun OnPressSkill1");
         GameController.Instance.ProjectileHandler.CreateSungjunSkill1(Team, GetDirection());
+        SoundManager.Instance.PlayVoiceSungjunSkill1(0.0f);
         return true;
     }
 
@@ -64,6 +67,7 @@ public class CharacterSungjun : Character
         GameController.Instance.ProjectileHandler.CreateSungjunSkill2(Team, GetDirection(), bounceTime);
         GameController.Instance.ProjectileHandler.CreateSungjunSkill2After(Team, GetDirection(), bounceTime);
         ChangeStateForcedMove(GetDirection(), 0, TimeSpan.FromSeconds(bounceTime), true, true);
+        SoundManager.Instance.PlayVoiceSungjunSkill2(0.0f);
         return true;
     }
 

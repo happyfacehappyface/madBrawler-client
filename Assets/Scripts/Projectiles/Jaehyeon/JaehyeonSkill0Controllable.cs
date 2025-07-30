@@ -9,6 +9,7 @@ public class JaehyeonSkill0Controllable : Controllable
     public void Initialize()
     {
         base.Initialize(_speed, true);
+        SoundManager.Instance.PlaySfxComputer(0.0f);
     }
 
 }

@@ -48,6 +48,8 @@ public class CharacterSeowoo : Character
     {
         if (!base.OnPressBasicAttack()) return false;
         GameController.Instance.ProjectileHandler.CreateSeowooBasicAttack(Team, GetDirection());
+        SoundManager.Instance.PlayVoiceSeowooBasicAttack(0.0f);
+        
         return true;
     }
 
@@ -71,6 +73,7 @@ public class CharacterSeowoo : Character
         if (!base.OnPressSkill0()) return false;
         GameController.Instance.ProjectileHandler.CreateSeowooSkill0(Team, GetDirection());
         AddSpecialPoint((-1) * _skill0SpecialCost);
+        SoundManager.Instance.PlayVoiceSeowooSkill0(0.0f);
         return true;
     }
 
@@ -86,12 +89,15 @@ public class CharacterSeowoo : Character
             _isPortalExist = false;
 
             AddEffect(GameController.Instance.CharacterEffectFactory.SeowooSkill1BuffMoveSpeed(TimeSpan.FromSeconds(_skill1BuffDuration), _skill1BuffFactor));
+        
+            SoundManager.Instance.PlaySfxPortalRide(0.0f);
         }
         else
         {
             _portalControllable = GameController.Instance.ControllableHandler.CreateSeowooSkill1(Team);
             _isPortalExist = true;
             ResetSkillCoolTime(1);
+            SoundManager.Instance.PlaySfxPortalOn(0.0f);
         }
 
         return true;
@@ -103,6 +109,7 @@ public class CharacterSeowoo : Character
         GameController.Instance.ProjectileHandler.CreateSeowooSkill2(Team, GetDirection());
         AddSpecialPoint((-1) * _skill2SpecialCost);
         AddEffect(GameController.Instance.CharacterEffectFactory.SeowooSkill2DebuffStun(TimeSpan.FromSeconds(_skill2DebuffDuration)));
+        SoundManager.Instance.PlayVoiceSeowooSkill2(0.0f);
         return true;
     }
 

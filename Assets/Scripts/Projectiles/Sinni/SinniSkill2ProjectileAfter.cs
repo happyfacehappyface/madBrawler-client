@@ -11,5 +11,7 @@ public class SinniSkill2ProjectileAfter : BasicProjectile
         base.Initialize(
             Direction.Right, false, false, false,
             _lifeTime, 0.0f, 0f);
+
+        SoundManager.Instance.PlaySfxDebris(0.0f);
     }
 }

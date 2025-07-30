@@ -26,6 +26,8 @@ public class SungjunSkill2ProjectileAfter : BasicProjectile
     {
         if (!base.OnHitByCharacter(character)) return false;
         character.AddEffect(GameController.Instance.CharacterEffectFactory.SungjunSkill2DebuffMoveSpeed(TimeSpan.FromSeconds(_slowDuration), _slowFactor));
+        SoundManager.Instance.PlayVoiceSungjunSkill2After(0.0f);
+        SoundManager.Instance.PlaySfxFall(0.0f);
         return true;
     }
 }

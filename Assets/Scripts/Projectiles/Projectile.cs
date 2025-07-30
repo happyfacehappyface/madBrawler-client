@@ -28,8 +28,8 @@ public abstract class Projectile : MonoBehaviour
         return true;
     }
 
-    public abstract void OnHitByWall(Wall wall);
-    public abstract void OnHitByBarrier(Barrier barrier);
+    public abstract bool OnHitByWall(Wall wall);
+    public abstract bool OnHitByBarrier(Barrier barrier);
 
     protected abstract bool IsHarmful();
 
@@ -61,7 +61,7 @@ public abstract class Projectile : MonoBehaviour
     private void ManualCheckCollision()
     {
         if (!IsHarmful()) return;
-        
+
         Vector2 currentPos = transform.position;
         Vector2 dir = currentPos - _prevPos;
         float dist = dir.magnitude;

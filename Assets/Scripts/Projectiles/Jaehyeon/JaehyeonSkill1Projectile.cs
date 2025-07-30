@@ -13,12 +13,14 @@ public class JaehyeonSkill1Projectile : RotatingProjectile
         base.Initialize(
             angle, false, true, true,
             _lifeTime, _speed, _damage);
+
+        SoundManager.Instance.PlaySfxLaser(0.0f);
     }
 
     public override bool OnHitByCharacter(Character character)
     {
         if (!base.OnHitByCharacter(character)) return false;
-
+        SoundManager.Instance.PlaySfxLaserHit(0.0f);
         return true;
     }
 }

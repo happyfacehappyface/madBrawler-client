@@ -73,9 +73,9 @@ public class BasicProjectile : Projectile
         return true;
     }
 
-    public override void OnHitByWall(Wall wall)
+    public override bool OnHitByWall(Wall wall)
     {
-        if (!IsHarmful()) return;
+        if (!IsHarmful()) return false;
 
         if (_canBreakWall)
         {
@@ -83,10 +83,12 @@ public class BasicProjectile : Projectile
         }
         
         _isHitByWall = true;
+        return true;
     }
 
-    public override void OnHitByBarrier(Barrier barrier)
+    public override bool OnHitByBarrier(Barrier barrier)
     {
         _isHitByWall = true;
+        return true;
     }
 }

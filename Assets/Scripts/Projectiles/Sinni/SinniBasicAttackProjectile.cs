@@ -60,6 +60,7 @@ public class SinniBasicAttackProjectile : BasicProjectile
         if (!base.OnHitByCharacter(character)) return false;
 
         character.AddHitPoint((-1) * _currentDamage);
+        SoundManager.Instance.PlaySfxWaveHit(0.0f);
         
         return true;
     }

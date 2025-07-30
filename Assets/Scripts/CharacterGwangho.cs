@@ -136,6 +136,7 @@ public class CharacterGwangho : Character
         if (GetSpecialPoint() >= 100f)
         {
             GameController.Instance.ProjectileHandler.CreateGwanghoBasicAttackStrong(Team, GetDirection(), lifeTime);
+            SoundManager.Instance.PlayVoiceGwanghoBasicAttack(0.0f);
         }
         else
         {
@@ -181,6 +182,7 @@ public class CharacterGwangho : Character
 
         ChangeStateDash(GetDirection(), power, TimeSpan.FromSeconds(lifeTime), false, false);
         GameController.Instance.ProjectileHandler.CreateGwanghoSkill1(Team, GetDirection(), lifeTime);
+        SoundManager.Instance.PlayVoiceGwanghoSkill1(0.0f);
         return true;
     }
 
@@ -189,6 +191,9 @@ public class CharacterGwangho : Character
         if (!base.OnPressSkill2()) return false;
 
         _stockState = new StockState.Fixed((int)_speicalPointMax, GameController.Instance.GetPlayerTime(Team) + TimeSpan.FromSeconds(10.0f));
+
+        SoundManager.Instance.PlayVoiceGwanghoSkill2(0.0f);
+        SoundManager.Instance.PlaySfxStock(0.0f);
 
         return true;
     }

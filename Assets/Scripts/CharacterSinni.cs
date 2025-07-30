@@ -35,6 +35,7 @@ public class CharacterSinni : Character
     {
         if (!base.OnPressBasicAttack()) return false;
         GameController.Instance.ProjectileHandler.CreateSinniBasicAttack(Team, GetDirection());
+        SoundManager.Instance.PlayVoiceSinniBasicAttack(0.0f);
         return true;
     }
 
@@ -48,6 +49,7 @@ public class CharacterSinni : Character
         if (!base.OnPressSkill0()) return false;
         GameController.Instance.ProjectileHandler.CreateSinniSkill0(Team, Direction.Right, SpecialPointRatio());
         AddSpecialPoint((-1) * _specialPoint);
+        SoundManager.Instance.PlayVoiceSinniSkill0(0.0f);
         return true;
     }
 
@@ -57,7 +59,8 @@ public class CharacterSinni : Character
 
         ChangeStateDash(GetDirection(), 4f, TimeSpan.FromSeconds(0.3f), true, true);
         AddEffect(GameController.Instance.CharacterEffectFactory.SinniSkill1BuffMoveSpeed(TimeSpan.FromSeconds(0.6f), 1.3f));
-
+        SoundManager.Instance.PlayVoiceSinniSkill1(0.0f);
+        SoundManager.Instance.PlaySfxJump(0.0f);
         return true;
     }
 
@@ -65,6 +68,7 @@ public class CharacterSinni : Character
     {
         if (!base.OnPressSkill2()) return false;
         GameController.Instance.ProjectileHandler.CreateSinniSkill2(Team, GetDirection());
+        SoundManager.Instance.PlayVoiceSinniSkill2(0.0f);
         return true;
     }
 

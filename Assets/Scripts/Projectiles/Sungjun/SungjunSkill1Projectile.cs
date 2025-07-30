@@ -21,6 +21,7 @@ public class SungjunSkill1Projectile : BasicProjectile
         base.Initialize(
             direction, false, false, true,
             _lifeTime, _speed, _damage);
+
     }
 
     public override bool OnHitByCharacter(Character character)
@@ -29,7 +30,9 @@ public class SungjunSkill1Projectile : BasicProjectile
 
         character.ChangeStateForcedMove(_direction, (-1) *_hookPower, TimeSpan.FromSeconds(_hookTime), true, false);
         character.AddEffect(GameController.Instance.CharacterEffectFactory.SungjunSkill1DebuffMoveSpeed(TimeSpan.FromSeconds(_slowDuration), _slowFactor));
-        
+
+        SoundManager.Instance.PlaySfxHook(0.0f);
+
         return true;
     }
 }
