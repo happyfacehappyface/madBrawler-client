@@ -22,24 +22,21 @@ public class CharacterSelection : MonoBehaviour
     [SerializeField] private TextMeshProUGUI descriptionText;
     
     [Header("스탯 표시")]
-    [SerializeField] private Image hitPointBar;        // 체력바
-    [SerializeField] private Image hitPointBarBackground;  // 체력 배경바
-    [SerializeField] private TextMeshProUGUI hitPointText;
+    [SerializeField] private Image[] healthBars = new Image[3];        // 체력바 3개
+    [SerializeField] private TextMeshProUGUI healthText;
 
-    [SerializeField] private Image moveSpeedBar;       // 이동속도바
-    [SerializeField] private Image moveSpeedBarBackground;  // 이동속도 배경바
+    [SerializeField] private Image[] moveSpeedBars = new Image[3];       // 이동속도바 3개
     [SerializeField] private TextMeshProUGUI moveSpeedText;
 
-    [SerializeField] private Image specialPointBar;    // 특수게이지바
-    [SerializeField] private Image specialPointBarBackground;  // 특수게이지 배경바
-    [SerializeField] private TextMeshProUGUI specialPointText;
-    
+    [SerializeField] private Image[] difficultyBars = new Image[3];    // 난이도바 3개
+    [SerializeField] private TextMeshProUGUI difficultyText;
+
     [Header("스킬 정보")]
     [SerializeField] private Image skill0Icon;
-    [SerializeField] private Image skill1Icon;
-    [SerializeField] private Image skill2Icon;
     [SerializeField] private TextMeshProUGUI skill0Text;
+    [SerializeField] private Image skill1Icon;
     [SerializeField] private TextMeshProUGUI skill1Text;
+    [SerializeField] private Image skill2Icon;
     [SerializeField] private TextMeshProUGUI skill2Text;
     
     [Header("스탯 바 색상")]
@@ -56,10 +53,8 @@ public class CharacterSelection : MonoBehaviour
     [Header("게임 시작 버튼")]
     [SerializeField] private Button playButton;
     
-    // 스탯 최대값 
-    private const float MAX_HIT_POINT = 150f;
-    private const float MAX_MOVE_SPEED = 8f;
-    private const float MAX_SPECIAL_POINT = 150f;
+    // 스탯 최대값 (3칸 표시용)
+    private const int MAX_STAT_LEVEL = 3;
     
     private int[] selectedCharacters = new int[2] { -1, -1 };
     private int currentHoveredCharacter = -1;
@@ -114,16 +109,18 @@ public class CharacterSelection : MonoBehaviour
         characterDataDictionary[CharacterType.Sungjun] = CreateSungjunData();
         characterDataDictionary[CharacterType.Sinni] = CreateSinniData();
         characterDataDictionary[CharacterType.Gwangho] = CreateGwanghoData();
+        characterDataDictionary[CharacterType.Seowoo] = CreateSeowooData();
+        characterDataDictionary[CharacterType.Jaehyeon] = CreateJaehyeonData();
     }
     
     private CharacterData CreateSungjunData()
     {
         CharacterData data = new CharacterData();
-        data.characterName = "성준";
+        data.characterName = "성 준";
         data.description = "";
-        data.hitPoint = 120f;
-        data.moveSpeed = 6f;
-        data.specialPointMax = 120f;
+        data.healthLevel = 3;      
+        data.moveSpeedLevel = 2;   
+        data.difficultyLevel = 2;  
         data.basicAttackDamage = 12f;
         data.basicAttackSpeed = 10f;
         data.basicAttackLifeTime = 2.5f;
@@ -136,11 +133,11 @@ public class CharacterSelection : MonoBehaviour
     private CharacterData CreateSinniData()
     {
         CharacterData data = new CharacterData();
-        data.characterName = "신이";
+        data.characterName = "신 이";
         data.description = "";
-        data.hitPoint = 100f;
-        data.moveSpeed = 5f;
-        data.specialPointMax = 150f;
+        data.healthLevel = 2;      
+        data.moveSpeedLevel = 3;   
+        data.difficultyLevel = 2;  
         data.basicAttackDamage = 8f;
         data.basicAttackSpeed = 12f;
         data.basicAttackLifeTime = 2.0f;
@@ -153,17 +150,51 @@ public class CharacterSelection : MonoBehaviour
     private CharacterData CreateGwanghoData()
     {
         CharacterData data = new CharacterData();
-        data.characterName = "광호";
+        data.characterName = "광 호";
         data.description = "";
-        data.hitPoint = 140f;
-        data.moveSpeed = 4f;
-        data.specialPointMax = 100f;
+        data.healthLevel = 2;     
+        data.moveSpeedLevel = 2;   
+        data.difficultyLevel = 3;  
         data.basicAttackDamage = 15f;
         data.basicAttackSpeed = 6f;
         data.basicAttackLifeTime = 3.0f;
         data.characterSprite = GetCharacterSprite(CharacterType.Gwangho);
         data.characterPrefab = GetCharacterPrefab(CharacterType.Gwangho);
         data.skills = CreateSkillDataFromClass<CharacterGwangho>();
+        return data;
+    }
+
+    private CharacterData CreateSeowooData()
+    {
+        CharacterData data = new CharacterData();
+        data.characterName = "서 우";
+        data.description = "";
+        data.healthLevel = 2;     
+        data.moveSpeedLevel = 3;   
+        data.difficultyLevel = 2;  
+        data.basicAttackDamage = 10f;
+        data.basicAttackSpeed = 8f;
+        data.basicAttackLifeTime = 2.0f;
+        data.characterSprite = GetCharacterSprite(CharacterType.Seowoo);
+        data.characterPrefab = GetCharacterPrefab(CharacterType.Seowoo);
+        data.skills = CreateSkillDataFromClass<CharacterSeowoo>();
+        return data;
+    }
+
+    private CharacterData CreateJaehyeonData()
+    {
+        CharacterData data = new CharacterData();
+        data.characterName = "재 현";
+        data.description = "";
+        data.healthLevel = 2;     
+        data.moveSpeedLevel = 2;   
+        data.difficultyLevel = 3;  
+        data.basicAttackDamage = 12f;
+        data.basicAttackSpeed = 9f;
+        data.basicAttackLifeTime = 2.5f;
+        data.characterSprite = GetCharacterSprite(CharacterType.Jaehyeon);
+        data.characterPrefab = GetCharacterPrefab(CharacterType.Jaehyeon);
+        data.skills = CreateSkillDataFromClass<CharacterJaehyeon>();
         return data;
     }
 
@@ -174,24 +205,38 @@ public class CharacterSelection : MonoBehaviour
         
         if (typeof(T) == typeof(CharacterSungjun))
         {
-            // 성준의 스킬들 (이름만)
+            // 성준의 스킬들 
             skills[0] = CreateSimpleSkillData("드라이브");
             skills[1] = CreateSimpleSkillData("기본 공격 강화");
-            skills[2] = CreateSimpleSkillData("특수 공격");
+            skills[2] = CreateSimpleSkillData("수플렉스");
         }
         else if (typeof(T) == typeof(CharacterSinni))
         {
-            // 신니의 스킬들 (이름만)
+            // 신이의 스킬들
             skills[0] = CreateSimpleSkillData("음파 공격");
-            skills[1] = CreateSimpleSkillData("음악 버프");
-            skills[2] = CreateSimpleSkillData("특수 음파");
+            skills[1] = CreateSimpleSkillData("점프");
+            skills[2] = CreateSimpleSkillData("진실의 방");
         }
         else if (typeof(T) == typeof(CharacterGwangho))
         {
-            // 광호의 스킬들 (이름만)
-            skills[0] = CreateSimpleSkillData("태클");
-            skills[1] = CreateSimpleSkillData("체력 강화");
-            skills[2] = CreateSimpleSkillData("특수 태클");
+            // 광호의 스킬들 
+            skills[0] = CreateSimpleSkillData("티라노");
+            skills[1] = CreateSimpleSkillData("의자 타기");
+            skills[2] = CreateSimpleSkillData("주식 떡상");
+        }
+        else if (typeof(T) == typeof(CharacterSeowoo))
+        {
+            // 서우의 스킬들 
+            skills[0] = CreateSimpleSkillData("전기 공격");
+            skills[1] = CreateSimpleSkillData("포탈");
+            skills[2] = CreateSimpleSkillData("기절 공격");
+        }
+        else if (typeof(T) == typeof(CharacterJaehyeon))
+        {
+            // 재현의 스킬들 
+            skills[0] = CreateSimpleSkillData("컴퓨터 설치");
+            skills[1] = CreateSimpleSkillData("P2P");
+            skills[2] = CreateSimpleSkillData("블록체인");
         }
         
         return skills;
@@ -318,34 +363,43 @@ public class CharacterSelection : MonoBehaviour
     
     private void InitializeStatBars()
     {
-        // 체력바 설정
-        if (hitPointBar != null)
+        // 체력바 설정 (3개 개별 바)
+        for (int i = 0; i < healthBars.Length; i++)
         {
-            hitPointBar.type = Image.Type.Filled;
-            hitPointBar.fillMethod = Image.FillMethod.Horizontal;
-            hitPointBar.fillOrigin = (int)Image.OriginHorizontal.Left;
-            hitPointBar.fillAmount = 0f; // 초기값 0%
-            Debug.Log("HitPointBar Filled 설정 완료");
+            if (healthBars[i] != null)
+            {
+                healthBars[i].type = Image.Type.Filled;
+                healthBars[i].fillMethod = Image.FillMethod.Horizontal;
+                healthBars[i].fillOrigin = (int)Image.OriginHorizontal.Left;
+                healthBars[i].fillAmount = 0f; // 초기값 0%
+                Debug.Log($"HealthBar[{i}] Filled 설정 완료");
+            }
         }
         
-        // 이동속도바 설정
-        if (moveSpeedBar != null)
+        // 이동속도바 설정 (3개 개별 바)
+        for (int i = 0; i < moveSpeedBars.Length; i++)
         {
-            moveSpeedBar.type = Image.Type.Filled;
-            moveSpeedBar.fillMethod = Image.FillMethod.Horizontal;
-            moveSpeedBar.fillOrigin = (int)Image.OriginHorizontal.Left;
-            moveSpeedBar.fillAmount = 0f; // 초기값 0%
-            Debug.Log("MoveSpeedBar Filled 설정 완료");
+            if (moveSpeedBars[i] != null)
+            {
+                moveSpeedBars[i].type = Image.Type.Filled;
+                moveSpeedBars[i].fillMethod = Image.FillMethod.Horizontal;
+                moveSpeedBars[i].fillOrigin = (int)Image.OriginHorizontal.Left;
+                moveSpeedBars[i].fillAmount = 0f; // 초기값 0%
+                Debug.Log($"MoveSpeedBar[{i}] Filled 설정 완료");
+            }
         }
         
-        // 특수게이지바 설정
-        if (specialPointBar != null)
+        // 난이도바 설정 (3개 개별 바)
+        for (int i = 0; i < difficultyBars.Length; i++)
         {
-            specialPointBar.type = Image.Type.Filled;
-            specialPointBar.fillMethod = Image.FillMethod.Horizontal;
-            specialPointBar.fillOrigin = (int)Image.OriginHorizontal.Left;
-            specialPointBar.fillAmount = 0f; // 초기값 0%
-            Debug.Log("SpecialPointBar Filled 설정 완료");
+            if (difficultyBars[i] != null)
+            {
+                difficultyBars[i].type = Image.Type.Filled;
+                difficultyBars[i].fillMethod = Image.FillMethod.Horizontal;
+                difficultyBars[i].fillOrigin = (int)Image.OriginHorizontal.Left;
+                difficultyBars[i].fillAmount = 0f; // 초기값 0%
+                Debug.Log($"DifficultyBar[{i}] Filled 설정 완료");
+            }
         }
     }
     
@@ -649,51 +703,36 @@ public class CharacterSelection : MonoBehaviour
     
     private void UpdateStatDisplay(CharacterData characterData)
     {
-        Debug.Log($"UpdateStatDisplay - HitPoint: {characterData.hitPoint}, MoveSpeed: {characterData.moveSpeed}, SpecialPoint: {characterData.specialPointMax}");
+        Debug.Log($"UpdateStatDisplay - Health: {characterData.healthLevel}, MoveSpeed: {characterData.moveSpeedLevel}, Difficulty: {characterData.difficultyLevel}");
         
-        // 체력바 업데이트
-        if (hitPointBar != null)
+        // 체력바 업데이트 (3개 개별 바)
+        UpdateStatBars(healthBars, characterData.healthLevel, statBarColor);
+        
+        if (healthText != null)
         {
-            float hitPointRatio = characterData.hitPoint / MAX_HIT_POINT;
-            hitPointBar.fillAmount = Mathf.Clamp01(hitPointRatio); // 0~1 사이로 제한
-            hitPointBar.color = statBarColor;
-            Debug.Log($"HitPointBar fillAmount: {hitPointBar.fillAmount} (ratio: {hitPointRatio})");
+            string healthLevelText = GetStatLevelText(characterData.healthLevel);
+            healthText.text = $"체력: {healthLevelText}";
+            healthText.color = statColor;
         }
         
-        if (hitPointText != null)
-        {
-            hitPointText.text = $"체력: {characterData.hitPoint}/{MAX_HIT_POINT}";
-            hitPointText.color = statColor;
-        }
-        
-        // 이동속도바 업데이트
-        if (moveSpeedBar != null)
-        {
-            float moveSpeedRatio = characterData.moveSpeed / MAX_MOVE_SPEED;
-            moveSpeedBar.fillAmount = Mathf.Clamp01(moveSpeedRatio); // 0~1 사이로 제한
-            moveSpeedBar.color = statBarColor;
-            Debug.Log($"MoveSpeedBar fillAmount: {moveSpeedBar.fillAmount} (ratio: {moveSpeedRatio})");
-        }
+        // 이동속도바 업데이트 (3개 개별 바)
+        UpdateStatBars(moveSpeedBars, characterData.moveSpeedLevel, statBarColor);
         
         if (moveSpeedText != null)
         {
-            moveSpeedText.text = $"이동속도: {characterData.moveSpeed:F1}/{MAX_MOVE_SPEED}";
+            string moveSpeedLevelText = GetStatLevelText(characterData.moveSpeedLevel);
+            moveSpeedText.text = $"이동속도: {moveSpeedLevelText}";
             moveSpeedText.color = statColor;
         }
         
-        // 특수게이지바 업데이트
-        if (specialPointBar != null)
-        {
-            float specialPointRatio = characterData.specialPointMax / MAX_SPECIAL_POINT;
-            specialPointBar.fillAmount = Mathf.Clamp01(specialPointRatio); // 0~1 사이로 제한
-            specialPointBar.color = statBarColor;
-            Debug.Log($"SpecialPointBar fillAmount: {specialPointBar.fillAmount} (ratio: {specialPointRatio})");
-        }
+        // 난이도바 업데이트 (3개 개별 바)
+        UpdateStatBars(difficultyBars, characterData.difficultyLevel, statBarColor);
         
-        if (specialPointText != null)
+        if (difficultyText != null)
         {
-            specialPointText.text = $"특수게이지: {characterData.specialPointMax}/{MAX_SPECIAL_POINT}";
-            specialPointText.color = statColor;
+            string difficultyLevelText = GetStatLevelText(characterData.difficultyLevel);
+            difficultyText.text = $"난이도: {difficultyLevelText}";
+            difficultyText.color = statColor;
         }
     }
     
@@ -809,6 +848,33 @@ public class CharacterSelection : MonoBehaviour
         
         UnityEngine.SceneManagement.SceneManager.LoadScene("InGameScene");
     }
+
+    // 스탯 레벨을 텍스트로 변환하는 헬퍼 메서드
+    private string GetStatLevelText(int level)
+    {
+        switch (level)
+        {
+            case 1: return "낮음";
+            case 2: return "보통";
+            case 3: return "높음";
+            default: return "보통";
+        }
+    }
+
+    // 개별 바들을 업데이트하는 헬퍼 메서드
+    private void UpdateStatBars(Image[] bars, int level, Color barColor)
+    {
+        for (int i = 0; i < bars.Length; i++)
+        {
+            if (bars[i] != null)
+            {
+                // i+1이 level보다 작거나 같으면 채우기, 아니면 비우기
+                bool shouldFill = (i + 1) <= level;
+                bars[i].fillAmount = shouldFill ? 1f : 0f;
+                bars[i].color = barColor;
+            }
+        }
+    }
 }
 
 // CharacterData와 CharacterSkillData 클래스는 별도 파일로 만들거나 여기에 추가
@@ -828,10 +894,10 @@ public class CharacterData
     public string description;
     public Sprite characterSprite;
     
-    [Header("캐릭터 스탯")]
-    public float hitPoint = 100f;
-    public float moveSpeed = 4f;
-    public float specialPointMax = 100f;
+    [Header("캐릭터 스탯 (1=낮음, 2=보통, 3=높음)")]
+    public int healthLevel = 2;        // 체력 레벨
+    public int moveSpeedLevel = 2;     // 이동속도 레벨
+    public int difficultyLevel = 2;    // 난이도 레벨
     
     [Header("기본 공격 설정")]
     public float basicAttackCooldown = 0.2f;
