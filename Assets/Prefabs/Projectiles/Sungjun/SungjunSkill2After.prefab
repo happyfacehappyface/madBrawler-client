@@ -82,6 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c75a70c6e5511646942906a9ae024a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animator: {fileID: 8929714939074282388}
 --- !u!95 &8929714939074282388
 Animator:
   serializedVersion: 5
@@ -92,7 +93,7 @@ Animator:
   m_GameObject: {fileID: 3289116017576895808}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2cc357af9f843c444b462a8235b2360d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -176,12 +177,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b5818729b5f63fa4dbac5d3156cfaa2b, type: 3}
-  m_Color: {r: 1, g: 0.6839622, b: 0.6839622, a: 0.5882353}
+  m_Sprite: {fileID: -1469113219, guid: e136e3577a50a9542b1462df38995f16, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 10.515625, y: 10.515625}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
