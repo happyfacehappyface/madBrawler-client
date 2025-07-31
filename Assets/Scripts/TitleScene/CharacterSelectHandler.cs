@@ -168,7 +168,7 @@ public class CharacterSelectHandler : MonoBehaviour
                 SoundManager.Instance.PlayVoiceGwanghoSkill2(0.0f);
                 break;
                 case 3:
-                SoundManager.Instance.PlayVoiceSeowooSkill0(0.0f);
+                SoundManager.Instance.PlayVoiceSeowooPick(0.0f);
                 break;
                 case 4:
                 SoundManager.Instance.PlayVoiceJaehyeonSkill0(0.0f);
@@ -198,7 +198,7 @@ public class CharacterSelectHandler : MonoBehaviour
                 SoundManager.Instance.PlayVoiceGwanghoSkill2(0.0f);
                 break;
                 case 3:
-                SoundManager.Instance.PlayVoiceSeowooSkill0(0.0f);
+                SoundManager.Instance.PlayVoiceSeowooPick(0.0f);
                 break;
                 case 4:
                 SoundManager.Instance.PlayVoiceJaehyeonSkill0(0.0f);

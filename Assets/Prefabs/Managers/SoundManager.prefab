@@ -327,6 +327,7 @@ MonoBehaviour:
   _voiceSeowooSkill0: {fileID: 8300000, guid: bb687fb274ee38e408cb718ba2971b50, type: 3}
   _voiceSeowooSkill1: {fileID: 0}
   _voiceSeowooSkill2: {fileID: 8300000, guid: 46670a057cecec742838baedc2e5ece2, type: 3}
+  _voiceSeowooPick: {fileID: 8300000, guid: 8a9d61f78f0679e4681f203dece8dc59, type: 3}
   _voiceJaehyeonBasicAttack: {fileID: 8300000, guid: 4974177b61764864abfc225a1968d8e8, type: 3}
   _voiceJaehyeonSkill0: {fileID: 8300000, guid: f48cde8918b145a41b11a4ff5da939bb, type: 3}
   _voiceJaehyeonSkill1: {fileID: 8300000, guid: 571295f1284263e448479b2ab74204f2, type: 3}

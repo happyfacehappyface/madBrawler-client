@@ -25,8 +25,8 @@ public class CharacterSinni : Character
         _skillRemainCoolTime = new TimeSpan[GameConst.SkillCount]
         {
             TimeSpan.FromSeconds(0.0f),
-            TimeSpan.FromSeconds(10.0f),
-            TimeSpan.FromSeconds(30.0f)
+            TimeSpan.FromSeconds(8.0f),
+            TimeSpan.FromSeconds(25.0f)
         };
     }
 

@@ -37,6 +37,8 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioClip _voiceSeowooSkill1;
     [SerializeField] private AudioClip _voiceSeowooSkill2;
 
+    [SerializeField] private AudioClip _voiceSeowooPick;
+
     [SerializeField] private AudioClip _voiceJaehyeonBasicAttack;
     [SerializeField] private AudioClip _voiceJaehyeonSkill0;
     [SerializeField] private AudioClip _voiceJaehyeonSkill1;
@@ -126,6 +128,8 @@ public class SoundManager : MonoBehaviour
     public void PlayVoiceSeowooSkill0(float delay) => PlayVoiceWithDelay(CharacterType.Seowoo, _voiceSeowooSkill0, delay);
     public void PlayVoiceSeowooSkill1(float delay) => PlayVoiceWithDelay(CharacterType.Seowoo, _voiceSeowooSkill1, delay);
     public void PlayVoiceSeowooSkill2(float delay) => PlayVoiceWithDelay(CharacterType.Seowoo, _voiceSeowooSkill2, delay);
+
+    public void PlayVoiceSeowooPick(float delay) => PlayVoiceWithDelay(CharacterType.Seowoo, _voiceSeowooPick, delay);
 
     public void PlayVoiceJaehyeonBasicAttack(float delay) => PlayVoiceWithDelay(CharacterType.Jaehyeon, _voiceJaehyeonBasicAttack, delay);
     public void PlayVoiceJaehyeonSkill0(float delay) => PlayVoiceWithDelay(CharacterType.Jaehyeon, _voiceJaehyeonSkill0, delay);

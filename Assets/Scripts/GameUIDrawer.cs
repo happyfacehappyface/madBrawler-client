@@ -82,6 +82,16 @@ public class GameUIDrawer : MonoBehaviour
         }
     }
 
+    public void OnLeftPlayerDefeated()
+    {
+        _leftPlayerPortrait.sprite = AssetManager.Instance.GetCharacterDefeatedSprite(GameController.Instance.LeftPlayerCharacter.GetCharacterType());
+    }
+
+    public void OnRightPlayerDefeated()
+    {
+        _rightPlayerPortrait.sprite = AssetManager.Instance.GetCharacterDefeatedSprite(GameController.Instance.RightPlayerCharacter.GetCharacterType());
+    }
+
     private string GetButtonText(Team team, int index)
     {
         if (team == Team.Left)

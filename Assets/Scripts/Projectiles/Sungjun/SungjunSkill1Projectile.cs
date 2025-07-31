@@ -7,8 +7,8 @@ public class SungjunSkill1Projectile : BasicProjectile
 {
 
 
-    private const float _lifeTime = 2.0f;
-    private const float _speed = 16f;
+    private const float _lifeTime = 3.0f;
+    private const float _speed = 17f;
     private const float _damage = 6f;
 
 

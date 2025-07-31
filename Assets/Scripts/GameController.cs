@@ -178,6 +178,7 @@ public class GameController : MonoBehaviour
             _postGameUI.SetActive(true);
             _postGameResultText.text = $"{_rightPlayerCharacter.GetCharacterName()} 이(가) 이겼습니다!\n승자: 오른쪽 플레이어";
             _leftCharacterHolder.SetCharacterImageToDefeated();
+            _gameUIDrawer.OnLeftPlayerDefeated();
             PlayWinningVoice(_rightPlayerCharacter.GetCharacterType());
         }
         else if (_rightPlayerCharacter.IsDead())
@@ -186,6 +187,7 @@ public class GameController : MonoBehaviour
             _postGameUI.SetActive(true);
             _postGameResultText.text = $"{_leftPlayerCharacter.GetCharacterName()} 이(가) 이겼습니다!\n승자: 왼쪽 플레이어";
             _rightCharacterHolder.SetCharacterImageToDefeated();
+            _gameUIDrawer.OnRightPlayerDefeated();
             PlayWinningVoice(_leftPlayerCharacter.GetCharacterType());
         }
     }
