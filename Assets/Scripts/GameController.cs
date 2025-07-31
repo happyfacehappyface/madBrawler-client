@@ -23,7 +23,8 @@ public class GameController : MonoBehaviour
     private CharacterHolder _leftCharacterHolder;
     private CharacterHolder _rightCharacterHolder;
     
-
+    private CharacterType _leftCharacterType;
+    private CharacterType _rightCharacterType;
 
     [SerializeField] private GameObject _characterPrefab;
     [SerializeField] private ProjectileHandler _projectileHandler;
@@ -62,7 +63,7 @@ public class GameController : MonoBehaviour
         ResetLayerCollisions();
         
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        ManualStart();
+        ManualStart(_leftCharacterType, _rightCharacterType);
     }
     
     private void ResetLayerCollisions()
@@ -84,8 +85,12 @@ public class GameController : MonoBehaviour
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("RightProjectile"), LayerMask.NameToLayer("RightProjectile"), true);
     }
 
-    private void ManualStart()
+    public void ManualStart(CharacterType leftCharacterType, CharacterType rightCharacterType)
     {
+
+        _leftCharacterType = leftCharacterType;
+        _rightCharacterType = rightCharacterType;
+
         Instance = this;
 
         _gameState = GameState.PreGame;
@@ -98,8 +103,8 @@ public class GameController : MonoBehaviour
         _leftCharacterHolder = leftPlayer.GetComponent<CharacterHolder>();
         _rightCharacterHolder = rightPlayer.GetComponent<CharacterHolder>();
 
-        _leftCharacterHolder.ManualStart(CharacterType.Jaehyeon);
-        _rightCharacterHolder.ManualStart(CharacterType.Sungjun);
+        _leftCharacterHolder.ManualStart(_leftCharacterType);
+        _rightCharacterHolder.ManualStart(_rightCharacterType);
 
         _leftPlayerCharacter = leftPlayer.GetComponent<Character>();
         _leftPlayerCharacter.ManualStart(Team.Left, _leftCharacterHolder);
@@ -376,7 +381,7 @@ public class GameController : MonoBehaviour
 
     protected void Start()
     {
-        ManualStart();
+        //ManualStart();
     }
 
     protected void Update()

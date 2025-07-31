@@ -155,32 +155,7 @@ public class CharacterJaehyeon : Character
     }
 
     
-    public override string GetCharacterName()
-    {
-        return "재현";
-    }
-
-    public override string GetBasicAttackName()
-    {
-        return "손가락 튕기기";
-    }
-
-
-    public override string GetSkillName(int skillIndex)
-    {
-        if (skillIndex == 0)
-        {
-            return "컴퓨터";
-        }
-        else if (skillIndex == 1)
-        {
-            return "P2P";
-        }
-        else
-        {
-            return "블록 체인";
-        }
-    }
+    
 
     public override string GetSpecialPointName()
     {

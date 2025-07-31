@@ -723,11 +723,28 @@ public abstract class Character : MonoBehaviour
     }
 
 
-    public abstract string GetCharacterName();
+    public string GetCharacterName()
+    {
+        return AssetManager.Instance.GetCharacterName(GetCharacterType());
+    }
 
-    public abstract string GetBasicAttackName();
+    public string GetBasicAttackName()
+    {
+        return AssetManager.Instance.GetCharacterBasicAttackName(GetCharacterType());
+    }
 
-    public abstract string GetSkillName(int skillIndex);
+    public string GetSkillName(int skillIndex)
+    {
+        if (skillIndex == 0)
+        {
+            return AssetManager.Instance.GetCharacterSkill0Name(GetCharacterType());
+        }
+        else if (skillIndex == 1)
+        {
+            return AssetManager.Instance.GetCharacterSkill1Name(GetCharacterType());
+        }
+        return AssetManager.Instance.GetCharacterSkill2Name(GetCharacterType());
+    }
     
     public abstract string GetSpecialPointName();
 

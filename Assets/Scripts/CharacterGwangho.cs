@@ -19,7 +19,7 @@ public class CharacterGwangho : Character
     {
         _hitPoint = 85f;
         _hitPointMax = 85f;
-        _moveSpeed = 3.7f;
+        _moveSpeed = 4.1f;
         
         _specialPoint = 30f;
         _speicalPointMax = 100f;
@@ -28,7 +28,7 @@ public class CharacterGwangho : Character
         _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
         {
             TimeSpan.FromSeconds(9.0f),
-            TimeSpan.FromSeconds(5.0f),
+            TimeSpan.FromSeconds(4.5f),
             TimeSpan.FromSeconds(30.0f)
         };
 
@@ -190,7 +190,7 @@ public class CharacterGwangho : Character
         if (!base.OnPressSkill1()) return false;
 
         float distance = 8f;
-        float power = 4f + (SpecialPointRatio() * 16.0f);
+        float power = 8f + (SpecialPointRatio() * 16.0f);
         float lifeTime = distance / power;
 
         ChangeStateDash(GetDirection(), power, TimeSpan.FromSeconds(lifeTime), false, false);
@@ -211,32 +211,8 @@ public class CharacterGwangho : Character
         return true;
     }
 
-    public override string GetCharacterName()
-    {
-        return "광호";
-    }
-
-    public override string GetBasicAttackName()
-    {
-        return "테니스 공";
-    }
 
 
-    public override string GetSkillName(int skillIndex)
-    {
-        if (skillIndex == 0)
-        {
-            return "티라노사우르스 렉스";
-        }
-        else if (skillIndex == 1)
-        {
-            return "의자 끌기";
-        }
-        else
-        {
-            return "주식 떡상";
-        }
-    }
 
     public override string GetSpecialPointName()
     {

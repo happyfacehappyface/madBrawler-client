@@ -121,32 +121,7 @@ public class CharacterSeowoo : Character
     }
 
 
-    public override string GetCharacterName()
-    {
-        return "서우";
-    }
 
-    public override string GetBasicAttackName()
-    {
-        return "인센디오";
-    }
-
-
-    public override string GetSkillName(int skillIndex)
-    {
-        if (skillIndex == 0)
-        {
-            return "스투페파이";
-        }
-        else if (skillIndex == 1)
-        {
-            return "포트키";
-        }
-        else
-        {
-            return "아바다 케다브라";
-        }
-    }
 
     public override string GetSpecialPointName()
     {

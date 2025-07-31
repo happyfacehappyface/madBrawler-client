@@ -24,7 +24,7 @@ public class SungjunSkill0Projectile : BasicProjectile
     {
         if (!base.OnHitByCharacter(character)) return false;
         SoundManager.Instance.PlaySfxBump(0.0f);
-        character.ChangeStateForcedMove(_owner.GetDirection(), 8f, TimeSpan.FromSeconds(0.4f), true, true);
+        character.ChangeStateForcedMove(_owner.GetDirection(), 8f, TimeSpan.FromSeconds(0.3f), true, true);
         return true;
     }
 

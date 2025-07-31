@@ -78,32 +78,7 @@ public class CharacterSungjun : Character
         return true;
     }
 
-    public override string GetCharacterName()
-    {
-        return "성준";
-    }
-
-    public override string GetBasicAttackName()
-    {
-        return "펀치";
-    }
-
-
-    public override string GetSkillName(int skillIndex)
-    {
-        if (skillIndex == 0)
-        {
-            return "태클";
-        }
-        else if (skillIndex == 1)
-        {
-            return "갈고리";
-        }
-        else
-        {
-            return "수플렉스";
-        }
-    }
+    
 
     public override string GetSpecialPointName()
     {

@@ -73,7 +73,7 @@ public class CharacterEffectFactory
 
     public CharacterEffect JaehyeonSkill2DebuffBond(TimeSpan duration)
     {
-        return new CharacterEffect(5201, duration, CharacterEffectType.Debuff, new CharacterEffectCategory.Bond(), "Bond", null);
+        return new CharacterEffect(5301, duration, CharacterEffectType.Debuff, new CharacterEffectCategory.Bond(), "Bond", null);
     }
 
 
