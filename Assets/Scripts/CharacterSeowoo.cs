@@ -5,10 +5,10 @@ using System;
 
 public class CharacterSeowoo : Character
 {
-
-    private const float _skill0SpecialCost = 10f;
+    private const float _basicAttackCost = 5f;
+    private const float _skill0SpecialCost = 15f;
     private const float _skill1SpecialCost = 0f;
-    private const float _skill2SpecialCost = 20f;
+    private const float _skill2SpecialCost = 25f;
 
     private const float _skill1BuffDuration = 1.2f;
     private const float _skill1BuffFactor = 1.6f;
@@ -23,12 +23,12 @@ public class CharacterSeowoo : Character
     {
         _hitPoint = 100f;
         _hitPointMax = 100f;
-        _moveSpeed = 6.0f;
+        _moveSpeed = 5.9f;
         
         _specialPoint = 30f;
         _speicalPointMax = 100f;
 
-        _basicAttackCoolTime = TimeSpan.FromSeconds(0.2f);
+        _basicAttackCoolTime = TimeSpan.FromSeconds(0.3f);
         _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
         {
             TimeSpan.FromSeconds(5.0f),
@@ -48,15 +48,21 @@ public class CharacterSeowoo : Character
     {
         base.ManualUpdate();
 
-        AddSpecialPoint((float)GameController.Instance.GetPlayerDeltaTime(Team).TotalSeconds * 3f);
+        AddSpecialPoint((float)GameController.Instance.GetPlayerDeltaTime(Team).TotalSeconds * 6f);
     }
+
+    public override bool IsBasicAttackAble()
+    {
+        return base.IsBasicAttackAble() && _specialPoint >= _basicAttackCost;
+    }
+
 
     public override bool OnPressBasicAttack()
     {
         if (!base.OnPressBasicAttack()) return false;
         GameController.Instance.ProjectileHandler.CreateSeowooBasicAttack(Team, GetDirection());
         SoundManager.Instance.PlayVoiceSeowooBasicAttack(0.0f);
-        
+        AddSpecialPoint((-1) * _basicAttackCost);
         return true;
     }
 

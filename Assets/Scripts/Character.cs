@@ -50,6 +50,9 @@ public abstract class Character : MonoBehaviour
 
     private CharacterHolder _characterHolder;
 
+    private bool _isBond = false;
+    public bool IsBond() => _isBond;
+
     public void ManualStart(Team team, CharacterHolder characterHolder)
     {
         InitializeBaseStats();
@@ -74,6 +77,7 @@ public abstract class Character : MonoBehaviour
         // 상태 초기화 추가
         _isWallPassable = false;
         _isFlying = false;
+        _isBond = false;
         
         ChangeStateIdle();
         transform.position = Team == Team.Left ? new Vector3(-5f, 0f, 0f) : new Vector3(5f, 0f, 0f);
@@ -275,6 +279,8 @@ public abstract class Character : MonoBehaviour
                     break;
             }
         }
+
+        _isBond = isBond;
 
         _characterHolder.SetActiveStunEffect(isStun);
         _characterHolder.SetActiveBondEffect(isBond);

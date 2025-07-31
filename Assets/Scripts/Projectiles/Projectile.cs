@@ -74,6 +74,17 @@ public abstract class Projectile : MonoBehaviour
             OnHitByCharacter(hit.collider.GetComponent<Character>());
         }
 
+        int wallLayerMask = LayerMask.GetMask("Wall");
+        RaycastHit2D wallHit = Physics2D.Raycast(_prevPos, dir.normalized, dist, wallLayerMask);
+        if (wallHit.collider != null)
+        {
+
+            if (wallHit.collider.TryGetComponent<Wall>(out Wall wall))
+            {
+                OnHitByWall(wall);
+            }
+        }
+
         _prevPos = currentPos;
     }
 

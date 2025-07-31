@@ -5,7 +5,7 @@ using System;
 
 public class SungjunSkill0Projectile : BasicProjectile
 {
-    private const float _damage = 5f;
+    private const float _damage = 4f;
 
 
 

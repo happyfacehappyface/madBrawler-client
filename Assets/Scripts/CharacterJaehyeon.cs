@@ -8,8 +8,11 @@ public class CharacterJaehyeon : Character
 
     private List<Controllable> _computers;
 
-    private const float _skill0BuffDuration = 0.2f;
-    private const float _skill0BuffFactor = 1.8f;
+    private const float _skill0BuffDuration = 0.5f;
+    private const float _skill0BuffFactor = 1.5f;
+
+    private const float _skill1Cost = 10f;
+    private const float _skill2Cost = 40f;
 
     protected override void InitializeBaseStats()
     {
@@ -17,22 +20,22 @@ public class CharacterJaehyeon : Character
         _hitPointMax = 80f;
         _moveSpeed = 4.6f;
         
-        _specialPoint = 0f;
+        _specialPoint = 30f;
         _speicalPointMax = 100f;
 
-        _basicAttackCoolTime = TimeSpan.FromSeconds(0.3f);
+        _basicAttackCoolTime = TimeSpan.FromSeconds(0.5f);
         _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
         {
-            TimeSpan.FromSeconds(2.0f),
-            TimeSpan.FromSeconds(4.0f),
-            TimeSpan.FromSeconds(17.0f)
+            TimeSpan.FromSeconds(1.0f),
+            TimeSpan.FromSeconds(3.0f),
+            TimeSpan.FromSeconds(20.0f)
         };
 
         _skillRemainCoolTime = new TimeSpan[GameConst.SkillCount]
         {
             TimeSpan.FromSeconds(0.0f),
-            TimeSpan.FromSeconds(8.0f),
-            TimeSpan.FromSeconds(26.0f)
+            TimeSpan.FromSeconds(6.0f),
+            TimeSpan.FromSeconds(10.0f)
         };
 
         _computers = new List<Controllable>();
@@ -45,12 +48,17 @@ public class CharacterJaehyeon : Character
         if (IsComputerNearby())
         {
             AddEffect(GameController.Instance.CharacterEffectFactory.JaehyeonSkill0BuffMoveSpeed(TimeSpan.FromSeconds(_skill0BuffDuration), _skill0BuffFactor));
+            AddSpecialPoint((-4.0f) * Time.deltaTime);
+        }
+        else
+        {
+            AddSpecialPoint(4.0f * Time.deltaTime);
         }
     }
 
     private bool IsComputerNearby()
     {
-        return GetComputerMinDistance() <= 1.0f;
+        return GetComputerMinDistance() <= 1.5f;
     }
 
 
@@ -73,9 +81,14 @@ public class CharacterJaehyeon : Character
         return base.IsSkill0Able() && GetComputerMinDistance() > 1.0f;
     }
 
+    public override bool IsSkill1Able()
+    {
+        return base.IsSkill1Able() && (_specialPoint >= _skill1Cost);
+    }
+
     public override bool IsSkill2Able()
     {
-        return base.IsSkill2Able() && _computers.Count >= 2;
+        return base.IsSkill2Able() && (_specialPoint >= _skill2Cost) && _computers.Count >= 2;
     }
 
     public override bool OnPressSkill0()
@@ -98,6 +111,8 @@ public class CharacterJaehyeon : Character
     public override bool OnPressSkill1()
     {
         if (!base.OnPressSkill1()) return false;
+
+        AddSpecialPoint((-1) *_skill1Cost);
 
         Vector2 destination = GameController.Instance.GetPlayerTransform(Utils.GetOppositeTeam(Team)).position;
         Vector2 myPosition = transform.position;
@@ -123,6 +138,8 @@ public class CharacterJaehyeon : Character
     public override bool OnPressSkill2()
     {
         if (!base.OnPressSkill2()) return false;
+
+        AddSpecialPoint((-1) *_skill2Cost);
 
         int computerCount = _computers.Count;
         for (int i = 0; i < computerCount; i++)
@@ -159,6 +176,6 @@ public class CharacterJaehyeon : Character
 
     public override string GetSpecialPointName()
     {
-        return "";
+        return "영감";
     }
 }

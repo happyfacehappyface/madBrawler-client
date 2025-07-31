@@ -14,7 +14,7 @@ public class SeowooSkill0Projectile : BasicProjectile
     public void Initialize(Direction direction)
     {
         base.Initialize(
-            direction, false, true, true,
+            direction, true, false, true,
             _lifeTime, _speed, _damage);
 
         SoundManager.Instance.PlaySfxStupefy(0.0f);

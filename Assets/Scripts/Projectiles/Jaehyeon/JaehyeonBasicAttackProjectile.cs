@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class JaehyeonBasicAttackProjectile : BasicProjectile
 {
@@ -14,6 +15,7 @@ public class JaehyeonBasicAttackProjectile : BasicProjectile
         base.Initialize(
             direction, false, true, true,
             _lifeTime, _speed, _damage);
+
     }
 
 
@@ -28,6 +30,8 @@ public class JaehyeonBasicAttackProjectile : BasicProjectile
     {
         if (!base.OnHitByCharacter(character)) return false;
         SoundManager.Instance.PlaySfxWaveHit(0.0f);
+        character.ChangeStateForcedMove(GetDirection(), 15f, TimeSpan.FromSeconds(0.1f), false, false);
+        
         return true;
     }
 }

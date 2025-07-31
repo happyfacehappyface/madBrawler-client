@@ -34,7 +34,7 @@ public class CharacterSinni : Character
     {
         base.ManualUpdate();
 
-        AddSpecialPoint((float)GameController.Instance.GetPlayerDeltaTime(Team).TotalSeconds * 3f);
+        AddSpecialPoint((float)GameController.Instance.GetPlayerDeltaTime(Team).TotalSeconds * 5f);
     }
 
     

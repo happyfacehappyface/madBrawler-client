@@ -11,7 +11,7 @@ public class GwanghoSkill1Projectile : BasicProjectile
     public void Initialize(float duration)
     {
         base.Initialize(
-            Direction.Right, false, false, false,
+            Direction.Right, false, true, false,
             duration, 0.0f, _damage);
         
         SoundManager.Instance.PlaySfxRollingChair(0.0f);

@@ -100,4 +100,9 @@ public class BasicProjectile : Projectile
         _isHitByWall = true;
         return true;
     }
+
+    protected Direction GetDirection()
+    {
+        return _direction;
+    }
 }

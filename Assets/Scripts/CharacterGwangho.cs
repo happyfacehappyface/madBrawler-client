@@ -28,14 +28,14 @@ public class CharacterGwangho : Character
         _skillCoolTime = new TimeSpan[GameConst.SkillCount]
         {
             TimeSpan.FromSeconds(9.0f),
-            TimeSpan.FromSeconds(4.5f),
+            TimeSpan.FromSeconds(3.0f),
             TimeSpan.FromSeconds(30.0f)
         };
 
         _skillRemainCoolTime = new TimeSpan[GameConst.SkillCount]
         {
             TimeSpan.FromSeconds(0.0f),
-            TimeSpan.FromSeconds(10.0f),
+            TimeSpan.FromSeconds(3.0f),
             TimeSpan.FromSeconds(20.0f)
         };
 
@@ -139,7 +139,7 @@ public class CharacterGwangho : Character
     {
         if (!base.OnPressBasicAttack()) return false;
 
-        float lifeTime = 0.5f + SpecialPointRatio() * 4.0f;
+        float lifeTime = 1.0f + SpecialPointRatio() * 3.0f;
 
 
         if (GetSpecialPoint() >= 100f)
@@ -189,11 +189,11 @@ public class CharacterGwangho : Character
     {
         if (!base.OnPressSkill1()) return false;
 
-        float distance = 8f;
-        float power = 8f + (SpecialPointRatio() * 16.0f);
+        float distance = 10f;
+        float power = 10f + (SpecialPointRatio() * 24.0f);
         float lifeTime = distance / power;
 
-        ChangeStateDash(GetDirection(), power, TimeSpan.FromSeconds(lifeTime), false, false);
+        ChangeStateDash(GetDirection(), power, TimeSpan.FromSeconds(lifeTime), true, false);
         GameController.Instance.ProjectileHandler.CreateGwanghoSkill1(Team, GetDirection(), lifeTime);
         SoundManager.Instance.PlayVoiceGwanghoSkill1(0.0f);
         return true;

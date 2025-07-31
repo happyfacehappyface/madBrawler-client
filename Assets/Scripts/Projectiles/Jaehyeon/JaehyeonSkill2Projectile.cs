@@ -7,10 +7,10 @@ public class JaehyeonSkill2Projectile : RotatingProjectile
 {
     [SerializeField] private BoxCollider2D _collider2D;
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    private const float _lifeTime = 3.0f;
+    private const float _lifeTime = 2.0f;
     private const float _extendTime = 0.5f;
     private const float _collapseTime = 0.5f;
-    private const float _damage = 15f;
+    private const float _damage = 9f;
     private const float _bondDuration = 2.0f;
 
     private Vector2 _origin;

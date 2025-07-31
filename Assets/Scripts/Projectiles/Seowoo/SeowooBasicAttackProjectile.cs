@@ -6,7 +6,7 @@ public class SeowooBasicAttackProjectile : BasicProjectile
 {
     private const float _lifeTime = 2.0f;
     private const float _speed = 16f;
-    private const float _damage = 5f;
+    private const float _damage = 2f;
 
     public void Initialize(Direction direction)
     {
