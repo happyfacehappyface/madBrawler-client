@@ -9,7 +9,7 @@ public class CharacterSungjun : Character
     {
         _hitPoint = 120f;
         _hitPointMax = 120f;
-        _moveSpeed = 4.8f;
+        _moveSpeed = 5.0f;
         
         _specialPoint = 0f;
         _speicalPointMax = 100f;
@@ -17,9 +17,9 @@ public class CharacterSungjun : Character
         _basicAttackCoolTime = TimeSpan.FromSeconds(0.3f);
         _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
         {
-            TimeSpan.FromSeconds(10.0f),
+            TimeSpan.FromSeconds(9.0f),
             TimeSpan.FromSeconds(6.0f),
-            TimeSpan.FromSeconds(12.0f)
+            TimeSpan.FromSeconds(13.0f)
         };
 
         _skillRemainCoolTime = new TimeSpan[GameConst.SkillCount]
