@@ -37,7 +37,11 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject _postGameUI;
     [SerializeField] private TextMeshProUGUI _postGameResultText;
 
+    [SerializeField] private GameObject[] _maps;
+
     private CharacterEffectFactory _characterEffectFactory;
+
+    private Transform _wallParent;
 
     public ProjectileHandler ProjectileHandler => _projectileHandler;
     public ControllableHandler ControllableHandler => _controllableHandler;
@@ -127,11 +131,13 @@ public class GameController : MonoBehaviour
         _leftTime = TimeSpan.Zero;
         _rightTime = TimeSpan.Zero;
 
+        SetRandomMap();
+
         _characterEffectFactory = new CharacterEffectFactory();
 
         _projectileHandler.ManualStart();
         _controllableHandler.ManualStart();
-        _wallHandler.ManualStart();
+        _wallHandler.ManualStart(_wallParent);
 
         _gameUIDrawer.ManualStart();
     }
@@ -182,6 +188,22 @@ public class GameController : MonoBehaviour
             _rightCharacterHolder.SetCharacterImageToDefeated();
             PlayWinningVoice(_leftPlayerCharacter.GetCharacterType());
         }
+    }
+
+    private void SetMap(int mapIndex)
+    {
+        for (int i = 0; i < _maps.Length; i++)
+        {
+            _maps[i].SetActive(i == mapIndex);
+        }
+
+        _wallParent = _maps[mapIndex].transform;
+    }
+
+    private void SetRandomMap()
+    {
+        int mapIndex = UnityEngine.Random.Range(0, _maps.Length);
+        SetMap(mapIndex);
     }
 
     private void HandleInput()

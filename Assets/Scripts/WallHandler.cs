@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class WallHandler : MonoBehaviour
 {
-    [SerializeField] private Transform _wallParent;
+    private Transform _wallParent;
     List<Wall> _walls;
 
-    public void ManualStart()
+    public void ManualStart(Transform wallParent)
     {
+        _wallParent = wallParent;
         _walls = new List<Wall>();
 
         foreach (Transform child in _wallParent)
