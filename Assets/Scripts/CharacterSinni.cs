@@ -14,7 +14,7 @@ public class CharacterSinni : Character
         _specialPoint = 30f;
         _speicalPointMax = 100f;
 
-        _basicAttackCoolTime = TimeSpan.FromSeconds(0.2f);
+        _basicAttackCoolTime = TimeSpan.FromSeconds(0.4f);
         _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
         {
             TimeSpan.FromSeconds(7.0f),

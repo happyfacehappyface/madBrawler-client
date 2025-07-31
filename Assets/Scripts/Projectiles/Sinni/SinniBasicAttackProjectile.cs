@@ -7,8 +7,8 @@ public class SinniBasicAttackProjectile : BasicProjectile
 {
     private const float _lifeTime = 0.5f;
     private const float _speed = 18f;
-    private const float _damageStart = 10f;
-    private const float _damageDelta = -15f;
+    private const float _damageStart = 5f;
+    private const float _damageDelta = -9f;
     private const float _scaleDelta = 2.5f;
     private const float _alphaDelta = -2.0f;
     private const float _harmfulTime = 0.4f;

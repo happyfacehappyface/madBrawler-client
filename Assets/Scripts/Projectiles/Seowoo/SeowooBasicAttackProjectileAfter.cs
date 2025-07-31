@@ -6,7 +6,7 @@ using System;
 public class SeowooBasicAttackProjectileAfter : BasicProjectile
 {
     private const float _lifeTime = 3.0f;
-    private const float _damage = 1f;
+    private const float _damage = 2f;
 
     private const float _lastTime = 1.5f;
 

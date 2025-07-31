@@ -54,7 +54,18 @@ public class GameController : MonoBehaviour
 
     public void OnClickReturnToTitle()
     {
-        SceneManager.LoadScene("OutGameScene");
+        SceneManager.LoadScene("TitleScene");
+
+        
+    }
+
+
+    private void OnInGameSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        SceneManager.sceneLoaded -= OnInGameSceneLoaded;
+        GameController controller = GameObject.FindObjectOfType<GameController>();
+
+        controller.ManualStart(_leftCharacterType, _rightCharacterType);
     }
 
     private void ResetGame()
@@ -62,8 +73,9 @@ public class GameController : MonoBehaviour
         // 레이어 충돌 매트릭스 초기화
         ResetLayerCollisions();
         
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        ManualStart(_leftCharacterType, _rightCharacterType);
+        SceneManager.LoadScene("InGameScene");
+
+        SceneManager.sceneLoaded += OnInGameSceneLoaded;
     }
     
     private void ResetLayerCollisions()
@@ -160,6 +172,7 @@ public class GameController : MonoBehaviour
             _postGameUI.SetActive(true);
             _postGameResultText.text = $"{_rightPlayerCharacter.GetCharacterName()} 이(가) 이겼습니다!\n승자: 오른쪽 플레이어";
             _leftCharacterHolder.SetCharacterImageToDefeated();
+            PlayWinningVoice(_rightPlayerCharacter.GetCharacterType());
         }
         else if (_rightPlayerCharacter.IsDead())
         {
@@ -167,6 +180,7 @@ public class GameController : MonoBehaviour
             _postGameUI.SetActive(true);
             _postGameResultText.text = $"{_leftPlayerCharacter.GetCharacterName()} 이(가) 이겼습니다!\n승자: 왼쪽 플레이어";
             _rightCharacterHolder.SetCharacterImageToDefeated();
+            PlayWinningVoice(_leftPlayerCharacter.GetCharacterType());
         }
     }
 
@@ -375,6 +389,28 @@ public class GameController : MonoBehaviour
         else
         {
             return _rightPlayerCharacter;
+        }
+    }
+
+    private void PlayWinningVoice(CharacterType characterType)
+    {
+        switch (characterType)
+        {
+            case CharacterType.Sungjun:
+                SoundManager.Instance.PlayVoiceSungjunSkill2After(0.0f);
+                break;
+            case CharacterType.Sinni:
+                SoundManager.Instance.PlayVoiceSinniSkill0(0.0f);
+                break;
+            case CharacterType.Gwangho:
+                SoundManager.Instance.PlayVoiceGwanghoBasicAttack(0.0f);
+                break;
+            case CharacterType.Seowoo:
+                SoundManager.Instance.PlayVoiceSeowooSkill2(0.0f);
+                break;
+            case CharacterType.Jaehyeon:
+                SoundManager.Instance.PlayVoiceJaehyeonSkill1(0.0f);
+                break;
         }
     }
 

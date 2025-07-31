@@ -19,13 +19,13 @@ public class CharacterGwangho : Character
     {
         _hitPoint = 85f;
         _hitPointMax = 85f;
-        _moveSpeed = 4.1f;
+        _moveSpeed = 4.4f;
         
         _specialPoint = 30f;
         _speicalPointMax = 100f;
 
-        _basicAttackCoolTime = TimeSpan.FromSeconds(0.7f);
-        _skillCoolTime = new TimeSpan[GameConst.SkillCount] 
+        _basicAttackCoolTime = TimeSpan.FromSeconds(0.5f);
+        _skillCoolTime = new TimeSpan[GameConst.SkillCount]
         {
             TimeSpan.FromSeconds(9.0f),
             TimeSpan.FromSeconds(4.5f),

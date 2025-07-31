@@ -10,8 +10,8 @@ public class CharacterSeowoo : Character
     private const float _skill1SpecialCost = 0f;
     private const float _skill2SpecialCost = 20f;
 
-    private const float _skill1BuffDuration = 0.6f;
-    private const float _skill1BuffFactor = 1.3f;
+    private const float _skill1BuffDuration = 1.2f;
+    private const float _skill1BuffFactor = 1.6f;
 
     private const float _skill2DebuffDuration = 1.0f;
 

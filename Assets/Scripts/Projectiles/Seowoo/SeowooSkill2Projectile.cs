@@ -9,7 +9,7 @@ public class SeowooSkill2Projectile : BasicProjectile
     [SerializeField] private Animator _animator;
     private const float _lifeTime = 6.0f;
 
-    private const float _delayTime = 2.0f;
+    private const float _delayTime = 1.5f;
     private const float _speed = 0.01f;
     private const float _damage = 65f;
 

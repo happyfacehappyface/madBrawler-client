@@ -6,7 +6,7 @@ public class SungjunBasicAttackProjectile : BasicProjectile
 {
     private const float _lifeTime = 0.15f;
     private const float _speed = 18f;
-    private const float _damage = 10f;
+    private const float _damage = 8f;
 
     public void Initialize(Direction direction)
     {

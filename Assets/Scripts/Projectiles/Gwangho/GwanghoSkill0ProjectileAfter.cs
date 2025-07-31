@@ -6,7 +6,7 @@ using System;
 public class GwanghoSkill0ProjectileAfter : BasicProjectile
 {
     private const float _lifeTime = 0.5f;
-    private const float _damage = 15f;
+    private const float _damage = 16f;
 
     private const float _delayTime = 0.15f;
     private const float _lastTime = 0.5f;

@@ -6,7 +6,7 @@ using System;
 public class SinniSkill0Projectile : BasicProjectile
 {
     private const float _lifeTime = 2.0f;
-    private const float _damage = 2f;
+    private const float _damage = 3f;
 
     private const float _lastTime = 1.5f;
 
@@ -26,7 +26,7 @@ public class SinniSkill0Projectile : BasicProjectile
             _lifeTime, 0f, _damage);
 
         float scaleRatio = Mathf.Clamp(specialRatio, 0f, 0.75f);
-        float scale = 0.3f + scaleRatio * 2.7f;
+        float scale = 0.3f + scaleRatio * 3.7f;
         _isSilenceActivated = specialRatio >= 1.0f;
 
         transform.localScale = new Vector3(scale, scale, scale);

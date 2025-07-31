@@ -314,7 +314,7 @@ MonoBehaviour:
   _voiceSungjunSkill0: {fileID: 8300000, guid: c6b7ed7b7e212654484dd57ad6fb48d0, type: 3}
   _voiceSungjunSkill1: {fileID: 8300000, guid: 09a98f3b1ff60ed43b6fe6b8959d74ae, type: 3}
   _voiceSungjunSkill2: {fileID: 8300000, guid: 9fb718ce0b1a6ad4ab08ced1fc288b4e, type: 3}
-  _voiceSungjunSkill2After: {fileID: 8300000, guid: c3123026ade31954f89d88a3d4658079, type: 3}
+  _voiceSungjunSkill2After: {fileID: 8300000, guid: 06733152502331b4484d0ee1043470bf, type: 3}
   _voiceSinniBasicAttack: {fileID: 8300000, guid: 61e534f00c43b0d42a40439655b72648, type: 3}
   _voiceSinniSkill0: {fileID: 8300000, guid: 7dc8dd383ffc1a04e9b9b48f493ed0ec, type: 3}
   _voiceSinniSkill1: {fileID: 8300000, guid: 1b29b9bb950a4f343ad4d5c036fe2a3e, type: 3}

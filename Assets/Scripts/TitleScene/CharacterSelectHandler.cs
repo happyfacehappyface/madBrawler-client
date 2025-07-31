@@ -98,11 +98,11 @@ public class CharacterSelectHandler : MonoBehaviour
         int selectedLeftCharacterIndex = _leftCharacterType;
         int selectedRightCharacterIndex = _rightCharacterType;
 
-        if (selectedLeftCharacterIndex == 6)
+        if (selectedLeftCharacterIndex == 5)
         {
             selectedLeftCharacterIndex = UnityEngine.Random.Range(0, 5);
         }
-        if (selectedRightCharacterIndex == 6)
+        if (selectedRightCharacterIndex == 5)
         {
             selectedRightCharacterIndex = UnityEngine.Random.Range(0, 5);
         }

@@ -5,7 +5,7 @@ using System;
 
 public class SungjunSkill2ProjectileAfter : BasicProjectile
 {
-    private const float _damage = 30f;
+    private const float _damage = 25f;
     private float _delayTime;
     private const float _slowDuration = 1.0f;
     private const float _slowFactor = 0.5f;

@@ -5,8 +5,8 @@ using UnityEngine;
 public class JaehyeonSkill1Projectile : RotatingProjectile
 {
     private const float _lifeTime = 2.0f;
-    private const float _speed = 11f;
-    private const float _damage = 3f;
+    private const float _speed = 13f;
+    private const float _damage = 4f;
 
     public void Initialize(float angle)
     {

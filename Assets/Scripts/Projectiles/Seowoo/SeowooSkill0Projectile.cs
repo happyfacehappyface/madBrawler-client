@@ -8,7 +8,7 @@ public class SeowooSkill0Projectile : BasicProjectile
     private const float _lifeTime = 2.0f;
     private const float _speed = 75f;
     private const float _damage = 3f;
-    private const float _stunDuration = 1.0f;
+    private const float _stunDuration = 1.5f;
 
 
     public void Initialize(Direction direction)
